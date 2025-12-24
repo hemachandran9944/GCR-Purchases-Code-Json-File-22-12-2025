@@ -1,0 +1,10 @@
+
+
+[Function: DownLoad_Sales]
+	
+
+Variable	:	Check_add_On	: String
+
+01:set		: Check_add_On		: $$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
+
+02:Msg Box	: "02"				: ##Check_add_On

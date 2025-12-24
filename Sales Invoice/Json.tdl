@@ -1,0 +1,117 @@
+
+
+
+
+
+[Collection : GCR_SalesVoucher]
+	
+		Data Source	: File JSON	: @@SalesVoucherDownloadURL
+		Client Only	: Yes
+		Fetch       : .*.
+		JSON Object	: Sales_object
+		
+[Object: Sales_object]
+	
+	Collection	: Saless_message	: Saless_message
+	
+[Object: Saless_message]
+	
+
+	Storage		: tallycode					: String
+    Storage		: tallyname					: String
+    Storage		: tallyserialno				: String
+    Storage		: salesguid					: String		
+    Storage		: ipaddress					: String
+    Storage		: systemname    			: String
+    Storage		: createduser   			: String
+    Storage		: requesttype				: String
+	Collection	: Saleslist					: Saleslist
+	
+[Object: Saleslist]
+	
+	storage		: invoicenumber				: string
+	storage		: invoicedate               : string
+	storage		: narration                 : string
+	storage		: customername              : string
+	storage		: vchtype                   : string
+	storage		: invoicemode               : string
+	storage		: reference                 : string
+	storage		: salesledger               : string
+	storage		: vchclass                  : string
+	storage		: deliverynoteno            : string
+	storage		: deliverynotedate          : string
+	storage		: dispatchdocno             : string
+	storage		: dipatchthrough            : string
+	storage		: destination               : string
+	storage		: lrrnumber                 : string
+	storage		: lrrdate                   : string
+	storage		: vehiclenumber             : string
+	storage		: ordernumber               : string
+	storage		: orderdate                 : string
+	storage		: modeofpayment             : string
+	storage		: otherreference            : string
+	storage		: termsofdelivery           : string
+	storage		: buyername                 : string
+	storage		: buyeraddress1             : string
+	storage		: buyeraddress2             : string
+	storage		: buyeraddress3             : string
+	storage		: buyeraddress4             : string
+	storage		: buyeraddress5             : string
+	storage		: country                   : string
+	storage		: buyerstate                : string
+	storage		: placeofsupply             : string
+	storage		: buyergstinnumber          : string
+	storage		: deliveryname              : string
+	storage		: deliveryaddress1          : string
+	storage		: deliveryaddress2          : string
+	storage		: deliveryaddress3          : string
+	storage		: deliveryaddress4          : string
+	storage		: deliveryaddress5          : string
+	storage		: consigneestate            : string
+	storage		: consigneegstinnumber      : string
+	storage		: subvalue                  : string
+	storage		: roundoffledger            : string
+	storage		: roundoffamount            : string
+	storage		: invoicevalue              : string
+	storage		: irn                       : string
+	storage		: ackno                     : string
+	storage		: ackdate                   : string
+	storage		: SignedInvoice             : string
+	storage		: SignedQRCode              : string
+	storage		: ewaybillno                : string
+	storage		: ewaybillnodate            : string
+	
+	Collection	: vchproductlist_Sales		: vchproductlist_Sales
+	Collection	: vchledgerlist_Sales		: vchledgerlist_Sales
+	
+[Object: vchproductlist_Sales]
+	
+	storage		: invoicenumber				: string
+	storage		: product                   : string
+	storage		: productdescription        : string
+	storage		: parent                    : string
+	storage		: partno                    : string
+	storage		: productgodown             : string
+	storage		: unit                      : string
+	storage		: Altunit                   : string
+	storage		: productqty                : string
+	storage		: productAltqty             : string
+	storage		: productrate               : string
+	storage		: producthsn                : string
+	storage		: productigstpercentage     : string
+	storage		: productcgstpercentage     : string
+	storage		: productsgstpercentage     : string
+	storage		: taxamount                 : string
+	storage		: taxableamount             : string
+	storage		: productvalue              : string
+	
+
+[Object: vchledgerlist_Sales]
+	
+
+	storage		: invoicenumber				: string
+	storage		: additionalledger          : string
+	storage		: parent                    : string
+	storage		: rateofpercentage          : string
+	Storage		: additionalledgervalue		: String
+		

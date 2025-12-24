@@ -1,0 +1,78 @@
+
+
+
+
+
+[System: Formula]
+	
+	
+/*Indent*/
+
+	MenuIndent							:	"DownLoad Integration" 
+	PurchasesIndent						:	 "DownLoad Voucher Types"
+	AutoShudling						: 	"AutoScheduling Config"
+						
+
+ /*Log Formula*/
+ 
+
+	currentDate  			   			: $$LocaleString:$$SysInfo:SYSTEMDATE
+	TallyDefaultAppPath        			: $$SysInfo:ApplicationPath
+	currentdate_LogFile        			: @@TallyDefaultAppPath+"\"+@@currentDate+".log"
+	
+
+
+
+	
+	SalesVoucherDownloadURL	:$$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
+	PurchVCHDownloadURL		:$$localestring:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+
+
+						 
+					/*Add On Storages*/
+
+	[System: UDF]
+	
+			/*Add On Set  Storages*/
+	
+	Add_Hit_Enableintegration		: Logical	: 2001
+	TallyCompanyCode				: String	: 2002
+	CompanyAPIKey					: String	: 2003
+	CompanyAPISecretkey             : String	: 2004
+	
+		/*Sales Voucher Type Storages*/
+
+	SalesVoucherDownloadURL         : String	: 2005
+	SalesVoucherDownloadURLStatus   : String	: 2006
+	SalesValueVCHType       		: String	: 2007
+	SalesValueLedger				: String	: 2008
+	
+		/*Purchase Voucher Type Storages*/
+	
+	PurchVCHDownloadURL				: String	: 2009
+	PurchStatusDownloadURL  		: String	: 2010
+	PurchValueVCHType	    		: String	: 2011
+	PurchValueLedger				: String	: 2012
+	
+		
+			/*Payment Vouvher Type Storages*/
+
+	PaymentVCHDownloadURL			: string	: 2013
+	PaymentDownloadURLStatus		: string	: 2014
+	PaymentValueVCHType				: String	: 2015
+	
+			/*Receipt Voucher Type Storages*/
+	
+	ReceiptDownloadURL				: string	: 2016
+	ReceiptDownloadURLStatus  		: string	: 2017
+	ReciptValueVCHType				: String	: 2018
+
+
+
+
+	
+
+
+
+
+

@@ -1,0 +1,538 @@
+
+
+
+
+[Function: DownLoad_PurchasesFuntion]
+	/*
+	001: Msg Box	: "001"	: "Test"
+	
+
+	Variable	: Add_On:String
+	
+	01:Set		: Add_On: $$LocaleString:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+	
+	02:Msg Box	: "02"	: ##Add_On  */
+	
+				/*Tally Requesttype Variables */
+		
+	Variable	: message_purchase_tallycode						: String
+	Variable	: message_purchase_tallyname						: String
+	Variable	: message_purchase_tallyserialno					: String
+	Variable	: message_purchase_salesguid						: String
+	Variable	: message_purchase_ipaddress						: String
+	Variable	: message_purchase_systemname   					: String
+	Variable	: message_purchase_createduser  					: String
+	Variable	: message_purchase_requesttype						: String
+	Variable	: message_purchase_date								: String
+		         
+					/*Voucher Detail Variables */
+	
+	Variable	: purchaselist_purchase_invoicenumber 				: String
+	Variable	: purchaselist_purchase_invoicedate					: String
+	Variable	: purchaselist_purchase_customername				: String
+	Variable	: purchaselist_purchase_VchType						: String
+	Variable	: purchaselist_purchase_invoicemode					: String
+	Variable	: purchaselist_purchase_reference					: String
+	Variable	: purchaselist_purchase_salesledger					: String
+	Variable	: purchaselist_purchase_deliverynoteno				: String
+	Variable	: purchaselist_purchase_deliverynotedate			: String
+	Variable	: purchaselist_purchase_dispatchdocno				: String
+	Variable	: purchaselist_purchase_dipatchthrough				: String
+	Variable	: purchaselist_purchase_destination					: String
+	Variable	: purchaselist_purchase_lrrnumber					: String
+	Variable	: purchaselist_purchase_lrrdate						: String
+	Variable	: purchaselist_purchase_vehiclenumber				: String
+	Variable	: purchaselist_purchase_ordernumber					: String
+	Variable	: purchaselist_purchase_orderdate					: String
+	Variable	: purchaselist_purchase_modeofpayment				: String
+	Variable	: purchaselist_purchase_otherreference				: String
+	Variable	: purchaselist_purchase_termsofdelivery				: String
+	Variable	: purchaselist_purchase_buyername					: String
+	Variable	: purchaselist_purchase_buyeraddress				: String
+	Variable	: purchaselist_purchase_country						: String
+	Variable	: purchaselist_purchase_Byr_state					: String
+	Variable	: purchaselist_purchase_placeofsupply				: String
+	Variable	: purchaselist_purchase_Byr_gstinnumber				: String
+	Variable	: purchaselist_purchase_deliveryname				: String
+	Variable	: purchaselist_purchase_deliveryaddress				: String
+	Variable	: purchaselist_purchase_state						: String
+	Variable	: purchaselist_purchase_gstinnumber					: String
+	Variable	: purchaselist_purchase_invoicevalue				: String
+	            
+					/*Master Variables */
+	
+	Variable	: vchproductlist_Purchase_invoicenumber 			: String
+	Variable	: vchproductlist_Purchase_product					: String
+	Variable	: vchproductlist_Purchase_productdescription		: String
+	Variable	: vchproductlist_Purchase_parent					: String
+	Variable	: vchproductlist_Purchase_partno					: String
+	Variable	: vchproductlist_Purchase_productgodown				: String
+	Variable	: vchproductlist_Purchase_unit						: String
+	Variable	: vchproductlist_Purchase_Altunit					: String	
+	Variable	: vchproductlist_Purchase_productqty				: String
+	Variable	: vchproductlist_Purchase_productAltqty           	: String
+	Variable	: vchproductlist_Purchase_productrate				: String
+	Variable	: vchproductlist_Purchase_producthsn				: String
+	Variable	: vchproductlist_Purchase_productigstpercentage		: String
+	Variable	: vchproductlist_Purchase_productcgstpercentage		: String
+	Variable	: vchproductlist_Purchase_productsgstpercentage		: String
+	Variable	: vchproductlist_Purchase_taxamount					: String
+	Variable	: vchproductlist_Purchase_taxableamount				: String
+	Variable	: vchproductlist_Purchase_productvalue				: String
+	              
+				/*Ledger GST Variable */
+                
+	Variable	: vchledgerlist_Purchase_purchase_invoicenumber 		: String
+	Variable	: vchledgerlist_Purchase_purchase_additionalledger		: String
+	Variable	: vchledgerlist_Purchase_purchase_parent				: String
+	Variable	: vchledgerlist_Purchase_purchase_rateofpercentage		: String
+	Variable	: vchledgerlist_Purchase_purchase_additionalledgervalue	: String    
+	
+
+	Variable	: vchledgerlist_Purchase_party_name						: String
+	Variable	: vchledgerlist_Purchase__CheckSalesVoucherNo			: String
+	Variable	: vchledgerlist_Purchase_STK_product					: String
+	Variable	: vchledgerlist_Purchase_ledger						: String
+                  
+					/*Progress Count Bor  Variable */
+
+	Variable	: ProgressCount											 : Number
+	Variable	: TotalPurchase										  	 : Number:1
+                   
+	Variable	: GCRNumberOfPurchase								     : Number						
+	Variable	: GCRNumberOfPurchasecount								 : Number	: 0	
+	
+
+
+	10	: SET	: ProgressCount	: 1
+							
+	20 	: If: (##TotalPurchase > 0)
+
+	30	: Query Box	: "Do you want to \n Download Purchases ":Yes:No	
+	
+	40	: If	: $$LastResult
+
+	41	: If	: ($$IsInternetActive)
+	
+	;42	: If 	: NOT $$IsEmpty:$$LicenseInfo:SerialNumber
+	
+	50		: Walk Collection	: 	GCR_Purchases  
+
+	55		: Walk Collection	: 	message 
+
+	60		: Set	: message_purchase_tallycode				: $$LocaleString:$tallycode		
+	70		: Set	: message_purchase_tallyname				: $$LocaleString:$tallyname		
+	80		: Set	: message_purchase_tallyserialno			: $$LocaleString:$tallyserialno		
+	90		: Set	: message_purchase_salesguid				: $$LocaleString:$salesguid		
+	100		: Set	: message_purchase_ipaddress				: $$LocaleString:$ipaddress		
+	110		: Set	: message_purchase_systemname   			: $$LocaleString:$systemname    
+	120		: Set	: message_purchase_createduser  			: $$LocaleString:$createduser   
+	130		: Set	: message_purchase_requesttype				: $$LocaleString:$requesttype	
+	131		: Set	: message_purchase_date						: $$LocaleString:$date
+
+	135		:  If	: ##message_purchase_tallycode=$TallyCompanyCode:Company:##SVCurrentCompany
+	
+	136		: SET	: GCRNumberOfPurchase	: $$NumItems:purchaselist
+
+	137		: IF	: ##GCRNumberOfPurchase > 0
+	
+	138		: START PROGRESS		: ##GCRNumberOfPurchase	: "Purchase Voucher Import" : @@CmpMailName	: "Importing Purchase Voucher..."
+	139		: END IF
+	
+	140		: Walk Collection: purchaselist 
+	145		: NEW OBJECT	: Voucher	
+	
+
+	146		: Call	: Sundry_Creditors
+	/*147		: Call	: Sundry_Creditors_Perant*/
+	148		: Call	: RoundOff_Ledger
+	
+	150		: Set	: purchaselist_purchase_invoicenumber 		: $$LocaleString:$invoicenumber 	
+	160		: Set	: purchaselist_purchase_invoicedate			: $invoicedate
+	170		: Set	: purchaselist_purchase_customername		: $$LocaleString:$customername
+	171		: Set	: purchaselist_purchase_VchType				: $$LocaleString:$VchType
+	172		: Set	: vchledgerlist_Purchase_party_name			: $$LocaleString:$Name:Ledger:$customername
+	180		: Set	: purchaselist_purchase_invoicemode			: $$LocaleString:$invoicemode				
+	190		: Set	: purchaselist_purchase_reference			: $$LocaleString:$reference					
+	200		: Set	: purchaselist_purchase_salesledger			: $$LocaleString:$salesledger
+	210		: Set	: purchaselist_purchase_deliverynoteno		: $$LocaleString:$deliverynoteno			
+	220		: Set	: purchaselist_purchase_deliverynotedate	: $$LocaleString:$deliverynotedate	
+	230		: Set	: purchaselist_purchase_dispatchdocno		: $$LocaleString:$dispatchdocno				
+	240		: Set	: purchaselist_purchase_dipatchthrough		: $$LocaleString:$dipatchthrough			
+	250		: Set	: purchaselist_purchase_destination			: $$LocaleString:$destination				
+	260		: Set	: purchaselist_purchase_lrrnumber			: $$LocaleString:$lrrnumber					
+	270		: Set	: purchaselist_purchase_lrrdate				: $$LocaleString:$lrrdate					
+	280		: Set	: purchaselist_purchase_vehiclenumber		: $$LocaleString:$vehiclenumber				
+	290		: Set	: purchaselist_purchase_ordernumber			: $$LocaleString:$ordernumber				
+	300		: Set	: purchaselist_purchase_orderdate			: $$LocaleString:$orderdate					
+	310		: Set	: purchaselist_purchase_modeofpayment		: $$LocaleString:$modeofpayment				
+	320		: Set	: purchaselist_purchase_otherreference		: $$LocaleString:$otherreference			
+	330		: Set	: purchaselist_purchase_termsofdelivery		: $$LocaleString:$termsofdelivery			
+	340		: Set	: purchaselist_purchase_buyername			: $$LocaleString:$buyername					
+	350		: Set	: purchaselist_purchase_buyeraddress		: $$LocaleString:$buyeraddress				
+	360		: Set	: purchaselist_purchase_country				: $$LocaleString:$country					
+	370		: Set	: purchaselist_purchase_Byr_state			: $$LocaleString:$buyerstate				
+	380		: Set	: purchaselist_purchase_placeofsupply		: $$LocaleString:$placeofsupply				
+	390		: Set	: purchaselist_purchase_Byr_gstinnumber		: $$LocaleString:$buyergstinnumber			
+	400		: Set	: purchaselist_purchase_deliveryname		: $$LocaleString:$deliveryname				
+	410		: Set	: purchaselist_purchase_deliveryaddress		: $$LocaleString:$deliveryaddress			
+	420		: Set	: purchaselist_purchase_state				: $$LocaleString:$consigneestate			
+	430		: Set	: purchaselist_purchase_gstinnumber			: $$LocaleString:$consigneegstinnumber		
+	432		: Set	: purchaselist_purchase_invoicevalue		: $$LocaleString:$invoicevalue			
+	
+	
+	436		: If: (Not($$IsEmpty:##purchaselist_purchase_customername))
+
+	438		: Set	: vchledgerlist_Purchase__CheckSalesVoucherNo:($$CollectionFieldByKey:$VoucherNumber:($$String:##purchaselist_purchase_invoicenumber+$$String:##purchaselist_purchase_VchType):CheckSalesVchAvailabilitGCRPurchase)
+
+	438a	: If	: ##vchledgerlist_Purchase__CheckSalesVoucherNo=''
+	
+	439A	: SET		: SVViewName							: $$SysName:InvVchView
+				
+	439C	: Set Value	: DATE									: ##purchaselist_purchase_invoicedate
+	439D	: Set Value	: NARRATION								: $narration
+	439E	: Set Value	: PARTYLEDGERNAME						: ##purchaselist_purchase_customername
+			
+	440E	: Set Value	: PERSISTEDVIEW							: If ##purchaselist_purchase_invoicemode = "Inventory View" Then "Invoice Voucher View" Else "Accounting Voucher View"
+	440F	: Set Value	: REFERENCE								: ##purchaselist_purchase_reference
+	440G	: Set Value	: IsInvoice								: Yes
+	440H	: Set Value	: VOUCHERTYPENAME						: ##purchaselist_purchase_VchType
+			  
+	440I	: Insert Collection Object:INVOICEDELNOTES
+	440J	: Set Value	: BASICSHIPDELIVERYNOTE					: ##purchaselist_purchase_deliverynoteno 
+	440K	: Set Value	: BASICSHIPPINGDATE						: ##purchaselist_purchase_deliverynotedate
+	440L	: Set Target:..
+			  
+	440M	: Set Value	: BASICSHIPDOCUMENTNO					: ##purchaselist_purchase_dispatchdocno
+	440N	: Set Value	: BASICSHIPPEDBY						: ##purchaselist_purchase_dipatchthrough
+	440O	: Set Value	: BASICFINALDESTINATION					: ##purchaselist_purchase_destination			
+	440P	: Set Value	: BILLOFLADINGNO						: ##purchaselist_purchase_lrrnumber        		
+	440Q	: Set Value	: BILLOFLADINGDATE						: ##purchaselist_purchase_lrrdate          		
+	440R	: Set Value	: BASICSHIPVESSELNO						: ##purchaselist_purchase_vehiclenumber    			
+			  
+	440S	: Insert Collection Object:INVOICEORDERLIST
+	440T	: Set Value	: BASICPURCHASEORDERNO					: ##purchaselist_purchase_ordernumber
+	440U	: Set Value	: BASICORDERDATE						: ##purchaselist_purchase_orderdate
+	440V	: Set Target:..
+			  
+	440W	: Set Value	: BASICDUEDATEOFPYMT					: ##purchaselist_purchase_modeofpayment			
+	440X	: Set Value	: BASICORDERREF							: ##purchaselist_purchase_otherreference			
+			  
+	440Y	: Insert Collection Object:BASICORDERTERMS
+	440Z	: Set Value	: BASICORDERTERMS						: ##purchaselist_purchase_termsofdelivery 
+	441A	: Set Target:..
+			  
+	441B	: Set Value	: BASICBUYERNAME						: ##purchaselist_purchase_buyername
+			  
+	441C	: Insert Collection Object:BASICBUYERADDRESS
+	441D	: Set Value	: BASICBUYERADDRESS						: ##purchaselist_purchase_buyeraddress
+	441E	: Set Target:..
+			  
+	441F	: Set Value	: COUNTRYOFRESIDENCE					: ##purchaselist_purchase_country						
+	441G	: Set Value	: STATENAME								: ##purchaselist_purchase_Byr_state         		
+	441H	: Set Value	: PLACEOFSUPPLY							: ##purchaselist_purchase_placeofsupply     	
+	441I	: Set Value	: PARTYGSTIN							: ##purchaselist_purchase_Byr_gstinnumber   	
+	
+	441J	: INSERT COLLECTION OBJECT							: LEDGER ENTRIES
+	441K	: SET VALUE		: LedgerName						: ##purchaselist_purchase_customername
+	441L	: SET VALUE		: IsDeemedPositive					: No
+	441M	: SET VALUE		: Amount							: ##purchaselist_purchase_invoicevalue
+	441N	: SET TARGET	: ..
+	
+	445H	: Set Value		: ISOPTIONAL						: $$LocaleString:"No"
+
+
+	450		: Insert Collection Object:EWAYBILLDETAILS
+	451		: Set Value	: BILLDATE								: $ewaybillnodate
+	452		: Set Value	: BILLNUMBER							: $ewaybillno
+	453		: Set Target:..
+	500		: Walk Collection: vchproductlist_pur 
+	
+	/*****************Autometic Cretion Master************************/
+	
+	
+	
+	
+	504		: Call	: StockGroup_Master 
+	505		: Call	: StockUnit_Master
+	506		: Call	: StockItem_Master
+	507		: Call	: Godwons_Master
+	
+	
+	
+	/*********************************************************************/
+	
+	
+	510		: Set	: vchproductlist_Purchase_invoicenumber 		: $$LocaleString:$invoicenumber 		
+	520		: Set	: vchproductlist_Purchase_product				: $$LocaleString:$product
+	521		: Set	: vchledgerlist_Purchase_STK_product			: $Name:StockItem:$product
+	525		: Set	: vchproductlist_Purchase_productdescription	: $$LocaleString:$productdescription
+	530		: Set	: vchproductlist_Purchase_parent				: $$LocaleString:$parent				
+	540		: Set	: vchproductlist_Purchase_partno				: $$LocaleString:$partno				
+	550		: Set	: vchproductlist_Purchase_productgodown			: $$LocaleString:$productgodown			
+	560		: Set	: vchproductlist_Purchase_unit					: $$LocaleString:$unit					
+	570		: Set	: vchproductlist_Purchase_Altunit				: $$LocaleString:$Altunit				
+	574		: Set	: vchproductlist_Purchase_productqty			: $$LocaleString:$productqty			
+	580		: Set	: vchproductlist_Purchase_productAltqty         : $$LocaleString:$productAltqty         
+	581		: Set	: vchproductlist_Purchase_productrate			: $$LocaleString:$productrate			
+	590		: Set	: vchproductlist_Purchase_producthsn			: $$LocaleString:$producthsn			
+	600		: Set	: vchproductlist_Purchase_productigstpercentage	: $$LocaleString:$productigstpercentage	
+	610		: Set	: vchproductlist_Purchase_productcgstpercentage	: $$LocaleString:$productcgstpercentage	
+	620		: Set	: vchproductlist_Purchase_productsgstpercentage	: $$LocaleString:$productsgstpercentage	
+	630		: Set	: vchproductlist_Purchase_taxamount				: $$LocaleString:$taxamount				
+	640		: Set	: vchproductlist_Purchase_taxableamount			: $$LocaleString:$taxableamount			
+	650		: Set	: vchproductlist_Purchase_productvalue			: $$LocaleString:$productvalue			
+
+	
+	651		: If: (Not($$IsEmpty:##vchledgerlist_Purchase_STK_product))
+	
+	652		: INSERT COLLECTION OBJECT				: INVENTORY ENTRIES
+	653		: SET VALUE		: StockItemName			: ##vchproductlist_Purchase_product
+	654		: SET VALUE		: IsDeemedPositive		: Yes
+	655		: SET VALUE		: ISLASTDEEMEDPOSITIVE	: Yes
+	656		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	661		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1
+	662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
+	663		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
+	
+	664A	: Msg Box	: "664A"	: ##vchproductlist_Purchase_productAltqty
+	
+	664B	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS	
+	665		: SET VALUE		: GodownName			: if $$IsEmpty:##vchproductlist_Purchase_productgodown then "Main Location" else ##vchproductlist_Purchase_productgodown
+	667		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productvalue)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	668		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1		
+	669		: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Purchase_productrate))
+	670		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
+	671		: SET TARGET	: ..
+			
+	672		: INSERT COLLECTION OBJECT				: ACCOUNTING ALLOCATIONS
+	673		: SET VALUE		: LedgerName			: ##purchaselist_purchase_salesledger
+	674		: SET VALUE		: Amount				: "-"+##vchproductlist_Purchase_productvalue
+	675		: SET TARGET	: ...
+	
+	676		:  Else
+			
+	677		: Set File Log On
+	678		: OPEN FILE : @@currentdate_LogFile : Text : Write
+	679		: Write File Line: "*****************"
+	680		: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##Download_TRANS_tallycode+', Status: "'+##vchproductlist_Purchase_product+'" Stock Item Not Found'
+    
+	682		: Close Target File
+	683		: Set File Log Off
+	
+	683a 	: LIST ADD EX : CommonVariableUpdatePur
+	683b 	: Set 		  : CommonVariableUpdatePur[$$LOOPINDEX].VRNO      			: ##purchaselist_purchase_invoicenumber
+	683c 	: Set 		  : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	683d 	: Set 		  : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    			: ##purchaselist_purchase_invoicedate
+	683e 	: Set 		  : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	683f 	: Set 		  : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: ##vchproductlist_Purchase_product+" Stock Item Not Found"
+	684  	: End If
+	
+	685		: End Walk 
+	
+	700		: Walk Collection: vchledgerlist_pur  
+	
+
+	701		: Call	: Ledger_GST_CGST
+    702		: Call	: Ledger_SGST
+    703		: Call	: Ledger_IGST	
+	
+ 
+
+
+	710		: Set	: vchledgerlist_Purchase_purchase_invoicenumber 			: $$LocaleString:$invoicenumber 		
+	720		: Set	: vchledgerlist_Purchase_purchase_additionalledger			: $$LocaleString:$additionalledger		
+	721		: Set	: vchledgerlist_Purchase__ledger							: $$LocaleString:$Name:Ledger:$additionalledger		
+	730		: Set	: vchledgerlist_Purchase_purchase_parent					: $$LocaleString:$parent				
+	740		: Set	: vchledgerlist_Purchase_purchase_rateofpercentage			: $$LocaleString:$rateofpercentage		
+	745		: Set	: vchledgerlist_Purchase_purchase_additionalledgervalue		: $$LocaleString:$additionalledgervalue	
+	
+	746A:Msg Box	: "746A"	: ##vchledgerlist_Purchase_purchase_additionalledgervalue
+	746B		: If: (Not($$IsEmpty:##vchledgerlist_Purchase_ledger)) AND (Not($$IsEmpty:##vchledgerlist_Purchase_purchase_additionalledger))
+
+	750A	: INSERT COLLECTION OBJECT				: LEDGERENTRIES
+	750B	: SET VALUE		: LedgerName			: ##vchledgerlist_Purchase_purchase_additionalledger
+	750C	: SET VALUE		: ISDEEMEDPOSITIVE		: Yes
+	750D	: SET VALUE		: LEDGERFROMITEM		: No
+	750E	: SET VALUE		: REMOVEZEROENTRIES		: No
+	750F	: SET VALUE		: ISPARTYLEDGER			: No
+	750G	: SET VALUE		: ISLASTDEEMEDPOSITIVE	: Yes
+	750H	: SET VALUE		: ISCAPVATTAXALTERED	: No
+	750I	: SET VALUE		: ISCAPVATNOTCLAIMED	: No
+	750J	: SET VALUE		: Amount				: "-"+##vchledgerlist_Purchase_purchase_additionalledgervalue
+	750K	: SET TARGET	: ..
+	
+	751		:  Else
+		
+	752 	: Set File Log On
+	753 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	754 	: Write File Line: "*****************"
+	755 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+', Status: "'+##vchledgerlist_Purchase_purchase_additionalledger+'" Ledger Not Found'
+	757 	: Close Target File
+	758 	: Set File Log Off
+	
+	758a	: LIST ADD EX :  CommonVariableUpdatePur
+	758b	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	758c	: Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	758d	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    			: ##purchaselist_purchase_invoicedate
+	758e	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	758f	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: ##vchledgerlist_Purchase_purchase_additionalledger+" Ledger Not Found"
+	
+	759 	: End If
+	
+
+
+	760		: End Walk	
+	
+	761		: Set Value	: VOUCHERNUMBER				: $$TgtObject:##purchaselist_purchase_invoicenumber
+
+	765		: Create TARGET
+	
+	List Variable:CommonVariableUpdatePur
+		
+	5800	: If	: $$LastResult
+	
+	5810 	: Set File Log On
+	5820 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	5830 	: Write File Line: "*****************"
+	5840 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: No - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+", Status: Imported Successfully"
+	5860 	: Close Target File
+	5870 	: Set File Log Off
+	
+	5871 	: LIST ADD EX :  CommonVariableUpdatePur
+	5872 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	5873 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	5874 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    			: ##purchaselist_purchase_invoicedate
+	5875 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Success"
+	5875f 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: ""
+	
+	5880	: Else
+
+	5910 	: Set File Log On
+	5920 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	5930 	: Write File Line: "*****************"
+	5940 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+", Status: "+$$LastError
+	5960 	: Close Target File
+	5970 	: Set File Log Off
+	
+	5971 	: LIST ADD EX :  CommonVariableUpdatePur
+	5972 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	5973 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	5974 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    			: ##purchaselist_purchase_invoicedate
+	5975 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	5975f 	: Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: $$LastError
+	
+	5980	: End if
+	
+	6001	: Else
+
+	6002 	: Set File Log On
+	6003 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	6004 	: Write File Line: "*****************"
+	6005 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+", Status: Invoice Number Already Exist"
+	6006 	: Close Target File
+	6007 	: Set File Log Off
+	
+	6007a 	: LIST ADD EX :  CommonVariableUpdatePur
+	6007b 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	6007c 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	6007d 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    		: ##purchaselist_purchase_invoicedate
+	6007e 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	6007f 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: ##purchaselist_purchase_invoicenumber+" Invoice Number Already Exist"
+	  
+	6008 	: End If
+	
+	6081	: Else
+	
+	6082 	: Set File Log On
+	6083 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	6084 	: Write File Line: "*****************"
+	6085 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+', Status: "'+##purchaselist_purchase_customername+'" Ledger Not Found'
+	6087 	: Close Target File
+	6088 	: Set File Log Off
+	
+	6088a 	: LIST ADD EX :  CommonVariableUpdatePur
+	6088b 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	6088c 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	6088d 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    		: ##purchaselist_purchase_invoicedate
+	6088e 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	6088f 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: ##purchaselist_purchase_customername+" Ledger Not Found"
+	
+	
+	6088z	: End If
+	6090	: INCREMENT 	: GCRNumberOfPurchasecount
+	6091	: SHOW PROGRESS	: ##GCRNumberOfPurchasecount
+
+	7770	: End Walk
+	7771	: IF	: ##GCRNumberOfPurchase > 0
+	7772	: END PROGRESS
+	7773	: END IF
+	7780	: Else
+	
+	
+	7790 	: Set File Log On
+	7800 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	7810 	: Write File Line: "*****************"
+	7820 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Purchase, Voucher Number: "+##purchaselist_purchase_invoicenumber+", Company Code: "+##message_purchase_tallycode+', Status: Company Code Not Found'
+	7840 	: Close Target File
+	7850 	: Set File Log Off
+	
+	7850a 	: LIST ADD EX :  CommonVariableUpdatePur
+	7850b 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRNO    			: ##purchaselist_purchase_invoicenumber
+	7850c 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].INVOICETYPES 		: ##purchaselist_purchase_VchType
+	7850d 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].VRDATE    		: ##purchaselist_purchase_invoicedate
+	7850e 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	7850f 	:  Set : CommonVariableUpdatePur[$$LOOPINDEX].APIRESULT_Msg		: "Company Code Not Found"
+	
+	7860 	: End If
+	
+	7870	: End Walk 
+	7870a	: End Walk 
+	
+	;8610	: Else
+	;
+	;8620	: Msg Box	: "Check"	: "License is not active.\nDownload not allowed!"
+	;
+	;8630	: End If
+	
+	8640	: Else
+	
+	8650	: Msg Box	:"Check"	: "Network unavailable.\nPlease try again later!"
+	
+	8660	: End If
+	
+	8670	: End If
+	
+	8680	: End If
+	
+	9000	: Msg Box: "Success":"Download completed"
+	
+[Variable:CommonVariableUpdatePur]
+
+	Variables:VRNO    			:String
+	Variables:APIRESULT_Msg		:String
+	Variables:INVOICETYPES 		:String
+	Variables:VRDATE    		:String
+	Variables:APIRESULT_STATUS	:String
+
+[Collection:CheckSalesVchAvailabilitGCRPurchase]
+
+	Type			: Vouchers	: VoucherType
+	
+	Child Of		: ##purchaselist_purchase_VchType
+	Native Method	: VoucherNumber,VoucherTypeName,MasterID
+	Aggr Method		: LastVoucherNumber1  : Last : $VoucherNumber
+	Search Key		: $VoucherNumber+$$String:##purchaselist_purchase_VchType
+
+
+
+
+
+
+
+
+
+
+
+
+

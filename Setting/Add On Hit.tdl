@@ -1,0 +1,490 @@
+
+
+
+
+
+
+	[#Part: CMP TallyShopFeaturesTitle]
+
+	Add: Line: IntergrationTitle,Enableintegration
+
+
+	Lines			:	IntergrationTitle,Enableintegration
+	Scroll			:	Vertical
+	
+[Line: IntergrationTitle]
+
+	Right Field		: 	Form SubTitle
+	Local			: 	Field	: Form SubTitle	: Info 	: $$LocaleString:"[Integration Details]"
+	Local			:	Field	: Form SubTitle	: Color	: Royal Blue
+	Local			:	Field	: Form SubTitle	: Style	: Large Serif
+	Space Top 		: 	0.25
+	Space Bottom	: 	0.5
+		
+[Line:Enableintegration]
+	
+	Field			: 	Medium Prompt,Hit_Enableintegration
+	Local       	: 	Field : Medium Prompt : Set as    : $$LocaleString:"Enable Integration ?"
+	Local      	 	: 	Field : Medium Prompt : Color	  : Royal Blue
+	Local 			: 	Field : Default 	  : Style     : Normal Bold
+	Space Top		: 	0.25
+
+[Field: Hit_Enableintegration]
+
+    Use         	: 	Logical Field
+    Storage     	: 	Add_Hit_Enableintegration
+	Sub Form		: 	EnableintegrationExploadReport	: $$Value
+
+
+
+[Report:EnableintegrationExploadReport]
+	
+	Title		: $$LocaleString:"Integration Details"
+
+	Form		: EnableintegrationExploadForm
+	
+	Object		: Company
+	
+[Form:EnableintegrationExploadForm]
+	
+	Part			: EnableintegrationExpload_Part
+	
+	Space Bottom    : 1
+	Space Left		: 1
+	Space Right		: 1
+	Space Top		: 1
+    Full Width      : No
+    Full Height     : No
+	
+	Width			: 55% Screen
+
+	Background		: White
+
+    Horizontal Align: Left
+    Vertical Align  : Bottom
+
+	Option			: Small Size Form
+	
+[Part: EnableintegrationExpload_Part]
+	
+	lines			: 	Form SubTitle,TallyCompanyCode,+
+						IntergrationTitleAPI,+
+						SalesVoucherDownloadAPI,SalesVoucherDownloadStatusURL,+
+						PurchVoucherDownloadURL,PurchVoucherDownloadURLStatus,+
+						PaymentVoucherDownloadURL,PaymentVoucherDownloadURLStatus,+	
+						RecepitVoucherDownloadURL,RecepitVoucherDownloadURLStatus,+
+						IntergrationTitleVCHType,+
+						SalesVCHTypeValue,SalesVCHTypeLedger,+
+						PurchValueVCHType,PurchValueVCHTypeLedger,+
+						PaymentValueVCHType,+
+						ReciptValueVCHType
+						
+
+	Local			: 	Line	: Default		: Space Top		: 0.3
+	Local			: 	Line	: Default		: Space Bottom	: 0.3
+		
+	Local			: 	Line	: Default		: Local			: Field	: Medium Prompt	: Width	: 23
+	
+	Local			:   Field	: Form SubTitle	: Set as		: "Integration Details"
+	
+	
+
+
+[Line:  TallyCompanyCode]
+
+	Field			:	Medium Prompt, CompanyCode_Field_1
+	Local			: 	Field : Medium Prompt : Info 		: $$LocaleString:"[Authorized Compny Code]"	
+	Local			: 	Field : Medium Prompt : Color 		: Royal Blue
+	Local 			: 	Field : Default 	  : Style		: Large Serif
+	
+	Border			: Thin Bottom
+        
+[Field: CompanyCode_Field_1]
+
+    Use          	: 	Name Field
+    Storage      	: 	TallyCompanyCode
+    Case    	 	: 	Normal
+    Width        	: 	20
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    Max  		 	: 	6
+
+
+[Line:  VIMCompanyAPIKey]
+
+	Field			:	Medium Prompt, VIMCompanyAPIKey
+	Local			: 	Field : Medium Prompt : Info 		: $$LocaleString:"API Key:"	
+	Local			: 	Field : Medium Prompt : Color 		: Royal Blue
+	Local 			: 	Field : Default 	  : Style   	: Small Bold
+	
+	Border			: Thin Bottom
+        
+[Field: VIMCompanyAPIKey]
+
+    Use          	: 	Name Field
+    Storage      	: 	CompanyAPIKey	
+    Case    	 	: 	Normal
+    Width        	: 	20
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    Max  		 	: 	6
+
+[Line:  VIMCompanyAPISecret]
+
+	Field			:	Medium Prompt, VIMCompanyAPISecret
+	Local			: 	Field : Medium Prompt : Info 		: $$LocaleString:"API Secret:"	
+	Local			: 	Field : Medium Prompt : Color 		: Royal Blue
+	Local 			: 	Field : Default 	  : Style   	: Small Bold
+	
+	Border			: Thin Bottom
+  
+[Field: VIMCompanyAPISecret]
+
+    Use          	: 	Name Field
+    Storage      	: 	CompanyAPISecretkey
+    Case    	 	: 	Normal
+    Width        	: 	20
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    Max  		 	: 	6
+	
+
+ 
+[Line: IntergrationTitleAPI]
+
+	Field			: 	Name Field
+	Local			: 	Field	: Name Field	: Info 		: $$LocaleString:"Voucher Type API:-"
+	Local			: 	Field	: Name Field	: Border	: Double Bottom
+	Local			: 	Field 	: Name Field	: Color		: Black
+	Local			:	Field	: Name Field	: Style		: Small Bold
+	
+	Space Top 		: 	0.25
+	Space Bottom	: 	0.5
+	
+
+
+[Line: SalesVoucherDownloadAPI]
+	
+	Fields      	: Medium Prompt, SalesVoucherDownloadAPI_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Sales-Voucher Download URL:-]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style			: Large Serif
+	
+[Field: SalesVoucherDownloadAPI_Field]
+	
+     Use        	: Name Field
+     Storage    	: SalesVoucherDownloadURL
+	 Full Width 	: Yes	
+	 Max			: 1000
+	 
+[Line: SalesVoucherDownloadStatusURL]
+	
+	Fields      	: Medium Prompt, SalesVoucherDownloadStatusURL_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Sales-Voucher Status URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style 		: Large Serif
+	
+[Field: SalesVoucherDownloadStatusURL_Field]
+	
+     Use        	: Name Field
+     Storage    	: SalesVoucherDownloadURLStatus
+	 Full Width 	: Yes	
+	 Max			: 1000
+	
+[Line: PurchVoucherDownloadURL]
+	
+	Fields      	: Medium Prompt, PurchVoucherDownloadURL_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Purchase-Voucher Download URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: PurchVoucherDownloadURL_Field]
+	
+     Use        	: Name Field
+     Storage    	: PurchVCHDownloadURL
+	 Full Width 	: Yes	
+	 Max			: 1000
+	 
+[Line: PurchVoucherDownloadURLStatus]
+	
+	Fields      	: Medium Prompt, PurchVoucherDownloadURLStatus_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Purchase-Voucher Status URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: PurchVoucherDownloadURLStatus_Field]
+	
+     Use        	: Name Field
+     Storage    	: PurchStatusDownloadURL
+	 Full Width 	: Yes	
+	 Max			: 1000
+	
+	
+	
+[Line: PaymentVoucherDownloadURL]
+	
+	Fields      	: Medium Prompt, PaymentVoucherDownloadURL_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Payment-Voucher Download URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: PaymentVoucherDownloadURL_Field]
+	
+     Use        	: Name Field
+     Storage    	: PaymentVCHDownloadURL
+	 Full Width 	: Yes	
+	 Max			: 1000
+	 
+[Line: PaymentVoucherDownloadURLStatus]
+	
+	Fields      	: Medium Prompt, PaymentVoucherDownloadURLStatus_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Payment-Voucher Status URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: PaymentVoucherDownloadURLStatus_Field]
+	
+     Use        	: Name Field
+     Storage    	: PaymentDownloadURLStatus
+	 Full Width 	: Yes	
+	 Max			: 1000
+	
+
+[Line: RecepitVoucherDownloadURL]
+	
+	Fields      	: Medium Prompt, RecepitVoucherDownloadURL_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Receipt-Voucher Download URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: RecepitVoucherDownloadURL_Field]
+	
+     Use        	: Name Field
+     Storage    	: ReceiptDownloadURL
+	 Full Width 	: Yes	
+	 Max			: 1000
+	 
+[Line: RecepitVoucherDownloadURLStatus]
+	
+	Fields      	: Medium Prompt, RecepitVoucherDownloadURLStatus_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Receipt-Voucher Status URL]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: RecepitVoucherDownloadURLStatus_Field]
+	
+     Use        	: Name Field
+     Storage    	: ReceiptDownloadURLStatus
+	 Full Width 	: Yes	
+	 Max			: 1000
+	
+			/*List Of Ledger*/
+
+[Line: IntergrationTitleVCHType]
+
+	Field			: 	Name Field
+	Local			: 	Field	: Name Field	: Info 		: $$LocaleString:"Transaction Values :-"
+	Local			: 	Field	: Name Field	: Border	: Double Bottom
+	Local			: 	Field 	: Name Field	: Color		: Black
+	
+	Space Top 		: 	0.25
+	Space Bottom	: 	0.5
+	
+
+[Line: SalesVCHTypeValue]
+	
+	Fields      	: Medium Prompt, SalesVCHTypeValue_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Voucher Type - Pick Slip[Sales]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+	
+	
+[Field: SalesVCHTypeValue_Field]
+	
+     Use        	: Name Field
+     Storage    	: SalesValueVCHType
+	 Set as			: $SalesValueVCHType
+	 Table			: SalesVCHTypeValueColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: SalesVCHTypeValueColl]
+	
+    Title       	: $$LocaleString:"List of Voucher Types"
+    Type        	: Voucher Type
+	Child Of		: $$VchTypeSales
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+
+
+[Line: SalesVCHTypeLedger]
+	
+	Fields      	: Medium Prompt, SalesVCHTypeLedger_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Sales Ledger - Pick Slip[Sales]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: SalesVCHTypeLedger_Field]
+	
+     Use        	: Name Field
+     Storage    	: SalesValueLedger
+	 Table			: SalesVCHTypeLedgerColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: SalesVCHTypeLedgerColl]
+	
+	Title       	: $$LocaleString:"List of Ledger"
+	Type			: Ledger
+	Child Of		: $$GroupSales
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+	 
+
+
+[Line: PurchValueVCHType]
+	
+	Fields      	: Medium Prompt, PurchValueVCHType_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Voucher Type - Pick Slip[Purchase]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+	
+	
+[Field: PurchValueVCHType_Field]
+	
+     Use        	: Name Field
+     Storage    	: PurchValueVCHType
+	 Set as			: $PurchValueVCHType
+	 Table			: PurchValueVCHTypeypeColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: PurchValueVCHTypeypeColl]
+	
+    Title       	: $$LocaleString:"List of Voucher Types"
+    Type        	: Voucher Type
+	Child Of		: $$VchTypePurchase
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+	
+
+[Line: PurchValueVCHTypeLedger]
+	
+	Fields      	: Medium Prompt, PurchValueVCHTypeLedger_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Sales Ledger - Pick Slip[Purchase]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+[Field: PurchValueVCHTypeLedger_Field]
+	
+     Use        	: Name Field
+     Storage    	: PurchValueLedger
+	 Table			: PurchValueVCHTypeLedgerColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: PurchValueVCHTypeLedgerColl]
+	
+	Title       	: $$LocaleString:"List of Ledger"
+	Type			: Ledger
+	Child Of		: $$GroupPurchase
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+
+
+
+[Line: PaymentValueVCHType]
+	
+	Fields      	: Medium Prompt, PaymentValueVCHType_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Voucher Type - [Payment]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default 		: Style  		: Large Serif
+	
+	
+	
+[Field: PaymentValueVCHType_Field]
+	
+     Use        	: Name Field
+     Storage    	: PaymentValueVCHType
+	 Set as			: $PaymentValueVCHType
+	 Table			: PaymentValueVCHTypeColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: PaymentValueVCHTypeColl]
+	
+    Title       	: $$LocaleString:"List of Voucher Types"
+    Type        	: Voucher Type
+	Child Of		: $$VchTypePayment
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+
+
+
+[Line: ReciptValueVCHType]
+	
+	Fields      	: Medium Prompt, ReciptValueVCHType_Field
+	Local       	: Field : Medium Prompt : Info    		: $$LocaleString:"[Voucher Type - [Receipt]"
+	Local       	: Field : Medium Prompt : Color			: Royal Blue
+	Space Top   	: 0.5
+	Local 			: Field : Default		 : Style  		: Large Serif
+	
+	
+	
+[Field: ReciptValueVCHType_Field]
+	
+     Use        	: Name Field
+     Storage    	: ReciptValueVCHType
+	 Set as			: $ReciptValueVCHType
+	 Table			: ReciptValueVCHTypeColl
+	 Show Table		: Always
+	 Full Width 	: Yes	
+	 
+[Table: ReciptValueVCHTypeColl]
+	
+    Title       	: $$LocaleString:"List of Voucher Types"
+    Type        	: Voucher Type
+	Child Of		: $$VchTypeReceipt
+	Belongs To		: Yes
+	Fetch			: Name, IsActive
+	Format      	: $$Name, 30
+    Align       	: Right
+    FullHeight  	: Yes
+	
+
+
+
+

@@ -1,0 +1,41 @@
+
+
+				/*Developed By D.Hemachandran*/
+				
+
+
+			[#Field:Default]
+			
+			ADD:Tooltip:$$DescName
+
+
+		
+	
+
+
+					/*Master Funtion*/
+					
+	[Include: Purchases Code\Master Funtion.tdl]
+
+
+				 /*Purchases Code*/
+				
+	[Include: Purchases Code\Funtion.tdl]
+	[Include: Purchases Code\Json.tdl]
+	[Include: Purchases Code\Status.tdl]
+	
+
+				/*Sales Code*/
+				
+	[Include: Sales Invoice\Json.tdl]
+	[Include: Sales Invoice\Sales Funtion.tdl]
+	[Include: Sales Invoice\Sales Status.tdl]
+	[Include: Sales Invoice\Sales Date Report.tdl	]
+	
+			
+				/*Setting Code*/
+					
+	[Include: Setting\Add On Hit.tdl]
+	[Include: Setting\Formula UDF.tdl]
+	[Include: Setting\Auto Shudduling.tdl]
+	[Include: Setting\Report.tdl]

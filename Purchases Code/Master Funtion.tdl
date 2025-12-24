@@ -1,0 +1,184 @@
+
+
+
+				/***********Auto Creation Master ****************/
+				
+				/*------------------ StockGroup------------------*/
+			
+			[Function: StockGroup_Master]
+			
+			/*003: Msg Box	: "003"	: "Check Master"*/
+	
+			10	:	If	: $$IsEmpty:$Name:StockGroup:$parent
+			15	:	New Object	: StockGroup
+			20	:	Set Value	: Name			: $$LocaleString:$parent
+			30	:	Set Value	: parent		: "Primary"
+			40	:	Save Target	
+			50	: 	End If
+			
+		
+	
+			/*--------------StockUnit_Master-----------------------------*/
+			
+			
+			[Function: StockUnit_Master]
+				
+			60	: If	: $$IsEmpty:$Name:Unit:$Unit
+			70	: New Object   : Unit				
+			80	: Set Value	   : Name				: $$LocaleString:$Unit
+			90	: Set Value	   : IsSimpleUnit		: Yes
+			
+			100	: Create Target
+			110	: End If
+			
+		/*---------------------------StockItem_Master----------------------*/
+		
+		[Function: StockItem_Master]
+			
+			120	: If	: $$IsEmpty:$Name:StockItem:$product
+			130	: New Object	: StockItem
+			140	: Set Value		: Name				: $$LocaleString:$product
+			150	: Set Value		: Parent			: $$LocaleString:$Parent
+			160	: Set Value		: GSTAPPLICABLE		: "Applicable" 
+			170	: Set Value		: BASEUNITS			: $$LocaleString:$Unit
+			
+			
+			180	: Create Target
+			190	: End If
+			
+			/*----------------------------- Sundery_Critors-------------------*/
+			
+		[Function: Sundry_Creditors]
+			
+			200	: If	: $$IsEmpty:$Name:Ledger:$customername
+			
+	        210	: NEW OBJECT	: Ledger	
+	        
+	        230	:	SET VALUE	: Name					: $$LocaleString:$customername
+			240	:	SET VALUE	: Parent				:"Sundry Creditors"
+            
+            250	:	set value	: PRIORSTATENAME		: $$LocaleString:""
+			260	:	set value	: COUNTRYNAME			: $$LocaleString:""
+            270	:	set value	: GSTREGISTRATIONTYPE   : $$LocaleString:""
+			280 :	set value	: VATDEALERTYPE         : $$LocaleString:""
+			300 :	set value	: COUNTRYOFRESIDENCE    : $$LocaleString:""
+			310 :	set value	: LEDSTATENAME          : $$LocaleString:""
+			
+			320 :	Set Target:...
+            
+            350	: Create Target
+            
+            400	: End If
+			
+		/*--------------Sundry_Creditors_Perant-------------------------------*/
+		
+
+		[Function: Sundry_Creditors_Perant]
+			
+			500	: If			: $$IsEmpty:$Name:Ledger:$additionalledger
+                 
+            510	: 	New Object	: Ledger	
+                 
+            520	:   set value: Name					: $$LocaleString:$additionalledger
+            530	:   set value: Parent				: $$LocaleString:"Purchase Accounts"
+                 
+            540	:    Set Target:...
+                 
+            550	:     Create Target
+                 
+            560	:     End If	
+			
+		/*---------------------------Ledger_GST_CGST-------------------------------*/
+		
+			[Function: Ledger_GST_CGST]
+				
+			600	: If	: $$IsEmpty:$Name:Ledger:$additionalledger
+                
+            610    : NEW OBJECT	: Ledger	
+                
+            620    : Set value: Name					: $$LocaleString:"Output  CGST"
+            630    : Set value: Parent					: $$LocaleString:"Duties & Taxes"
+            640    : Set value: TAXTYPE					: $$LocaleString:"GST"
+            670    : Set value: GSTDUTYHEAD           	: $$LocaleString:"Central Tax"
+            700    : Set value: RATEOFTAXCALCULATION  	: $$LocaleString:"9"
+            710    : Set Target:...
+            720    : Create Target
+                
+            740    : End If
+			
+				/*----------------------Ledger_SGST---------------------------------------*/
+				
+			[Function: Ledger_SGST]
+				
+				800	: If	: $$IsEmpty:$Name:Ledger:$additionalledger
+			
+				810		: New Object	: Ledger	
+				
+				820		: Set Value	: Name					: $$LocaleString:"Output  SGST"
+				830		: Set Value	: Parent				: $$LocaleString:"Duties & Taxes"
+				840		: Set Value	: TAXTYPE				: $$LocaleString:"GST"
+				850		: Set Value	: GSTDUTYHEAD           : $$LocaleString:"State Tax"
+				860		: Set Value	: RATEOFTAXCALCULATION  : $$LocaleString:"9"
+				870 	: Set Target:...
+				880		: Create Target
+				
+				900		: End If
+				
+			/*-------------------------- Ledger_IGST---------------------------------------------------*/
+				
+				[Function: Ledger_IGST]
+					
+				910		: If	: $$IsEmpty:$Name:Ledger:$additionalledger
+                    
+                920    : NEW OBJECT	: Ledger	
+                    
+                930    : Set Value	: Name					: $$LocaleString:"Output  IGST @ 18%"
+                940    : Set Value	: Parent				: $$LocaleString:"Duties & Taxes"
+                950    : Set Value	: TAXTYPE				: $$LocaleString:"GST"
+                960    : Set Value	: GSTDUTYHEAD           : $$LocaleString:""
+                970    : Set Value	: RATEOFTAXCALCULATION  : $$LocaleString:"18"
+                980    : Set Target:...
+                990    : Create Target
+                    
+                1000   : End If
+				
+				/*------------------------------- Godwon_Master--------------------*/
+				
+				[Function: Godwons_Master]
+				
+				1010	:  If	: $$IsEmpty:$Name:Godown:$productgodown
+                          
+                 1020   : New Object		: Godown
+                 1030   : set value    		: Name   	                   : $$LocaleString:$productgodown
+                 1040   : set value 		: Parent 			           : " Primary"
+				 1042	: Set Target:...	
+				  
+                 1050   : Create Target
+                       
+                 1060   : End if	
+				 
+			/*-------------------------RoundOff_Ledger--------------------------------------*/
+			
+				[Function: RoundOff_Ledger]
+			
+				1080	: If	: $$IsEmpty:$Name:Ledger:$$LocaleString:"Rounding Off"
+                    
+                2000    : NEW OBJECT	: Ledger	
+                    
+                2010    :	SET VALUE	: Name				: $$LocaleString:"Rounding Off"
+                2030    :	SET VALUE	: Parent			: $$LocaleString:"Indirect Expenses"
+                    
+                2040    :   Insert Collection Object: MAILINGNAME
+                    
+                2050    : 	Set Value	: MAILINGNAME		: $$LocaleString:"Rounding Off"
+                    
+                2060    : 	Set Target:..
+                    
+                2080    : 	Set Value	: TAXTYPE			: $$LocaleString:"Others"
+                2090    : 	Set Value	: ROUNDINGMETHOD	: $$LocaleString:"Normal Rounding"
+                3000    : 	Set Value	: ROUNDINGLIMIT 	: $$LocaleString:"1"
+                3010    : 	Set Value	: VATDEALERNATURE 	: $$LocaleString:"Invoice Rounding"
+                    
+                3020    : Accept Alter
+                    
+                3040    : End If

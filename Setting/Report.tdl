@@ -1,0 +1,98 @@
+
+
+
+
+[Report: GCR_Date_Wise_DownLoad_Report]  
+
+    
+    Form    	: MultivchSign
+	Variables   : SV CurrentCompany, SV FromDate, SV ToDate, SV SortMethod 
+	Auto		: Yes
+
+
+[Form: MultivchSign]
+
+    Part        : MultivchSign
+    Full Width  : No
+    No Confirm  : Yes
+    Space Left  : 1
+    Space Right : 1
+    Space Top   : 1
+    Space Bottom: 1
+	Local   : Line  : Default       : Space Bottom : 1
+	
+	
+	
+ [Part: MultivchSign]
+	 
+		Width		: 40 % Page
+	 
+		Lines       : Form SubTitle,FromDate,ToDate
+		
+        Local       : Field : Form SubTitle : Info : $$LocaleString:"PURCHASES VOUCHER:-"
+			
+		Local		: Field	: Form SubTitle	: Color	: Royal Blue
+		
+		Local		: Field	: Form SubTitle	: Style	: Large Serif
+	
+[Line: FromDate]
+
+        Fields      : Short Prompt, FormDate
+        Local       : Field : Short Prompt : Set as : $$LocaleString:"Form Date"
+		Local		: Field : Short Prompt : Style	: Large Serif
+		
+[Field: FormDate]
+				
+		Use			: Short Date Field
+		Modifies	: FormDate:Yes
+        Set as		: ##FormDate
+				
+				
+[Line: ToDate]
+
+       Fields      : Short Prompt, ToDates
+       Local       : Field : Short Prompt : Set as : $$LocaleString:"To Date"
+	   Local	   : Field : Short Prompt : Style  : Large Serif
+         
+
+ [Field: ToDates]
+
+		Use			: Short Date Field,Called_Function
+		Modifies	: ToDates:Yes
+	    Set as		: ##ToDates
+			
+				
+
+[Variable:FormDate]
+	
+	Type		: Date
+	Persistent  : Yes
+		
+[Variable:ToDates]
+	
+	Type		: Date
+	Persistent  : Yes
+
+
+[Field:Called_Function]
+	
+	On		: Accept	: Yes	: Call				: DownLoad_PurchasesFuntion
+	
+	
+	
+[Variable:selectVchType]
+	
+	Type				: String
+	Persistent			: Yes
+	
+[System: UDF]
+		
+	selectVchType 	: String: 20002
+		
+
+[System: Variables]
+		
+	selectVchType : ""
+	ToDates		  : ""
+	FormDate	  : ""
+	

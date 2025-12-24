@@ -1,0 +1,201 @@
+
+
+
+					/*AutoScheduling Code*/
+
+
+[Report:  AutoSchedulingGCRPurchases]										
+											
+	Title   	: $$LocaleString:"Auto Schedule"									
+	Form		: VIMAutoSche
+	Object		: Company												
+											
+[Form: VIMAutoSche]
+
+	Width		: 60% Page	
+	;Height		: 10 % Page
+	Parts		: VIMAutoSche	
+	Option		: Small Size Form   
+											
+[Part: VIMAutoSche]
+										
+	Space Left	: 4								
+	Lines		: VIMAutoScheConfigTitle,VIMAutoscheduleYN,VIMAutoscheduleTimeHour,VIMAutoscheduleTimeMin,SlecetVCHType						
+	
+[Line: VIMAutoScheConfigTitle]
+	
+ 	Fields      : Form Sub Title									
+	Space Bottom: 0.25        										
+	Local   	: Field : Form Sub Title : Info : $$LocaleString:"Auto Schedule:-"
+	Local		: Field	: Form Sub Title : Style: Large Serif
+	Local		: Field	: Form Sub Title : Color: Royal Blue
+											
+[Line: VIMAutoscheduleYN]											
+											
+ 	Fields      : Long Prompt,VIMAutoscheduleYN								
+	Space Top	: 1									
+	Space Bottom: 0.25        										
+	Local   	: Field : Long Prompt : Set as	: "Do you want Auto schedule ?"	
+	Local		: Field	: Long Prompt : Style	: Large Serif
+											
+[Field: VIMAutoscheduleYN]											
+											
+	Use 	 	: Logical Field
+	Width		: 45	
+	Align		: Left
+ 	Modifies	: VIMAutoscheduleYN:Yes
+	Set as  	: ##VIMAutoscheduleYN 
+	Storage		: VIMAutoscheduleYN
+	
+[System: Variable]
+	
+	VIMAutoscheduleYN	: "" 
+	
+[Variable: VIMAutoscheduleYN]
+	
+	Type		: Logical
+	Persistent	: Yes
+	
+[Line: VIMAutoscheduleTimeHour]											
+											
+ 	Fields      : Long Prompt,VIMAutoscheduleTimeHour								
+	Space Top	: 1									
+	Space Bottom: 0.25        										
+	Local   	: Field : Long Prompt : Set as	: " Time Level (Hour)"	
+	Local		: Field	: Long Prompt : Style	: Large Serif
+	Invisible	: ##VIMAutoscheduleYN = "No"
+											
+[Field: VIMAutoscheduleTimeHour]											
+											
+	Use			: Number Field
+	set as		: $VIMAutoscheduleTimeHour
+	Storage		: VIMAutoscheduleTimeHour
+	Width		: 45
+	Format		: "No Comma, No Symbol,No zero"
+	Max			: 2
+	Control		: EnterHRSMsg     : Not $$Value <= 23 and $$Value >= 00
+	
+[System:Formulae]
+
+	EnterMinMsg					: $$LocaleString:"The Minutes Should Be Value Between 00 to 59"
+	EnterHRSMsg					: $$LocaleString:"The Hours Should Be Value Between 00 to 23"
+	
+[Line: VIMAutoscheduleTimeMin]											
+											
+ 	Fields      : Long Prompt,VIMAutoscheduleTimeMin								
+	Space Top	: 1									
+	Space Bottom: 1        										
+	Local   	: Field : Long Prompt : Set as	: " Time Level (Min)"
+	Local		: Field	: Long Prompt : Style	: Large Serif
+	Invisible	: ##VIMAutoscheduleYN = "No"
+											
+[Field: VIMAutoscheduleTimeMin]											
+											
+	Use			: Number Field 
+	set as		: $VIMAutoscheduleTimeMin
+	Storage		: VIMAutoscheduleTimeMin
+	Format		: "No Comma, No Symbol,No zero"
+	Width		: 45
+	Max			: 2
+	
+	Control		: EnterMinMsg     : Not $$Value <= 59 and $$Value >= 00
+	
+[Line: SlecetVCHType]
+	
+	Field		: Long Prompt,Table_Field
+	Local		: Field		: Long Prompt	: Set as	: "[Select Vocher Types]"
+	Local		: Field		: Long Prompt	: Style		: Large Serif
+	Local		: Field		: Long Prompt 	: Color		: Royal Blue
+	
+
+[Field: Table_Field]
+														
+	Storage		:	SalesValueVCHType                   
+	Width		:  	45 
+	Set as		:	$PurchValueVCHTyp	
+	Modifies	:	PurchValueVCHTyp:Yes   
+	Show Table	: 	Always                  
+	Table		:   SalesVCHTypeValueColl,PurchValueVCHTypeypeColl
+	
+	
+[Variable:SelectVocherTypes]
+	
+	Type				: String
+	Persistent			: Yes
+	
+
+[System: UDF]
+	
+	VIMAutoscheduleYN		: Logical	: 3021
+	VIMAutoscheduleTimeHour	: Number	: 3022
+	VIMAutoscheduleTimeMin	: Number	: 3023
+	SelectVocherTypes		: String	: 3024
+
+	
+[System: Events]
+	
+	AutoStartEvent	: System Start 	: TRUE 			: CALL 		: AutoStart 
+	
+[Function: AutoStart]
+	
+	50	: START TIMER	: AutoUpload		: 1
+		
+[System: Event]
+	
+	AutoUpload 	: TIMER : @@VIMAutoscheduleYN : CALL	: VIMAutoUploadTimeFun
+	
+[System: Formulae]
+	
+	VIMAutoscheduleYN		: $$LocaleString:$VIMAutoscheduleYN:Company:##SVCurrentCompany
+	VIMAutoscheduleTimeHour : $$LocaleString:$VIMAutoscheduleTimeHour:Company:##SVCurrentCompany
+	VIMAutoscheduleTimeMin  : $$LocaleString:$VIMAutoscheduleTimeMin:Company:##SVCurrentCompany 
+
+[Function: VIMAutoUploadTimeFun]
+	
+	
+	Variable: CurrentTimeHour1 				: String
+	Variable: CurrentTimeHour2 				: String
+	Variable: CurrentTimeHour 				: String
+	
+	Variable: CurrentTimeMin  				: String
+	
+	Variable: CurrentTimeSec  				: String
+	
+	
+	Variable: AutoscheduleHourFieldFalue	: String
+	Variable: AutoscheduleMinFieldFalue  	: String
+	
+	010: Set 	: CurrentTimeHour1 			: $$SysInfo:SystemTime
+	020: Set 	: CurrentTimeHour2 			: $$StringPart:##CurrentTimeHour1:0:2
+	030: Set 	: CurrentTimeHour 				: if($$StringLength:##CurrentTimeHour2 = 1) then +
+												$$String:'0'+$$String:##CurrentTimeHour2 else +
+												If $$IsEmpty:##CurrentTimeHour2 Then "00" else +
+												##CurrentTimeHour2
+											
+	040: Set 	: CurrentTimeMin 			: $$SysInfo:SystemTime
+	050: Set 	: CurrentTimeMin 			: $$StringPart:##CurrentTimeMin:3:2
+	
+	060: Set 	: CurrentTimeSec 			: $$SysInfo:SystemTimeHMS
+	070: Set 	: CurrentTimeSec 			: $$StringPart:##CurrentTimeSec:6:2
+	
+	080: Set 	: AutoscheduleHourFieldFalue: @@VIMAutoscheduleTimeHour
+	090: Set 	: AutoscheduleMinFieldFalue	: @@VIMAutoscheduleTimeMin
+	
+	
+	100: If  	: (##CurrentTimeHour = ##AutoscheduleHourFieldFalue) AND +
+					(##CurrentTimeMin = $$LocaleString:##AutoscheduleMinFieldFalue) AND +
+					(##CurrentTimeSec = "01")
+					
+	110: If  		:@@SalesVoucherDownloadURL = #SalesVCHTypeValue_Field
+	120: Call	 	: DownLoad_Sales 
+	130: End If
+	
+	140: If    : @@PurchVCHDownloadURL = #PurchValueVCHType_Field
+	150: Call  :  DownLoad_PurchasesFuntion
+	160: End If
+	
+	800: End If
+	
+
+
+	
