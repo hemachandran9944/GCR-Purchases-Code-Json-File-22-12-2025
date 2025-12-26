@@ -1,3 +1,67 @@
+/*
+		[Report: PurchasesVoucherTypeDateReport]
+		
+			Form		: PurchasesVoucherTypeDateReport_Form
+		[Form:PurchasesVoucherTypeDateReport_Form]
+			
+			Top Part	: VoucherType_Top_Part
+			Part		: Part_1
+			Width		: 100 % Page
+			Height		: 20 % Page
+		
+			
+			
+		[Part: VoucherType_Top_Part]
+			
+			Line		: VoucherType_Top_Part_L1
+		
+		
+		[Part: Part_1]
+			
+			Line		: Part_1_L1
+		
+		[Line: Part_1_L1]
+			
+			Space Top	: 3 % Page
+			Field		: Part_1_L1_Fi1,Part_1_L1_Fi2
+
+		[Field: Part_1_L1_Fi1]
+		
+			Use			: Long Prompt
+			Set as		: "ENTER A [CASH RECEIPT] DATE"
+			Color		: Royal Blue
+			Style		: Large Serif
+
+		[Field	: Part_1_L1_Fi2]
+			
+			Use			: Short Date Field
+			Storage		: PurchasesVoucherDate  /*Check----->System_Formulas_UDF.Txt----------->Storage*/
+/*		
+		Width		: 7 % Page
+			Set as		: ##message_cashreceipt_date
+
+
+		[Line	: VoucherType_Top_Part_L1]
+			
+			Space Top	: 2%
+			Field		: VoucherType_Top_Part_L1_Fi1      
+
+		[Field: VoucherType_Top_Part_L1_Fi1]
+			
+			Use			: Form SubTitle
+			Info		: "[CASH RECEIPT]"
+			Skip		: Yes
+			Full Width	: Yes
+			Color		: Royal Blue
+			Style		: Large Serif
+			On			: Accept	: Yes	: Call	: DownLoad_PurchasesFuntion
+
+			
+
+*/
+
+
+
 
 
 
@@ -8,7 +72,7 @@
     Form    	: MultivchSign
 	Variables   : SV CurrentCompany, SV FromDate, SV ToDate, SV SortMethod 
 	Auto		: Yes
-
+	
 
 [Form: MultivchSign]
 
@@ -23,6 +87,7 @@
 	
 	
 	
+	
  [Part: MultivchSign]
 	 
 		Width		: 40 % Page
@@ -34,6 +99,8 @@
 		Local		: Field	: Form SubTitle	: Color	: Royal Blue
 		
 		Local		: Field	: Form SubTitle	: Style	: Large Serif
+		
+		
 	
 [Line: FromDate]
 
@@ -75,6 +142,8 @@
 
 
 [Field:Called_Function]
+	
+	
 	
 	On		: Accept	: Yes	: Call				: DownLoad_PurchasesFuntion
 	

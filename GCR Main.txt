@@ -9,10 +9,6 @@
 			ADD:Tooltip:$$DescName
 
 
-		
-	
-
-
 					/*Master Funtion*/
 					
 	[Include: Purchases Code\Master Funtion.tdl]

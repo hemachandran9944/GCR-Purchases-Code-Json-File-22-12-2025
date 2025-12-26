@@ -18,7 +18,7 @@ Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: Purch
 	
 	Indent		: ""
 	
-	Key Item	: "DownLoad Sales"		: I : Alter: GCRDateWiseDownLoadReportSales
+	Key Item	: "DownLoad Sales"		: S : Call: DownLoad_Sales_Function
 	
 	Indent		: ""
 	
@@ -143,4 +143,8 @@ Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: Purch
 	storage		: parent                    : string
 	storage		: rateofpercentage          : string
 	Storage		: additionalledgervalue		: String
-		
+	
+
+
+
+	

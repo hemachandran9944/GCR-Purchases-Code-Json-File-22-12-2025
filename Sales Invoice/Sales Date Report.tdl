@@ -1,11 +1,64 @@
 
 
 
+	[Report: SalesVoucherTypeDateReport]
+		
+			Form		: SalesVoucherTypeDateReport_Form
+		[Form:SalesVoucherTypeDateReport_Form]
+			
+			Top Part	: VoucherType_Top_Part_Sales
+			Part		: Part_1
+			Width		: 100 % Page
+			Height		: 20 % Page
+		
+			
+			
+		[Part: VoucherType_Top_Part_Sales]
+			
+			Line		: VoucherType_Top_Part_L1_Sales
+		
+		
+		[Part: Part_1]
+			
+			Line		: Part_1_L1
+		
+		[Line: Part_1_L1]
+			
+			Space Top	: 3 % Page
+			Field		: Part_1_L1_Fi1,Part_1_L1_Fi2
+
+		[Field: Part_1_L1_Fi1]
+		
+			Use			: Long Prompt
+			Set as		: "ENTER A [CASH RECEIPT] DATE"
+			Color		: Royal Blue
+			Style		: Large Serif
+
+		[Field	: Part_1_L1_Fi2]
+			
+			Use			: Short Date Field
+			Storage		: PurchasesVoucherDate  /*Check----->System_Formulas_UDF.Txt----------->Storage*/
+
+			Width		: 7 % Page
+			Set as		: ##message_cashreceipt_date
 
 
+		[Line	: VoucherType_Top_Part_L1_Sales]
+			
+			Space Top	: 2%
+			Field		: VoucherType_Top_Part_L1_Fi1_Sales      
 
+		[Field: VoucherType_Top_Part_L1_Fi1_Sales]
+			
+			Use			: Form SubTitle
+			Info		: "[SALES VOUCHER]"
+			Skip		: Yes
+			Full Width	: Yes
+			Color		: Royal Blue
+			Style		: Large Serif
+			
 
-
+/*
 
 [Report: GCRDateWiseDownLoadReportSales]  
 

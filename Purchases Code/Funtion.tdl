@@ -90,7 +90,7 @@
 	
 
 	Variable	: vchledgerlist_Purchase_party_name						: String
-	Variable	: vchledgerlist_Purchase__CheckSalesVoucherNo			: String
+	Variable	: vchledgerlist_Purchase_CheckSalesVoucherNo			: String
 	Variable	: vchledgerlist_Purchase_STK_product					: String
 	Variable	: vchledgerlist_Purchase_ledger						: String
                   
@@ -150,11 +150,11 @@
 	150		: Set	: purchaselist_purchase_invoicenumber 		: $$LocaleString:$invoicenumber 	
 	160		: Set	: purchaselist_purchase_invoicedate			: $invoicedate
 	170		: Set	: purchaselist_purchase_customername		: $$LocaleString:$customername
-	171		: Set	: purchaselist_purchase_VchType				: $$LocaleString:$VchType
+	171		: Set	: purchaselist_purchase_VchType				: $$LocaleString:$PurchValueVCHType:Company:##SVCurrentCompany
 	172		: Set	: vchledgerlist_Purchase_party_name			: $$LocaleString:$Name:Ledger:$customername
 	180		: Set	: purchaselist_purchase_invoicemode			: $$LocaleString:$invoicemode				
 	190		: Set	: purchaselist_purchase_reference			: $$LocaleString:$reference					
-	200		: Set	: purchaselist_purchase_salesledger			: $$LocaleString:$salesledger
+	200		: Set	: purchaselist_purchase_salesledger			: $$LocaleString:$PurchValueLedger:Company:##SVCurrentCompany
 	210		: Set	: purchaselist_purchase_deliverynoteno		: $$LocaleString:$deliverynoteno			
 	220		: Set	: purchaselist_purchase_deliverynotedate	: $$LocaleString:$deliverynotedate	
 	230		: Set	: purchaselist_purchase_dispatchdocno		: $$LocaleString:$dispatchdocno				
@@ -178,12 +178,13 @@
 	410		: Set	: purchaselist_purchase_deliveryaddress		: $$LocaleString:$deliveryaddress			
 	420		: Set	: purchaselist_purchase_state				: $$LocaleString:$consigneestate			
 	430		: Set	: purchaselist_purchase_gstinnumber			: $$LocaleString:$consigneegstinnumber		
-	432		: Set	: purchaselist_purchase_invoicevalue		: $$LocaleString:$invoicevalue			
+	432		: Set	: purchaselist_purchase_invoicevalue		: $$LocaleString:$invoicevalue
 	
+	434:Msg Box	: "434"	: ##purchaselist_purchase_invoicedate	
 	
 	436		: If: (Not($$IsEmpty:##purchaselist_purchase_customername))
 
-	438		: Set	: vchledgerlist_Purchase__CheckSalesVoucherNo:($$CollectionFieldByKey:$VoucherNumber:($$String:##purchaselist_purchase_invoicenumber+$$String:##purchaselist_purchase_VchType):CheckSalesVchAvailabilitGCRPurchase)
+	438		: Set	: vchledgerlist_Purchase_CheckSalesVoucherNo:($$CollectionFieldByKey:$VoucherNumber:($$String:##purchaselist_purchase_invoicenumber+$$String:##purchaselist_purchase_VchType):CheckSalesVchAvailabilitGCRPurchase)
 
 	438a	: If	: ##vchledgerlist_Purchase__CheckSalesVoucherNo=''
 	
@@ -254,8 +255,8 @@
 	
 	
 	504		: Call	: StockGroup_Master 
-	505		: Call	: StockUnit_Master
-	506		: Call	: StockItem_Master
+	505		: Call	: StockUnit_Masters
+	506		: Call	: StockItem_Masters
 	507		: Call	: Godwons_Master
 	
 	
@@ -276,7 +277,7 @@
 	580		: Set	: vchproductlist_Purchase_productAltqty         : $$LocaleString:$productAltqty         
 	581		: Set	: vchproductlist_Purchase_productrate			: $$LocaleString:$productrate			
 	590		: Set	: vchproductlist_Purchase_producthsn			: $$LocaleString:$producthsn			
-	600		: Set	: vchproductlist_Purchase_productigstpercentage	: $$LocaleString:$productigstpercentage	
+	601		: Set	: vchproductlist_Purchase_productigstpercentage	: $$LocaleString:$productigstpercentage	
 	610		: Set	: vchproductlist_Purchase_productcgstpercentage	: $$LocaleString:$productcgstpercentage	
 	620		: Set	: vchproductlist_Purchase_productsgstpercentage	: $$LocaleString:$productsgstpercentage	
 	630		: Set	: vchproductlist_Purchase_taxamount				: $$LocaleString:$taxamount				
@@ -290,19 +291,19 @@
 	653		: SET VALUE		: StockItemName			: ##vchproductlist_Purchase_product
 	654		: SET VALUE		: IsDeemedPositive		: Yes
 	655		: SET VALUE		: ISLASTDEEMEDPOSITIVE	: Yes
-	656		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
-	661		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1
-	662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
+	;660		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	;661		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1
+	;662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
 	663		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
 	
 	664A	: Msg Box	: "664A"	: ##vchproductlist_Purchase_productAltqty
 	
 	664B	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS	
 	665		: SET VALUE		: GodownName			: if $$IsEmpty:##vchproductlist_Purchase_productgodown then "Main Location" else ##vchproductlist_Purchase_productgodown
-	667		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productvalue)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
-	668		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1		
-	669		: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Purchase_productrate))
-	670		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
+	;667		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productvalue)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	;668		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1		
+	;669		: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Purchase_productrate))
+	670		: SET VALUE		: Amount   				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
 	671		: SET TARGET	: ..
 			
 	672		: INSERT COLLECTION OBJECT				: ACCOUNTING ALLOCATIONS
@@ -342,7 +343,7 @@
 
 	710		: Set	: vchledgerlist_Purchase_purchase_invoicenumber 			: $$LocaleString:$invoicenumber 		
 	720		: Set	: vchledgerlist_Purchase_purchase_additionalledger			: $$LocaleString:$additionalledger		
-	721		: Set	: vchledgerlist_Purchase__ledger							: $$LocaleString:$Name:Ledger:$additionalledger		
+	721		: Set	: vchledgerlist_Purchase_ledger								: $$LocaleString:$Name:Ledger:$additionalledger		
 	730		: Set	: vchledgerlist_Purchase_purchase_parent					: $$LocaleString:$parent				
 	740		: Set	: vchledgerlist_Purchase_purchase_rateofpercentage			: $$LocaleString:$rateofpercentage		
 	745		: Set	: vchledgerlist_Purchase_purchase_additionalledgervalue		: $$LocaleString:$additionalledgervalue	
@@ -425,7 +426,7 @@
 	5980	: End if
 	
 	6001	: Else
-
+	
 	6002 	: Set File Log On
 	6003 	: OPEN FILE : @@currentdate_LogFile : Text : Write
 	6004 	: Write File Line: "*****************"

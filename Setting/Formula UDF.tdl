@@ -18,7 +18,7 @@
 
 	currentDate  			   			: $$LocaleString:$$SysInfo:SYSTEMDATE
 	TallyDefaultAppPath        			: $$SysInfo:ApplicationPath
-	currentdate_LogFile        			: @@TallyDefaultAppPath+"\"+@@currentDate+".log"
+	currentdate_LogFile        			: @@TallyDefaultAppPath+"\"+@@currentDate+".log"    
 	
 
 
@@ -68,6 +68,7 @@
 	ReciptValueVCHType				: String	: 2018
 
 
+	PurchasesVoucherDate			: Date		: 2029
 
 
 	

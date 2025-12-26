@@ -6,15 +6,18 @@
 [Collection : GCR_SalesVoucher]
 	
 		Data Source	: File JSON	: @@SalesVoucherDownloadURL
+		
+[Collection:GCR_SalesVoucher2]
+	
 		Client Only	: Yes
 		Fetch       : .*.
 		JSON Object	: Sales_object
 		
 [Object: Sales_object]
 	
-	Collection	: Saless_message	: Saless_message
+	Collection	: message	: message
 	
-[Object: Saless_message]
+[#Object: message]
 	
 
 	Storage		: tallycode					: String
@@ -52,6 +55,7 @@
 	storage		: otherreference            : string
 	storage		: termsofdelivery           : string
 	storage		: buyername                 : string
+	Storage		: deliveryaddress			: String
 	storage		: buyeraddress1             : string
 	storage		: buyeraddress2             : string
 	storage		: buyeraddress3             : string
@@ -82,7 +86,7 @@
 	storage		: ewaybillnodate            : string
 	
 	Collection	: vchproductlist_Sales		: vchproductlist_Sales
-	Collection	: vchledgerlist_Sales		: vchledgerlist_Sales
+	Collection	: vchledgerlist				: vchledgerlist
 	
 [Object: vchproductlist_Sales]
 	
@@ -106,7 +110,7 @@
 	storage		: productvalue              : string
 	
 
-[Object: vchledgerlist_Sales]
+[Object: vchledgerlist]
 	
 
 	storage		: invoicenumber				: string
@@ -114,4 +118,28 @@
 	storage		: parent                    : string
 	storage		: rateofpercentage          : string
 	Storage		: additionalledgervalue		: String
+	
+
+
+	[Function: Auto_Creation_Master]
+	
+	010		: If	: $$IsEmpty:$Name:Ledger:$customername
+	020		: NEW OBJECT	: Ledger	
+	
+	030		:	SET VALUE	: Name					: $$LocaleString:$customername
+	040		:	SET VALUE	: Parent				:"Sundry Debtors"
+	
+	050		:	SET VALUE	: PRIORSTATENAME		: $$LocaleString:""
+	060		:	SET VALUE	: COUNTRYNAME			: $$LocaleString:""
+	070		:	SET VALUE	: GSTREGISTRATIONTYPE   : $$LocaleString:""
+	080		:	SET VALUE	: VATDEALERTYPE         : $$LocaleString:""
+	090		:	SET VALUE	: COUNTRYOFRESIDENCE    : $$LocaleString:""
+	100		:	SET VALUE	: LEDSTATENAME          : $$LocaleString:""
+	180 	:	Set Target:...
+	
+	190		: Create Target
+
+	200		: End If
+
+		
 		

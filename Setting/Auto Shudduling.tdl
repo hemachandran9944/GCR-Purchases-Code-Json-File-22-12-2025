@@ -13,7 +13,6 @@
 [Form: VIMAutoSche]
 
 	Width		: 60% Page	
-	;Height		: 10 % Page
 	Parts		: VIMAutoSche	
 	Option		: Small Size Form   
 											
