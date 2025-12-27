@@ -1,0 +1,217 @@
+
+
+	
+	
+
+
+	
+	
+[Report: DownLoadeURLReport]
+
+	Form 	: HTTP Post Welcome
+	Title 	: "Action HTTP POST"
+
+[Form: HTTP Post Welcome]
+
+	Parts	: HTTP Post Welcome
+	Buttons	: GitButton,Sales_Button
+	
+
+	/*GET JSON TAG PROCESS*/
+
+[Button : GitButton]
+	
+	Key		: Alt + G 
+	Title	: "MyGitHTTPS"
+	Action	: call:GitFuntion
+	
+[Function	: GitFuntion]
+		
+	10				: Walk Collection: GitCollection
+	11				: End Walk	
+	
+/*
+	Variable		: Check_HTTPS:String
+	12: Set			: Check_HTTPS:$$LocaleString:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+	13:Msg Box		: "13":##Check_HTTPS
+	
+	*/
+	
+[Collection	: GitCollection]
+	
+	Data Source		: HTTP JSON	: @@MyGitHTTPS	
+	RemoteRequest 	: Json_FO	: UTF8
+	
+
+[Button: Sales_Button]
+		
+	Key		: Ctrl + S
+	Title	: "SalesJson"
+	Action	: Call	: SalesFuntion
+	
+[Function: SalesFuntion]
+	
+ 20 : Walk Collection	: SalesCollocation
+ 30	: End Walk
+ 
+[Collection: SalesCollocation]
+	
+	Data Source		: HTTP JSON	: @@SalesHTTPs
+	RemoteRequest	: Json_FO	: UTF8
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[Part: HTTP Post Welcome]
+	
+	Height	: 100 % Page
+	Width	: 100 % Page
+	
+	
+	Lines	: HTTP Post Welcome, HTTP Post Instruct ,ThisReportNote_L3,ThisReportNote_L4,+ 
+				ThisReportNote_L5,ThisReportNote_L6,ThisReportNote_L7
+	
+[Line: HTTP Post Welcome]
+
+	Fields	: HTTP Post Welcome
+	Space Bottom	: 10 % Page
+
+[Field: HTTP Post Welcome]	
+			
+	Use		: Form SubTitle
+	info 	: "Welcome HTTPS POST:-"
+	Style 	: Large Serif
+	Color	: Royal Blue
+	Align	: Center
+
+[Line: HTTP Post Instruct]
+		
+	Space Bottom : 5 % Page
+	Fields		 : HTTP Post Instruct
+
+[Field: HTTP Post Instruct]
+
+	Use		:  Form SubTitle
+	Set as	: "[It sends an HTTP request to a URL.]"
+	Delete	: Border      : Thin Bottom
+	Color	: Royal Blue
+	
+
+[Line: ThisReportNote_L3]
+	
+	Space Bottom	: 5 % Page
+	Field			: ThisReportNote_L3_Fi1
+	
+[Field: ThisReportNote_L3_Fi1]
+	
+	Use		:  Form SubTitle
+	Set as	: "[Receives JSON response from the server.]"
+	Delete	: Border      : Thin Bottom
+	Color	: Royal Blue
+	
+[Line: ThisReportNote_L4]
+	
+	Space Bottom	: 5 % Page
+	Field			: ThisReportNote_L4_Fi
+	
+[Field: ThisReportNote_L4_Fi]
+	
+	Use			:  Form SubTitle
+	Set as		: "[Receives JSON response from the server.]"
+	Delete		:  Border      : Thin Bottom
+	Color		: Royal Blue	
+	
+[Line: ThisReportNote_L5]
+	
+	Space Bottom	: 5  % Page
+	Field			: ThisReportNote_L5_Fi
+	
+[Field: ThisReportNote_L5_Fi]
+	
+	Use			: Form SubTitle
+	Set as		: "[Uses JSONTag to read/parse that JSON.]"
+	Color		: Royal Blue
+	Delete		: Border	: Thin Bottom
+	
+[Line: ThisReportNote_L6]
+	
+	Space Bottom	: 5 % Page
+	Field			: ThisReportNote_L6
+	
+[Field: ThisReportNote_L6]
+	
+	Use			: Form SubTitle
+	Set as		: "[Stores it in PurchasesCollection.]"
+	Delete		: Border	: Thin Bottom
+	Color		: Royal Blue
+	
+[Line: ThisReportNote_L7]
+	
+	Space Bottom	: 5 % Page
+	Field			: ThisReportNote_L7_Fi7
+	
+[Field: ThisReportNote_L7_Fi7]
+	
+	Use			: Form SubTitle
+	Set as		: "[TDL -This- code works similar to Postman.]"
+	Delete		: Border	: Thin Bottom
+	Color		: Royal Blue
+	
+
+
+
+
+
+				/*Get The Json Tag Report Code*/
+
+			
+
+[Report: Json_FO]
+
+	Form  	: Json_F
+	Plain JSON: No
+	Exportemptyfields: Yes
+	
+[Form: Json_F]
+
+    Parts 	: Json_P
+	JSONTag	: ""
+	
+	
+[Part: Json_P]
+
+    Lines   : Json_L
+	JSONTag	:"REQUEST"
+	Scroll 	: Vertical
+
+	[Line: Json_L]
+
+		Fields 	: Json_Fi1, Json_Fi22
+
+      	[Field: Json_Fi1]
+
+           	Set As 	 	: "TALLY"
+  		 	XMLTag	 	: "NAME"
+		
+		[Field:Json_Fi22]
+
+		 	Set As  	: "00000"
+            XMLTag		: "EMPID"
+
+	
+

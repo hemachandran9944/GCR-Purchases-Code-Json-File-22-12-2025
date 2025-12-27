@@ -368,7 +368,7 @@ Variable	:	Check_add_On	: String
 			
 	4000	: SET VALUE		: BILLTYPE					: $$LocaleString:"New Ref"
 	4010	: SET VALUE		: TDSDEDUCTEEISSPECIALRATE	: $$LocaleString:"Yes"
-	4020	: SET VALUE		: AMOUNT					:If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue			
+	4020	: SET VALUE		: AMOUNT					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue			
 	4030	: SET TARGET	: ..
 	4040	: SET TARGET	: ..
 			
@@ -408,28 +408,29 @@ Variable	:	Check_add_On	: String
     
     7030	: SET VALUE		: StockItemName			: ##vchproductlist_Sales_product
 	7040	: SET VALUE		: IsDeemedPositive		: No
-    7050	: SET VALUE		: ISLASTDEEMEDPOSITIVE	: No
+    7050	: SET VALUE		: ISLASTDEEMEDPOSITIVE	: No  
 	
-		Variable	: vchproductlist_Sales_productAltqtyy123,vchproductlist_Sales_productAltqtyy456 : String
+		Variable	: vchproductlist_Sales_productAltqtyy123,vchproductlist_Sales_productAltqtyy456: String
+		
 		
 		7051	: Set	:vchproductlist_Sales_productAltqtyy123:($$Number:"800"*$$Number:"-1")
 		7052	: Set	:vchproductlist_Sales_productAltqtyy456:$$TgtObject:$$AsQty:##vchproductlist_Sales_productAltqtyy123
 		
 		;7053: Msg Box	: "7053"	: ##vchproductlist_Sales_productAltqty+##vchproductlist_Sales_productqty+##vchproductlist_Sales_productrate
 ;		7054: Set Value	: ActualQty	: $$number:"800"*-1 
-		7055:Msg Box: "7055"	: ##vchproductlist_Sales_productAltqtyy456
+		7055:Msg Box: "7055"	: ##vchproductlist_Sales_productAltqtyy456        
 
-    7060	: SET VALUE		: ActualQty				: ##vchproductlist_Sales_productAltqtyy123;if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
-    7080	: SET VALUE		: BilledQty				: ##vchproductlist_Sales_productAltqtyy456
-    ;7090	: SET VALUE		: Rate					: :##vchproductlist_Sales_productrate
+    7060	: SET VALUE		: ActualQty				: ##vchproductlist_Sales_productAltqtyy456;if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
+    7080	: SET VALUE		: BilledQty				: ##vchproductlist_Sales_productAltqtyy123
+   ; 7090	: SET VALUE		: Rate					: :##vchproductlist_Sales_productAltqtyy456
     8000	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
     	
     8010	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS
 		
     8020	: SET VALUE		: GodownName			: ##vchproductlist_Sales_productgodown
-    8030	: SET VALUE		: ActualQty				: ##vchproductlist_Sales_productAltqtyy123;if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
-    8040	: SET VALUE		: BilledQty				: ##vchproductlist_Sales_productAltqtyy456;($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
-   ; 8050	: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Sales_productrate))
+    8030	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
+    8040	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
+	;8050	: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Sales_productrate))
     8060	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
     8090	: SET TARGET	: ..
 
@@ -492,12 +493,6 @@ Variable	:	Check_add_On	: String
 
 
 
-
-
-
-
-
-
 	10810	: Set Value	: VOUCHERNUMBER				: $$TgtObject:##Saleslist_invoicenumber
 	10820	: Create TARGET
 	
@@ -519,20 +514,21 @@ Variable	:	Check_add_On	: String
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 		
 		12000	: End Walk	/*SalesList*/
         12020   : End Walk	/*Saless_message*/
         12030   : End Walk  /*GCR_SalesVoucher*/
 		
+
 		15000   : Msg Box	: "Success":"Download completed"
+
+
+
+
+
+
+
+
+
+
+

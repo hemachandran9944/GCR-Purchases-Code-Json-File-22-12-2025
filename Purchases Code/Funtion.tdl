@@ -134,7 +134,7 @@
 	
 	136		: SET	: GCRNumberOfPurchase	: $$NumItems:purchaselist
 
-	137		: IF	: ##GCRNumberOfPurchase > 0
+	137		: IF	: ##GCRNumberOfPurchase > 0 
 	
 	138		: START PROGRESS		: ##GCRNumberOfPurchase	: "Purchase Voucher Import" : @@CmpMailName	: "Importing Purchase Voucher..."
 	139		: END IF
@@ -254,10 +254,10 @@
 	
 	
 	
-	504		: Call	: StockGroup_Master 
-	505		: Call	: StockUnit_Masters
-	506		: Call	: StockItem_Masters
-	507		: Call	: Godwons_Master
+	;504		: Call	: StockGroup_Master 
+	;505		: Call	: StockUnit_Masters
+	;506		: Call	: StockItem_Masters
+	;507		: Call	: Godwons_Master
 	
 	
 	
@@ -291,18 +291,18 @@
 	653		: SET VALUE		: StockItemName			: ##vchproductlist_Purchase_product
 	654		: SET VALUE		: IsDeemedPositive		: Yes
 	655		: SET VALUE		: ISLASTDEEMEDPOSITIVE	: Yes
-	;660		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
-	;661		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1
-	;662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
+	660		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	661		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1
+	662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
 	663		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
 	
 	664A	: Msg Box	: "664A"	: ##vchproductlist_Purchase_productAltqty
 	
 	664B	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS	
 	665		: SET VALUE		: GodownName			: if $$IsEmpty:##vchproductlist_Purchase_productgodown then "Main Location" else ##vchproductlist_Purchase_productgodown
-	;667		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productvalue)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
-	;668		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1		
-	;669		: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Purchase_productrate))
+	667		: SET VALUE		: ACTUALQTY				: if ##vchproductlist_Purchase_productAltqty=##vchproductlist_Purchase_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productvalue)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productAltqty)) * -1
+	668		: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Purchase_productqty)) * 1		
+	669		: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Purchase_productrate))
 	670		: SET VALUE		: Amount   				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
 	671		: SET TARGET	: ..
 			

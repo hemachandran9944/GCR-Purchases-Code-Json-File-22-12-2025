@@ -35,3 +35,7 @@
 	[Include: Setting\Formula UDF.tdl]
 	[Include: Setting\Auto Shudduling.tdl]
 	[Include: Setting\Report.tdl]
+	
+				/*HTTPS URL Config*/
+	
+	[Include: HTTPS URL\HTTPS URL Setting.tdl]

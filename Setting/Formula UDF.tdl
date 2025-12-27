@@ -11,7 +11,7 @@
 	MenuIndent							:	"DownLoad Integration" 
 	PurchasesIndent						:	 "DownLoad Voucher Types"
 	AutoShudling						: 	"AutoScheduling Config"
-						
+	HTTTPConfig							: 	"HTTPS Config"					
 
  /*Log Formula*/
  
@@ -26,6 +26,14 @@
 	
 	SalesVoucherDownloadURL	:$$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
 	PurchVCHDownloadURL		:$$localestring:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+
+
+
+	/*HTTPS Formulas*/
+
+	
+	MyGitHTTPS	: $$localestring:"https://github.com/"
+	SalesHTTPs	: $$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
 
 
 						 
@@ -71,7 +79,7 @@
 	PurchasesVoucherDate			: Date		: 2029
 
 
-	
+	HTTPPostEnable					: Logical	: 2030
 
 
 
