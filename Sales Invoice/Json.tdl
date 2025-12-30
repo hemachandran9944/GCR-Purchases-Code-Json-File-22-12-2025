@@ -121,25 +121,4 @@
 	
 
 
-	[Function: Auto_Creation_Master]
 	
-	010		: If	: $$IsEmpty:$Name:Ledger:$customername
-	020		: NEW OBJECT	: Ledger	
-	
-	030		:	SET VALUE	: Name					: $$LocaleString:$customername
-	040		:	SET VALUE	: Parent				:"Sundry Debtors"
-	
-	050		:	SET VALUE	: PRIORSTATENAME		: $$LocaleString:""
-	060		:	SET VALUE	: COUNTRYNAME			: $$LocaleString:""
-	070		:	SET VALUE	: GSTREGISTRATIONTYPE   : $$LocaleString:""
-	080		:	SET VALUE	: VATDEALERTYPE         : $$LocaleString:""
-	090		:	SET VALUE	: COUNTRYOFRESIDENCE    : $$LocaleString:""
-	100		:	SET VALUE	: LEDSTATENAME          : $$LocaleString:""
-	180 	:	Set Target:...
-	
-	190		: Create Target
-
-	200		: End If
-
-		
-		

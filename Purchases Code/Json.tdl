@@ -1,6 +1,7 @@
 
 
 
+
 [#Menu	: GateWay Of Tally]
 	
 
@@ -16,9 +17,24 @@ Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: Purch
 	
 	Key Item	: "DownLoade Purchases"	: P	: Alter: GCR_Date_Wise_DownLoad_Report
 	
+
+	
 	Indent		: ""
 	
+	Indent		: @@Sales
+	
 	Key Item	: "DownLoad Sales"		: S : Call: DownLoad_Sales_Function
+	
+
+	Indent		: ""
+	
+	Indent		: @@Payment
+	
+	Key Item	: "DownLoade Payment"	: P	: Call	: DownLoade_Payment_Funtion
+	
+
+
+
 	
 	Indent		: ""
 	
@@ -26,11 +42,23 @@ Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: Purch
 
 	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
 	
-	Indent		: ""
+
+
 	
+	Indent		: ""
+
 	Indent		: @@HTTTPConfig
 	
 	Key Item	: "API Request"			: A	: Display	: DownLoadeURLReport
+	
+
+	
+	Indent		: ""
+	
+	Indent		: @@AutoShudling
+
+	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
+	
 	
 	
 	
@@ -60,6 +88,8 @@ Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: Purch
 	Storage		: systemname    			: String
     Storage		: createduser   			: String
 	Storage		: requesttype				: String
+	Storage		: fromdate					: String			
+	Storage		: todate				    : String
 	Collection	: purchaselist				: purchaselist
 
 	

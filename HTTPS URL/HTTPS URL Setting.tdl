@@ -1,9 +1,3 @@
-
-
-	
-	
-
-
 	
 	
 [Report: DownLoadeURLReport]
@@ -14,62 +8,75 @@
 [Form: HTTP Post Welcome]
 
 	Parts	: HTTP Post Welcome
-	Buttons	: GitButton,Sales_Button
+	Buttons	: Git,FastAPI,SalesJson
 	
 
 	/*GET JSON TAG PROCESS*/
 
-[Button : GitButton]
-	
-	Key		: Alt + G 
-	Title	: "MyGitHTTPS"
-	Action	: call:GitFuntion
-	
-[Function	: GitFuntion]
-		
-	10				: Walk Collection: GitCollection
-	11				: End Walk	
-	
+
 /*
 	Variable		: Check_HTTPS:String
 	12: Set			: Check_HTTPS:$$LocaleString:$PurchVCHDownloadURL:Company:##SVCurrentCompany
 	13:Msg Box		: "13":##Check_HTTPS
 	
 	*/
-	
-[Collection	: GitCollection]
-	
-	Data Source		: HTTP JSON	: @@MyGitHTTPS	
-	RemoteRequest 	: Json_FO	: UTF8
-	
 
-[Button: Sales_Button]
+
+[Button: Git]
 		
-	Key		: Ctrl + S
-	Title	: "SalesJson"
-	Action	: Call	: SalesFuntion
+	Key		: Ctrl + M
+	Title	: "My Git"
+	Action	: Call	: GitFunction
 	
-[Function: SalesFuntion]
+[Function: GitFunction]
 	
- 20 : Walk Collection	: SalesCollocation
+ 20 : Walk Collection	: GitCollocation
  30	: End Walk
  
-[Collection: SalesCollocation]
+[Collection: GitCollocation]
 	
-	Data Source		: HTTP JSON	: @@SalesHTTPs
+	Data Source		: HTTP JSON	: @@MyGitHTTPS
 	RemoteRequest	: Json_FO	: UTF8
 	
 
 
 
 
+[Button: FastAPI]
+	
+	Key		: Ctrl + F
+	Title	: "FastAPI"
+	Action	: Call	: FastAPIFuntion
+	
+[Function: FastAPIFuntion]
+	
+	35:Walk Collection	: FastAPI_Collection
+	40:End Walk
+	
+[Collection: FastAPI_Collection]
+	
+	Data Source		: HTTP JSON	: @@FastAPI
+	RemoteRequest	: Json_FO	: UTF8
 
 
 
 
+[Button: SalesJson]
+	
+	Key		: Ctrl + S
+	Title	: "Sales"
+	Action	: Call	: Sales_Function
+	
+[Function: Sales_Function]
+	
+	50: Walk Collection	: Sales_Collecation
+	60: End Walk
+	
+[Collection: Sales_Collecation]
+	
 
-
-
+	Data Source		: HTTP JSON		: @@SalesVoucherDownloadURL
+	RemoteRequest	: Json_FO		: UTF8 
 
 
 

@@ -1,0 +1,81 @@
+
+
+				/*Auto Create Sales Master*/
+				
+	
+
+		[Function: Sales_Ledger_Master]
+	
+	10		: If	: $$IsEmpty:$Name:Ledger:$customername
+	20		: NEW OBJECT	: Ledger	
+	
+	30		:	SET VALUE	: Name					: $$LocaleString:$customername
+	40		:	SET VALUE	: Parent				:"Sundry Debtors"
+	
+	50		:	SET VALUE	: PRIORSTATENAME		: $$LocaleString:""
+	60		:	SET VALUE	: COUNTRYNAME			: $$LocaleString:""
+	70		:	SET VALUE	: GSTREGISTRATIONTYPE   : $$LocaleString:""
+	80		:	SET VALUE	: VATDEALERTYPE         : $$LocaleString:""
+	90		:	SET VALUE	: COUNTRYOFRESIDENCE    : $$LocaleString:""
+	100		:	SET VALUE	: LEDSTATENAME          : $$LocaleString:""
+	180 	:	Set Target:...
+	
+	190		: Create Target
+
+	200		: End If
+	
+
+	[Function: StockGroup_SalesMaster]
+	
+		
+	210		: If	: $$IsEmpty:$Name:StockGroup:$parent
+	
+	220		:   NEW OBJECT	: StockGroup
+
+	230		:	SET VALUE	: Name							: $$LocaleString:$parent
+	240		:	SET VALUE	: Parent						: "Primary"
+	250	 	: 	Save Target
+	
+	260		: End If
+
+
+
+	[Function:StockUnit_SalesMaster]
+	
+	300			: If				: $$IsEmpty:$Name:Unit:$Unit
+	320	 		: New Object		: Unit		
+	330	 		: Set Value			: Name					: $$LocaleString:$unit
+	340	 		: Set Value			: IsSimpleUnit			: Yes		
+	350	 		: Create Target		
+	
+	380			: End If	
+		
+	
+	[Function: Sales_StockMaster]
+		
+	400		: If	: $$IsEmpty:$Name:StockItem:$product
+	
+	410		:   NEW OBJECT	: StockItem
+
+	420		:	SET VALUE	: Name							: $$LocaleString:$product
+	430A	:	SET VALUE	: Parent						: $$LocaleString:$parent
+	430B	:	SET VALUE	: GSTAPPLICABLE					: "Applicable" 
+	440		:	SET VALUE	: BASEUNITS						: $$LocaleString:$unit
+
+	450	 	:  Create Target
+	460		:  End If
+	
+
+	[Function: Sales_Godon_Master]
+
+	500		: If	: $$IsEmpty:$Name:Godown:$productgodown
+		
+	510 	: NEW OBJECT		: Godown
+  	520		: SET VALUE    		: Name   	                   : $$LocaleString:$productgodown
+	540		: SET VALUE 		: Parent 			           : " Primary"
+	
+    560		: Create Target
+	
+	600		: End if	
+	
+		

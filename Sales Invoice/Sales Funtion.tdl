@@ -7,9 +7,9 @@
 	
 10: Alter	: SalesVoucherTypeDateReport
 
-20: Msg Box	: "Check"		: "Test"
-	
-/*
+
+	/*
+
 Variable	:	Check_add_On	: String
 
 02:set		: Check_add_On		: $$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
@@ -17,7 +17,6 @@ Variable	:	Check_add_On	: String
 03:Msg Box	: "02"				: ##Check_add_On
 
 */
-
 
 				/*Sales Request Type [Variables]*/
 
@@ -94,7 +93,7 @@ Variable	:	Check_add_On	: String
 
 				/*Sales Masters [Varaiables]*/
 				
-	Variable	: vchproductlist_Sales_invoicenumber			 : string
+	Variable	: vchproductlist_Sales_invoicenumber			 : String
 	Variable	: vchproductlist_Sales_product                   : string
 	Variable	: vchproductlist_Sales_productdescription        : string
 	Variable	: vchproductlist_Sales_parent                    : string
@@ -123,7 +122,7 @@ Variable	:	Check_add_On	: String
 	Variable	: vchledgerlist_Sales_additionalledger          : string
 	Variable	: vchledgerlist_Sales_parent                    : string
 	Variable	: vchledgerlist_Sales_rateofpercentage          : string
-	Variable	: vchledgerlist_Sales_additionalledgervalue		: String
+	Variable	: vchledgerlist_Sales_additionalledgervalue		: String   
 
 
 						/*Commen Variables*/
@@ -142,11 +141,17 @@ Variable	:	Check_add_On	: String
 	Variable	: GCRNumberOfSalescount							: Number	: 0
 
 	
+	
+	
+
+	30	: Query Box	: "Do you want to \n Download Sales ?": Yes: No	
+	
+	
 
 	100: Walk Collection	: GCR_SalesVoucher
 	110: Walk Collection	: message
 	
-	120		: Set	: Saless_message_tallycode			   :$$Localestring:$tallycode			
+	120		: Set	: Saless_message_tallycode			   : $$Localestring:$tallycode			
 	130		: Set	: Saless_message_tallyname		       : $$Localestring:$tallyname		
 	140		: Set	: Saless_message_tallyserialno	       : $$Localestring:$tallyserialno	
 	150		: Set	: Saless_message_salesguid		       : $$Localestring:$salesguid		
@@ -155,11 +160,22 @@ Variable	:	Check_add_On	: String
 	180		: Set	: Saless_message_createduser           : $$Localestring:$createduser    
 	190		: Set	: Saless_message_requesttype	       : $$Localestring:$requesttype
 	
+	
+	136		: SET	: GCRNumberOfSales	: $$NumItems:saleslist
+
+	137		: IF	: ##GCRNumberOfSales > 0
+	
+	138		: START PROGRESS		: ##GCRNumberOfSales	: "Sales Voucher Import" : @@CmpMailName	: "Importing Sales Voucher..."
+	139		: END IF
+	
+	
+
+	
 
 	207		: Walk Collection	: Saleslist
 	208		: New Object		: Voucher 
 	
-	;209		: Call : Auto_Creation_Master
+	209		: Call : Sales_Ledger_Master
 
 	210		: Set  : Saleslist_invoicenumber				: $$LocaleString:$invoicenumber								
 	220		: Set  : Saleslist_invoicedate                  : $$LocaleString:$invoicedate                
@@ -168,7 +184,7 @@ Variable	:	Check_add_On	: String
 	250		: Set  : Saleslist_vchtype                      : $$LocaleString:$vchtype                    
 	260		: Set  : Saleslist_invoicemode                  : $$LocaleString:$invoicemode                
 	270		: Set  : Saleslist_reference                    : $$LocaleString:$reference                  
-	280		: Set  : Saleslist_salesledger                  : $$LocaleString:$salesledger 
+	280		: Set  : Saleslist_salesledger                  : $$LocaleString:$SalesValueLedger:Company:##SVCurrentCompany
 	281		: Set  : Saleslist_GstType						: $$LocaleString:$Saleslist
 	290		: Set  : Saleslist_vchclass                     : $$LocaleString:$vchclass                   
 	300		: Set  : Saleslist_deliverynoteno               : $$LocaleString:$deliverynoteno             
@@ -215,9 +231,11 @@ Variable	:	Check_add_On	: String
     720     : Set  : Saleslist_SignedQRCode                 : $$LocaleString:$SignedQRCode         
 	730		: Set  : Saleslist_ewaybillno                   : $$LocaleString:$ewaybillno           
     740     : Set  : Saleslist_ewaybillnodate               : $$LocaleString:$ewaybillnodate       
-			 
+	
+	
 
-	800	    : Msg Box	: "800"					: ##Saleslist_invoicedate
+			 
+	
 	
 	810	    :	SET			: SVViewName					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"			
 	830		:	Set Value	: DATE							: ##Saleslist_invoicedate
@@ -361,23 +379,30 @@ Variable	:	Check_add_On	: String
 	3050		: INSERT COLLECTION OBJECT					: BILLALLOCATIONS
 	3060		: SET VALUE		: NAME						: $$LocaleString:##Saleslist_invoicenumber
 	
-	Variable				: SalesDueOnValueVariable		: String
-	
-	3070	: Set			: SalesDueOnValueVariable	: $$LocaleString:$BillCreditPeriod:Ledger:##Saleslist_customername
+	Variable					: SalesDueOnValueVariable	: String
+		
+	3070		: Set			: SalesDueOnValueVariable	: $$LocaleString:$BillCreditPeriod:Ledger:##Saleslist_customername
 	3080		: SET VALUE		: BILLCREDITPERIOD			: $$DateRange:(##SalesDueOnValueVariable):(##Saleslist_invoicedate):True
 			
-	4000	: SET VALUE		: BILLTYPE					: $$LocaleString:"New Ref"
-	4010	: SET VALUE		: TDSDEDUCTEEISSPECIALRATE	: $$LocaleString:"Yes"
-	4020	: SET VALUE		: AMOUNT					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue			
+	4000	: SET VALUE		: BILLTYPE						: $$LocaleString:"New Ref"
+	4010	: SET VALUE		: TDSDEDUCTEEISSPECIALRATE		: $$LocaleString:"Yes"
+	4020	: SET VALUE		: AMOUNT						: If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue			
 	4030	: SET TARGET	: ..
 	4040	: SET TARGET	: ..
 			
 	4060		: Set Value		: REFERENCE						: $$LocaleString:##Saleslist_invoicenumber
 
 	
+
+	
 	
 	
 	4070: Walk Collection	: vchproductlist_Sales
+	
+	4071	: Call	: StockGroup_SalesMaster
+	4072	: Call	: StockUnit_SalesMaster
+	4073	: Call	: Sales_StockMaster
+	4074	: Call	: Sales_Godon_Master
 	
 		
 
@@ -389,8 +414,6 @@ Variable	:	Check_add_On	: String
     5040	: Set : vchproductlist_Sales_partno                         : $$localestring:$partno               
     5060	: Set : vchproductlist_Sales_productgodown                  : $$localestring:$productgodown        
     5070	: Set : vchproductlist_Sales_unit                           : $$localestring:$unit   
-	5072:Msg Box	: "5072"	: ##vchproductlist_Sales_unit
-	5073:Msg Box	: "5073"	: ##vchproductlist_Sales_product
     5080	: Set : vchproductlist_Sales_Altunit                        : $$localestring:$Altunit              
     6000	: Set : vchproductlist_Sales_productqty                     : $$localestring:$productqty           
     6010	: Set : vchproductlist_Sales_productAltqty                  : $$localestring:$productAltqty        
@@ -404,7 +427,10 @@ Variable	:	Check_add_On	: String
     7010	: Set : vchproductlist_Sales_productvalue                   : $$localestring:$productvalue
 	
 
-	7020	: INSERT COLLECTION OBJECT				: ALLINVENTORYENTRIES
+    
+
+
+	7020	: INSERT COLLECTION OBJECT				: ALLINVENTORYENTRIES 
     
     7030	: SET VALUE		: StockItemName			: ##vchproductlist_Sales_product
 	7040	: SET VALUE		: IsDeemedPositive		: No
@@ -416,21 +442,20 @@ Variable	:	Check_add_On	: String
 		7051	: Set	:vchproductlist_Sales_productAltqtyy123:($$Number:"800"*$$Number:"-1")
 		7052	: Set	:vchproductlist_Sales_productAltqtyy456:$$TgtObject:$$AsQty:##vchproductlist_Sales_productAltqtyy123
 		
-		;7053: Msg Box	: "7053"	: ##vchproductlist_Sales_productAltqty+##vchproductlist_Sales_productqty+##vchproductlist_Sales_productrate
-;		7054: Set Value	: ActualQty	: $$number:"800"*-1 
-		7055:Msg Box: "7055"	: ##vchproductlist_Sales_productAltqtyy456        
+		
+		
 
-    7060	: SET VALUE		: ActualQty				: ##vchproductlist_Sales_productAltqtyy456;if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
-    7080	: SET VALUE		: BilledQty				: ##vchproductlist_Sales_productAltqtyy123
-   ; 7090	: SET VALUE		: Rate					: :##vchproductlist_Sales_productAltqtyy456
+    7060	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1 
+    7080	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
+    7090	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Sales_productrate
     8000	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
     	
     8010	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS
 		
     8020	: SET VALUE		: GodownName			: ##vchproductlist_Sales_productgodown
-    8030	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_product then ($$TgtObject:($$AsQty:##vchproductlist_Sales_product)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
+    8030	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
     8040	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
-	;8050	: SET VALUE		: Rate					: ($$TgtObject:($$AsRate:##vchproductlist_Sales_productrate))
+	8050	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Sales_productrate
     8060	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
     8090	: SET TARGET	: ..
 
@@ -440,14 +465,7 @@ Variable	:	Check_add_On	: String
 	9020	: SET VALUE		: Amount				: ##vchproductlist_Sales_productvalue    
 	9030	: SET TARGET	: ...
 
-
-
-
-
-
-
-
-
+	
 	9040	: End Walk /*vchproductlist_Sales*/
 	
 	
@@ -459,6 +477,9 @@ Variable	:	Check_add_On	: String
 	10130	: Set : vchledgerlist_Sales_rateofpercentage    	    : $$Localestring:$rateofpercentage    	
 	10140	: Set : vchledgerlist_Sales_additionalledgervalue	    : $$Localestring:$additionalledgervalue	
 	10150	: Set : Sales_ledger                                    : $$Localestring:$Name:Ledger:$additionalledger	
+	
+			
+
 	
 	10180	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
 					
@@ -473,54 +494,78 @@ Variable	:	Check_add_On	: String
     10300	: SET VALUE		:  Amount								: ##vchledgerlist_Sales_additionalledgervalue
     10310	: SET TARGET	: ..    
 
-	10315	: End Walk	/*vchledgerlist_Sales*/
-
-		/*if :Saleslist_roundoffledgerFieled*/
 	
-	10320		: INSERT COLLECTION OBJECT								: LEDGERENTRIES
-	10330		: SET VALUE		: LedgerName							: ##Saleslist_roundoffledger    
-	10340		: SET VALUE		: ISDEEMEDPOSITIVE						: No
-	10350		: SET VALUE		: LEDGERFROMITEM						: No
-	10360		: SET VALUE		: REMOVEZEROENTRIES						: No
-	10370		: SET VALUE		: ISPARTYLEDGER							: No
-	10380		: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
-	10390		: SET VALUE		: ISCAPVATTAXALTERED					: No
-	10410		: SET VALUE		: ISCAPVATNOTCLAIMED					: No
-	10420		: SET VALUE		: Amount								: ##Saleslist_roundoffamount             
-	10430		: SET TARGET	: ..
-		
+	10319	: End Walk	/*vchledgerlist_Sales*/
 
 
+
+
+
+	10320B	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
+	10330	: SET VALUE		: LedgerName							: ##Saleslist_roundoffledger    
+	10340	: SET VALUE		: ISDEEMEDPOSITIVE						: No
+	10350	: SET VALUE		: LEDGERFROMITEM						: No
+	10360	: SET VALUE		: REMOVEZEROENTRIES						: No
+	10370	: SET VALUE		: ISPARTYLEDGER							: No
+	10380	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
+	10390	: SET VALUE		: ISCAPVATTAXALTERED					: No
+	10410	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
+	10420	: SET VALUE		: Amount								: ##Saleslist_roundoffamount             
+	10430	: SET TARGET	: ..
+	
+	
+
+	
+	10440	: INCREMENT 	: GCRNumberOfSalescount
+	10450	: SHOW PROGRESS	: ##GCRNumberOfSalescount
+
+	
+	10470A	: IF	: ##GCRNumberOfSales > 0
+	10470B	: END PROGRESS
+	10480	: END IF
+
+	
+
+	
 
 
 	10810	: Set Value	: VOUCHERNUMBER				: $$TgtObject:##Saleslist_invoicenumber
 	10820	: Create TARGET
+
+
+
 	
 
+	
+	
+	
+	
 
-
-		         
-        			
-        
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		12000	: End Walk	/*SalesList*/
-        12020   : End Walk	/*Saless_message*/
-        12030   : End Walk  /*GCR_SalesVoucher*/
+	12019	: End Walk	/*SalesList*/	
+    12020   : End Walk	/*Saless_message*/
+    12030   : End Walk  /*GCR_SalesVoucher*/
 		
 
-		15000   : Msg Box	: "Success":"Download completed"
+    15000   : Msg Box	: "Success":"Download completed"
+
+
+
+[Variable:SalesCommonVariableUpdate]
+
+Variables:VRNO    			:String
+Variables:APIRESULT_Msg		:String
+Variables:INVOICETYPES 		:String
+Variables:VRDATE    		:String
+Variables:APIRESULT_STATUS	:String
+
+[Collection:CheckSales_GCR_VchAvailabilit]
+
+	Type			: Vouchers	: VoucherType
+	
+	Child Of		: ##Saleslist_vchtype
+	Native Method	: VoucherNumber,VoucherTypeName,MasterID
+	Aggr Method		: LastVoucherNumber1  : Last : $VoucherNumber
+	Search Key		: $VoucherNumber+$$String:##Saleslist_vchtype
 
 
 
@@ -532,3 +577,729 @@ Variable	:	Check_add_On	: String
 
 
 
+
+
+;[Function: DownLoad_Sales_Function]
+;	
+;
+;
+;	
+;10: Alter	: SalesVoucherTypeDateReport
+;
+;
+;	
+;
+;Variable	:	Check_add_On	: String
+;
+;02:set		: Check_add_On		: $$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
+;
+;03:Msg Box	: "02"				: ##Check_add_On
+;
+;
+;
+;
+;				/*Sales Request Type [Variables]*/
+;
+;	Variable	: Saless_message_tallycode					: String	
+;	Variable	: Saless_message_tallyname		            : String
+;	Variable	: Saless_message_tallyserialno	            : String
+;	Variable	: Saless_message_salesguid		            : String
+;	Variable	: Saless_message_ipaddress		            : String
+;	Variable	: Saless_message_systemname                 : String
+;	Variable	: Saless_message_createduser                : String
+;	Variable	: Saless_message_requesttype	            : String
+;	
+;
+;
+;
+;			/*Sales  Voucher Details [Variables]*/
+;			
+;	
+;	Variable	: Saleslist_invoicenumber					: String		
+;	Variable	: Saleslist_invoicedate                     : String
+;	Variable	: Saleslist_narration                       : String
+;	Variable	: Saleslist_customername                    : String
+;	Variable	: Saleslist_vchtype                         : String
+;	Variable	: Saleslist_invoicemode                     : String
+;	Variable	: Saleslist_reference                       : String
+;	Variable	: Saleslist_salesledger                     : String
+;	Variable	: Saleslist_GstType							: String
+;	Variable	: Saleslist_vchclass                        : String
+;	Variable	: Saleslist_deliverynoteno                  : String
+;	Variable	: Saleslist_deliverynotedate                : String
+;	Variable	: Saleslist_dispatchdocno                   : String
+;	Variable	: Saleslist_dipatchthrough                  : String
+;	Variable	: Saleslist_destination                     : String
+;	Variable	: Saleslist_lrrnumber                       : String
+;	Variable	: Saleslist_lrrdate                         : String
+;	Variable	: Saleslist_vehiclenumber                   : String
+;	Variable	: Saleslist_ordernumber                     : String
+;	Variable	: Saleslist_orderdate                       : String
+;	Variable	: Saleslist_modeofpayment                   : String
+;	Variable	: Saleslist_otherreference                  : String
+;	Variable	: Saleslist_termsofdelivery                 : String
+;	Variable	: Saleslist_buyername                       : String
+;	Variable	: Saleslist_deliveryaddress					: String
+;	Variable	: Saleslist_buyeraddress1                   : String
+;	Variable	: Saleslist_buyeraddress2                   : String
+;	Variable	: Saleslist_buyeraddress3                   : String
+;	Variable	: Saleslist_buyeraddress4                   : String
+;	Variable	: Saleslist_buyeraddress5                   : String
+;	Variable	: Saleslist_country                         : String
+;	Variable	: Saleslist_buyerstate                      : String
+;	Variable	: Saleslist_placeofsupply                   : String
+;	Variable	: Saleslist_buyergstinnumber                : String
+;	Variable	: Saleslist_deliveryname                    : String
+;	Variable	: Saleslist_deliveryaddress1                : String
+;	Variable	: Saleslist_deliveryaddress2                : String
+;	Variable	: Saleslist_deliveryaddress3                : String
+;	Variable	: Saleslist_deliveryaddress4                : String
+;	Variable	: Saleslist_deliveryaddress5                : String
+;	Variable	: Saleslist_consigneestate                  : String
+;	Variable	: Saleslist_consigneegstinnumber            : String
+;	Variable	: Saleslist_subvalue                        : String
+;	Variable	: Saleslist_roundoffledger                  : String
+;	Variable	: Saleslist_roundoffledgerFieled			: String
+;	Variable	: Saleslist_roundoffamount                  : String
+;	Variable	: Saleslist_invoicevalue                    : String
+;	Variable	: Saleslist_irn                             : String
+;	Variable	: Saleslist_ackno                           : String
+;	Variable	: Saleslist_ackdate                         : String
+;	Variable	: Saleslist_SignedInvoice                   : String
+;	Variable	: Saleslist_SignedQRCode                    : String
+;	Variable	: Saleslist_ewaybillno                      : String
+;	Variable	: Saleslist_ewaybillnodate                  : String
+;	Variable    : PartyLedgerAmountPurchase					: String
+;
+;				/*Sales Masters [Varaiables]*/
+;				
+;
+;	Variable	: vchproductlist_Sales_product                   : string
+;	Variable	: vchproductlist_Sales_productdescription        : string
+;	Variable	: vchproductlist_Sales_parent                    : string
+;	Variable	: vchproductlist_Sales_partno                    : string
+;	Variable	: vchproductlist_Sales_productgodown             : string
+;	Variable	: vchproductlist_Sales_unit                      : string
+;	Variable	: vchproductlist_Sales_Altunit                   : string
+;	Variable	: vchproductlist_Sales_productqty                : string
+;	Variable	: vchproductlist_Sales_productAltqty             : string
+;	Variable	: vchproductlist_Sales_productrate               : string
+;	Variable	: vchproductlist_Sales_producthsn                : string
+;	Variable	: vchproductlist_Sales_productigstpercentage     : string
+;	Variable	: vchproductlist_Sales_productcgstpercentage     : string
+;	Variable	: vchproductlist_Sales_productsgstpercentage     : string
+;	Variable	: vchproductlist_Sales_taxamount                 : string
+;	Variable	: vchproductlist_Sales_taxableamount             : string
+;	Variable	: vchproductlist_Sales_productvalue              : string
+;	
+;
+;
+;
+;					/*Sales Ledger Variables*/
+;					
+;
+;	Variable	: vchledgerlist_Sales_invoicenumber				: string
+;	Variable	: vchledgerlist_Sales_additionalledger          : string
+;	Variable	: vchledgerlist_Sales_parent                    : string
+;	Variable	: vchledgerlist_Sales_rateofpercentage          : string
+;	Variable	: vchledgerlist_Sales_additionalledgervalue		: String
+;
+;
+;						/*Commen Variables*/
+;
+;	Variable	: Sales_party_name								: String
+;    Variable	: Sales_CheckSalesVoucherNo						: String
+;    Variable	: Sales_Stock_product							: String
+;    Variable	: Sales_ledger									: String
+;	
+;
+;
+;	Variable	: ProgressCount									: Number
+;	Variable	: TotalSales 									: Number	: 1
+;			
+;	Variable	: GCRNumberOfSales								: Number
+;	Variable	: GCRNumberOfSalescount							: Number	: 0
+;
+;	List Variable	: SalesCommonVariableUpdate
+;
+;	
+;	10	: SET	: ProgressCount	: 1
+;	
+;	15	: Msg Box	: "15"	: ##ProgressCount
+;							
+;	20 	: If: (##TotalSales > 0)
+;
+;	30	: Query Box	: "Do you want to \n Download Sales ?": Yes: No	
+;	
+;	40	: If	: $$LastResult
+;
+;	41	: If	: ($$IsInternetActive)
+;	
+;	42	: If 	: NOT $$IsEmpty:$$LicenseInfo:SerialNumber
+;
+;
+;	100: Walk Collection	: GCR_SalesVoucher
+;	110: Walk Collection	: message
+;	
+;	120		: Set	: Saless_message_tallycode			   :$$Localestring:$tallycode			
+;	130		: Set	: Saless_message_tallyname		       : $$Localestring:$tallyname		
+;	140		: Set	: Saless_message_tallyserialno	       : $$Localestring:$tallyserialno	
+;	150		: Set	: Saless_message_salesguid		       : $$Localestring:$salesguid		
+;	160		: Set	: Saless_message_ipaddress		       : $$Localestring:$ipaddress		
+;	170		: Set	: Saless_message_systemname            : $$Localestring:$systemname     
+;	180		: Set	: Saless_message_createduser           : $$Localestring:$createduser    
+;	190		: Set	: Saless_message_requesttype	       : $$Localestring:$requesttype
+;	
+;
+;	191		: If	: ##Download_TRANS_tallycode=$TallyCompanyCode:Company:##SVCurrentCompany  
+;	
+;	192		: SET	: GCRNumberOfSales	: $$NumItems:saleslist
+;	
+;	193		: IF	: ##GCRNumberOfSales > 0
+;	
+;	194		: START PROGRESS		: ##GCRNumberOfSales	: "Sales Voucher Import" : @@CmpMailName	: "Importing Sales Voucher..."
+;	195		: END IF
+;	
+;
+;
+;	
+;
+;	207		: Walk Collection	: Saleslist
+;	208		: New Object		: Voucher 
+;	
+;	209		: Call : Auto_Creation_Master
+;
+;	210		: Set  : Saleslist_invoicenumber				: $$LocaleString:$invoicenumber								
+;	220		: Set  : Saleslist_invoicedate                  : $$LocaleString:$invoicedate                
+;	230		: Set  : Saleslist_narration                    : $$LocaleString:$narration                  
+;	240		: Set  : Saleslist_customername                 : $$LocaleString:$customername               
+;	250		: Set  : Saleslist_vchtype                      : $$LocaleString:$vchtype                    
+;	260		: Set  : Saleslist_invoicemode                  : $$LocaleString:$invoicemode                
+;	270		: Set  : Saleslist_reference                    : $$LocaleString:$reference                  
+;	280		: Set  : Saleslist_salesledger                  : $$LocaleString:$salesledger 
+;	281		: Set  : Saleslist_GstType						: $$LocaleString:$Saleslist
+;	290		: Set  : Saleslist_vchclass                     : $$LocaleString:$vchclass                   
+;	300		: Set  : Saleslist_deliverynoteno               : $$LocaleString:$deliverynoteno             
+;	310		: Set  : Saleslist_deliverynotedate             : $$LocaleString:$deliverynotedate           
+;	320		: Set  : Saleslist_dispatchdocno                : $$LocaleString:$dispatchdocno              
+;	330		: Set  : Saleslist_dipatchthrough               : $$LocaleString:$dipatchthrough             
+;	340		: Set  : Saleslist_destination                  : $$LocaleString:$destination                
+;	350		: Set  : Saleslist_lrrnumber                    : $$LocaleString:$lrrnumber                  
+;	360		: Set  : Saleslist_lrrdate                      : $$LocaleString:$lrrdate                    
+;	370		: Set  : Saleslist_vehiclenumber                : $$LocaleString:$vehiclenumber              
+;	380		: Set  : Saleslist_ordernumber                  : $$LocaleString:$ordernumber                
+;	390		: Set  : Saleslist_orderdate                    : $$LocaleString:$orderdate                  
+;	400		: Set  : Saleslist_modeofpayment                : $$LocaleString:$modeofpayment              
+;	410		: Set  : Saleslist_otherreference               : $$LocaleString:$otherreference             
+;	420		: Set  : Saleslist_termsofdelivery              : $$LocaleString:$termsofdelivery            
+;	430		: Set  : Saleslist_buyername                    : $$LocaleString:$buyername 
+;	431		: Set  : Saleslist_deliveryaddress				: $$LocaleString:$deliveryaddress
+;	440		: Set  : Saleslist_buyeraddress1                : $$LocaleString:$buyeraddress1              
+;	450		: Set  : Saleslist_buyeraddress2                : $$LocaleString:$buyeraddress2              
+;	460		: Set  : Saleslist_buyeraddress3                : $$LocaleString:$buyeraddress3              
+;	470		: Set  : Saleslist_buyeraddress4                : $$LocaleString:$buyeraddress4              
+;	480		: Set  : Saleslist_buyeraddress5                : $$LocaleString:$buyeraddress5              
+;	490		: Set  : Saleslist_country                      : $$LocaleString:$country                    
+;	500		: Set  : Saleslist_buyerstate                   : $$LocaleString:$buyerstate                 
+;	510     : Set  : Saleslist_placeofsupply                : $$LocaleString:$placeofsupply              
+;    520		: Set  : Saleslist_buyergstinnumber             : $$LocaleString:$buyergstinnumber           
+;    530     : Set  : Saleslist_deliveryname                 : $$LocaleString:$deliveryname               
+;    540		: Set  : Saleslist_deliveryaddress1             : $$LocaleString:$deliveryaddress1           
+;    560     : Set  : Saleslist_deliveryaddress2             : $$LocaleString:$deliveryaddress2           
+;    570     : Set  : Saleslist_deliveryaddress3             : $$LocaleString:$deliveryaddress3           
+;    580     : Set  : Saleslist_deliveryaddress4             : $$LocaleString:$deliveryaddress4           
+;    590     : Set  : Saleslist_deliveryaddress5             : $$LocaleString:$deliveryaddress5           
+;    600     : Set  : Saleslist_consigneestate               : $$LocaleString:$consigneestate             
+;    610     : Set  : Saleslist_consigneegstinnumber         : $$LocaleString:$consigneegstinnumber       
+;    620     : Set  : Saleslist_subvalue                     : $$LocaleString:$subvalue                   
+;    630     : Set  : Saleslist_roundoffledger               : $$LocaleString:$roundoffledger 
+;	631		: Set  : Saleslist_roundoffledgerFieled			: $$LocaleString:$Name:Ledger:$roundoffledgerFieled
+;    640     : Set  : Saleslist_roundoffamount               : $$LocaleString:$roundoffamount             
+;	650		: Set  : Saleslist_invoicevalue                 : $$LocaleString:$invoicevalue                
+;	670		: Set  : Saleslist_irn                          : $$LocaleString:$irn                         
+;	680     : Set  : Saleslist_ackno                        : $$LocaleString:$ackno                      
+;    700     : Set  : Saleslist_ackdate                      : $$LocaleString:$ackdate              
+;	710		: Set  : Saleslist_SignedInvoice                : $$LocaleString:$SignedInvoice        
+;    720     : Set  : Saleslist_SignedQRCode                 : $$LocaleString:$SignedQRCode         
+;	730		: Set  : Saleslist_ewaybillno                   : $$LocaleString:$ewaybillno           
+;    740     : Set  : Saleslist_ewaybillnodate               : $$LocaleString:$ewaybillnodate       
+;			 
+;	750		: If	: (Not($$IsEmpty:##Saleslist_customername))
+;			
+;    760     : Set	: Sales_CheckSalesVoucherNo:($$CollectionFieldByKey:$VoucherNumber:($$String:##Saleslist_invoicenumber+$$String:##Saleslist_vchtype):CheckSales_GCR_VchAvailabilit)
+;		
+;    770     : If	: ##Sales_CheckSalesVoucherNo=''  
+;
+;	
+;	810	    :	SET			: SVViewName					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"			
+;	830		:	Set Value	: DATE							: ##Saleslist_invoicedate
+;	840		:	Set Value	: NARRATION						: $narration
+;	850		:	Set Value	: PARTYLEDGERNAME				: ##Saleslist_customername
+;	860		:	Set Value	: PERSISTEDVIEW					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"
+;	870		:	Set Value	: REFERENCE						: ##Saleslist_reference
+;	880		:	Set Value	: IsInvoice						: If ##Saleslist_invoicemode = "Accounting Voucher View" Then "No" Else "Yes"
+;	890		:	Set Value	: VOUCHERTYPENAME				: ##Saleslist_vchtype
+;
+;	
+;	900		:  Insert Collection Object:INVOICEDELNOTES
+;	910		:  Set Value	: BASICSHIPDELIVERYNOTE			: ##Saleslist_deliverynoteno   
+;	920		:  Set Value	: BASICSHIPPINGDATE				: ##Saleslist_deliverynotedate 
+;	930		:  Set Target:..	
+;	
+;	1001	: Set Value	: BASICSHIPDOCUMENTNO				: ##Saleslist_dispatchdocno 
+;    1020	: Set Value	: BASICSHIPPEDBY					: ##Saleslist_dipatchthrough
+;    1030	: Set Value	: BASICFINALDESTINATION				: ##Saleslist_destination  
+;	1040	: Set Value	: BILLOFLADINGNO					: ##Saleslist_lrrnumber    	
+;	1050	: Set Value	: BILLOFLADINGDATE					: ##Saleslist_lrrdate      		
+;    1060	: Set Value	: BASICSHIPVESSELNO					: ##Saleslist_vehiclenumber
+;	
+;		
+;	1070	: Insert Collection Object:INVOICEORDERLIST	
+; 	1080	: Set Value	: BASICPURCHASEORDERNO				: ##Saleslist_ordernumber 
+;	1100	: Set Value	: BASICORDERDATE					: ##Saleslist_orderdate   
+;	1110	: Set Target:..																
+;			
+;	1120	: Set Value	: BASICDUEDATEOFPYMT				: ##Saleslist_modeofpayment 
+;    1130	: Set Value	: BASICORDERREF						: ##Saleslist_otherreference
+;				
+;    1140	: Insert Collection Object:BASICORDERTERMS	
+;    1150	: Set Value	: BASICORDERTERMS					: ##Saleslist_termsofdelivery
+;	1160	: Set Target:..	
+;		
+;    1170	: Set Value	: BASICBUYERNAME					: ##Saleslist_buyername
+;    1180	: Set Value	: VCHGSTClass						: ##Saleslist_GstType
+;	
+;
+;					/*while condition*/
+;					
+;	Variable:sListCount					: Number:5
+;	Variable:sListCount2				: Number:1
+;	Variable:T1,Saleslist_buyeraddress	: String
+;
+;	1200	: While	: ##sListCount>0
+;    		  
+;    1220	: 	If	: $$LocaleString:##sListCount2=$$LocaleString:1
+;    1230	: 		Set	: Saleslist_buyeraddress	: $$LocaleString:##Saleslist_buyeraddress1  
+;    1240	: 	End If
+;	1250	: 	If	: $$LocaleString:##sListCount2=$$LocaleString:2
+;	1260	: 		Set	: Saleslist_buyeraddress	: $$LocaleString:##Saleslist_buyeraddress2
+;    1270	: 	End If
+;    1290	: 	If	: $$LocaleString:##sListCount2=$$LocaleString:3
+;    1300	: 		Set	: Saleslist_buyeraddress	: $$LocaleString:##Saleslist_buyeraddress3 
+;	
+;    1310	: 	End If
+;    1320	: 	If	: $$LocaleString:##sListCount2=$$LocaleString:4
+;    1330	: 		Set	: Saleslist_buyeraddress	: $$LocaleString:##Saleslist_buyeraddress4
+;    1350	: 	End If
+;    1360	: 	If	: $$LocaleString:##sListCount2=$$LocaleString:5
+;    1390	: 		Set	:Saleslist_buyeraddress		: $$LocaleString:##Saleslist_buyeraddress5
+;    1400	: 	End If
+;				
+;
+;	1500	: 	Insert Collection Object	: BASICBUYERADDRESS
+;	1510	: 	Set Value	: BASICBUYERADDRESS	: ##Saleslist_buyeraddress
+;	1520	: 	Set Target : ..
+;			  
+;	1530 	:   Decr		: sListCount	
+;	1540	:   Increment	: sListCount2
+;	
+;	1560	:	End While
+;	
+;	1580	: Set Value	: REFERENCE					: $$LocaleString:""
+;	1590	: Set Value	: ISOPTIONAL				: $$LocaleString:No
+;		
+;		
+;
+;	1600	: Set Value	: COUNTRYOFRESIDENCE		: ##Saleslist_country            		
+;    1610	: Set Value	: STATENAME					: ##Saleslist_buyerstate                
+;	1630	: Set Value	: PLACEOFSUPPLY				: ##Saleslist_placeofsupply      						 
+;    1640	: Set Value	: PARTYGSTIN				: ##Saleslist_buyergstinnumber                           
+;																							
+;    1690	: Set Value	: STATENAME					: ##Saleslist_buyerstate                             
+;    1700	: Set Value	: PARTYNAME					: ##Saleslist_deliveryname
+;    1710	: Set Value	: CONSIGNEEGSTIN			: ##Saleslist_buyergstinnumber
+;    1720	: Set Value	: VCHENTRYMODE				: If ##Saleslist_invoicenumber = "Accounting Voucher View" Then "As Voucher" Else "Item Invoice"
+;
+;
+;	Variable:sListCountCON:Number:5
+;	Variable:sListCountCON2:Number:1
+;	Variable:sCON1,SalesList_deliveryaddress:String
+;
+;	
+;	1800	: While	: ##sListCountCON>0
+;    		  
+;    1810	: If	: $$LocaleString:##sListCountCON2=$$LocaleString:1
+;    1820	: 	Set	: SalesList_deliveryaddress	: $$LocaleString:##Saleslist_deliveryaddress1
+;    1830	: End If
+;    1840	: If	: $$LocaleString:##sListCountCON2=$$LocaleString:2
+;    1850	: 	Set	: SalesList_deliveryaddress	: $$LocaleString:##Saleslist_deliveryaddress2
+;    1870	: End If
+;    1890	: If	: $$LocaleString:##sListCountCON2=$$LocaleString:3
+;    1900	: 	Set	: SalesList_deliveryaddress	: $$LocaleString:##Saleslist_deliveryaddress3
+;    1910	: End If
+;    1920	: If	: $$LocaleString:##sListCountCON2=$$LocaleString:4
+;    1930	: 	Set	: SalesList_deliveryaddress	: $$LocaleString:##Saleslist_deliveryaddress4
+;    1950	: End If
+;    1955	: If	: $$LocaleString:##sListCountCON2=$$LocaleString:5
+;    1960	: 	Set	: SalesList_deliveryaddress	: $$LocaleString:##Saleslist_deliveryaddress5
+;    1970	: End If
+;
+;
+;
+;	2000	: Insert Collection Object	: ADDRESS
+;	
+;	2010	: Set Value	: ADDRESS	: ##Saleslist_deliveryaddress
+;	2020	: Set Target : ..
+;	
+;	2030 	: Decr		: sListCountCON
+;	2040	: Increment	: sListCountCON2
+;	
+;	2050	: End While
+;	
+;
+;
+;	2060	: INSERT COLLECTION OBJECT					: LEDGER ENTRIES
+;	2070 	: SET VALUE		: LedgerName				: ##Saleslist_customername
+;	2080	: SET VALUE		: IsDeemedPositive			: $$LocaleString:"Yes"
+;	3000	: SET VALUE		: ISPARTYLEDGER				: $$LocaleString:"Yes"
+;	3010	: SET VALUE		: ISLASTDEEMEDPOSITIVE		: $$LocaleString:"Yes"
+;	3020	: Set			: PartyLedgerAmountPurchase	: $$CollectionField:($$AsDrAmt:$additionalledgervalue):1:vchledgerlist
+;	3040	: SET VALUE		: Amount					: If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue
+;
+;
+;
+;
+;	
+;	3050		: INSERT COLLECTION OBJECT					: BILLALLOCATIONS
+;	3060		: SET VALUE		: NAME						: $$LocaleString:##Saleslist_invoicenumber
+;	
+;	Variable					: SalesDueOnValueVariable	: String
+;		
+;	3070		: Set			: SalesDueOnValueVariable	: $$LocaleString:$BillCreditPeriod:Ledger:##Saleslist_customername
+;	3080		: SET VALUE		: BILLCREDITPERIOD			: $$DateRange:(##SalesDueOnValueVariable):(##Saleslist_invoicedate):True
+;			
+;	4000	: SET VALUE		: BILLTYPE						: $$LocaleString:"New Ref"
+;	4010	: SET VALUE		: TDSDEDUCTEEISSPECIALRATE		: $$LocaleString:"Yes"
+;	4020	: SET VALUE		: AMOUNT						: If ##Saleslist_invoicemode = "Accounting Voucher View" Then ##PartyLedgerAmountPurchase Else  "-"+##Saleslist_invoicevalue			
+;	4030	: SET TARGET	: ..
+;	4040	: SET TARGET	: ..
+;			
+;	4060		: Set Value		: REFERENCE						: $$LocaleString:##Saleslist_invoicenumber
+;
+;	
+;	
+;	
+;	4070: Walk Collection	: vchproductlist_Sales
+;	
+;		
+;
+;	5000	: Set : vchproductlist_Sales_invoicenumber					: $$localestring:$invoicenumber			
+;    5010	: Set : vchproductlist_Sales_product                        : $$localestring:$product              
+;    5020	: Set : vchproductlist_Sales_productdescription             : $$localestring:$productdescription 
+;	5021	: Set : Sales_Stock_product									: $$LocaleString:$Name:StockItem:$product			
+;    5030	: Set : vchproductlist_Sales_parent                         : $$localestring:$parent               
+;    5040	: Set : vchproductlist_Sales_partno                         : $$localestring:$partno               
+;    5060	: Set : vchproductlist_Sales_productgodown                  : $$localestring:$productgodown        
+;    5070	: Set : vchproductlist_Sales_unit                           : $$localestring:$unit   
+;    5080	: Set : vchproductlist_Sales_Altunit                        : $$localestring:$Altunit              
+;    6000	: Set : vchproductlist_Sales_productqty                     : $$localestring:$productqty           
+;    6010	: Set : vchproductlist_Sales_productAltqty                  : $$localestring:$productAltqty        
+;    6020	: Set : vchproductlist_Sales_productrate                    : $$localestring:$productrate          
+;    6030	: Set : vchproductlist_Sales_producthsn                     : $$localestring:$producthsn           
+;    6040	: Set : vchproductlist_Sales_productigstpercentage          : $$localestring:$productigstpercentage
+;    6050	: Set : vchproductlist_Sales_productcgstpercentage          : $$localestring:$productcgstpercentage
+;    6070	: Set : vchproductlist_Sales_productsgstpercentage          : $$localestring:$productsgstpercentage
+;    6090	: Set : vchproductlist_Sales_taxamount                      : $$localestring:$taxamount            
+;    7000	: Set : vchproductlist_Sales_taxableamount                  : $$localestring:$taxableamount        
+;    7010	: Set : vchproductlist_Sales_productvalue                   : $$localestring:$productvalue
+;	
+;
+;	7015	: If	: (Not($$IsEmpty:##Sales_Stock_product))
+;
+;	7020	: INSERT COLLECTION OBJECT				: ALLINVENTORYENTRIES 
+;    
+;    7030	: SET VALUE		: StockItemName			: ##vchproductlist_Sales_product
+;	7040	: SET VALUE		: IsDeemedPositive		: No
+;    7050	: SET VALUE		: ISLASTDEEMEDPOSITIVE	: No  
+;	
+;		Variable	: vchproductlist_Sales_productAltqtyy123,vchproductlist_Sales_productAltqtyy456: String
+;		
+;		
+;		7051	: Set	:vchproductlist_Sales_productAltqtyy123:($$Number:"800"*$$Number:"-1")
+;		7052	: Set	:vchproductlist_Sales_productAltqtyy456:$$TgtObject:$$AsQty:##vchproductlist_Sales_productAltqtyy123
+;		
+;		
+;		
+;
+;    7060	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1 
+;    7080	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
+;    7090	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Sales_productrate
+;    8000	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
+;    	
+;    8010	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS
+;		
+;    8020	: SET VALUE		: GodownName			: ##vchproductlist_Sales_productgodown
+;    8030	: SET VALUE		: ActualQty				: if ##vchproductlist_Sales_productAltqty=##vchproductlist_Sales_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Sales_productAltqty)) * -1
+;    8040	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Sales_productqty)) * -1
+;	8050	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Sales_productrate
+;    8060	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Sales_productvalue))
+;    8090	: SET TARGET	: ..
+;
+;	9000	: INSERT COLLECTION OBJECT				: ACCOUNTING ALLOCATIONS
+;		
+;	9010	: SET VALUE		: LedgerName			: ##Saleslist_salesledger
+;	9020	: SET VALUE		: Amount				: ##vchproductlist_Sales_productvalue    
+;	9030	: SET TARGET	: ...
+;
+;	9031	: Else
+;	
+;	9032 	: Set File Log On
+;	9033 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	9034 	: Write File Line: "*****************"
+;	9035 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+', Status: "'+##vchproductlist_Sales_product+'" Stock Item Not Found'
+;	9036 	: Close Target File
+;	9037 	: Set File Log Off
+;	
+;	9038	: LIST ADD EX :  SalesCommonVariableUpdate
+;	
+;	9039A	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRNO    			 : ##vchproductlist_Sales_invoicenumber
+;	9039B	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 	 : ##Saleslist_vchtype
+;	9039C	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRDATE    		 : ##Saleslist_invoicedate
+;	9039D	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS	 : "Error"
+;	9039E	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg	 : ##vchproductlist_Sales_product+" Stock Item Not Found"
+;	
+;	9039F	: End If
+;
+;	9040	: End Walk /*vchproductlist_Sales*/
+;	
+;	
+;	10000	: Walk Collection	: vchledgerlist
+;	
+;	10100	: Set : vchledgerlist_Sales_invoicenumber				: $$Localestring:$invoicenumber						
+;	10110	: Set : vchledgerlist_Sales_additionalledger    	    : $$Localestring:$additionalledger    	
+;	10120	: Set : vchledgerlist_Sales_parent              	    : $$Localestring:$parent              	
+;	10130	: Set : vchledgerlist_Sales_rateofpercentage    	    : $$Localestring:$rateofpercentage    	
+;	10140	: Set : vchledgerlist_Sales_additionalledgervalue	    : $$Localestring:$additionalledgervalue	
+;	10150	: Set : Sales_ledger                                    : $$Localestring:$Name:Ledger:$additionalledger	
+;	
+;	
+;	761		: If	: (Not($$IsEmpty:##vchledgerlist_Sales_additionalledger))
+;		
+;	761a     : If: ##Saleslist_customername!=##vchledgerlist_Sales_additionalledger
+;
+;
+;	
+;	10180	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
+;					
+;    10200	: SET VALUE		: LedgerName							: ##vchledgerlist_Sales_additionalledger
+;    10210	: SET VALUE		: ISDEEMEDPOSITIVE						: No
+;    10230	: SET VALUE		: LEDGERFROMITEM						: No
+;    10240	: SET VALUE		: REMOVEZEROENTRIES						: No
+;    10250	: SET VALUE		: ISPARTYLEDGER							: No
+;    10260	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
+;    10270	: SET VALUE		: ISCAPVATTAXALTERED					: No
+;    10280	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
+;    10300	: SET VALUE		:  Amount								: ##vchledgerlist_Sales_additionalledgervalue
+;    10310	: SET TARGET	: ..    
+;
+;	10311	:  Else
+;	
+;	10312	: Set File Log On
+;	10313	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	10314	: Write File Line: "*****************"
+;	10315	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+', Status: "'+##vchledgerlist_Sales_additionalledger+'" Ledger Not Found'
+;	10316	: Close Target File
+;	10317A	: Set File Log Off
+;	
+;	10317B	: LIST ADD EX :  SalesCommonVariableUpdate
+;	10318A	:  Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRNO    			: ##vchproductlist_Sales_invoicenumber
+;	10318B	:  Set : SalesCommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 		: ##Saleslist_vchtype
+;	10318C	:  Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRDATE    			: ##Saleslist_invoicedate
+;	10318D	:  Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS 	: "Error"
+;	10318E	:  Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg		: ##vchledgerlist_Sales_additionalledger+" Ledger Not Found"
+;	
+;	10318F	: End If
+;	10318G	: SET VALUE    	: PersistedView 	: If ##Saleslist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"
+;	10318H	: End If
+;	
+;	10319	: End Walk	/*vchledgerlist_Sales*/
+;	
+;
+;	
+;	10320A	: If: (Not($$IsEmpty:##Saleslist_roundoffledger)) AND (Not($$IsEmpty:##Saleslist_roundoffledgerFieled))
+;	
+;	10320B	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
+;	10330	: SET VALUE		: LedgerName							: ##Saleslist_roundoffledger    
+;	10340	: SET VALUE		: ISDEEMEDPOSITIVE						: No
+;	10350	: SET VALUE		: LEDGERFROMITEM						: No
+;	10360	: SET VALUE		: REMOVEZEROENTRIES						: No
+;	10370	: SET VALUE		: ISPARTYLEDGER							: No
+;	10380	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
+;	10390	: SET VALUE		: ISCAPVATTAXALTERED					: No
+;	10410	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
+;	10420	: SET VALUE		: Amount								: ##Saleslist_roundoffamount             
+;	10430	: SET TARGET	: ..
+;		
+;	10440	: Else
+;				
+;	10450	: Set File Log On
+;	10460	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	10470	: Write File Line: "*****************"
+;	10480	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+', Status: "'+##Saleslist_roundoffledger+'" Ledger Not Found'
+;		
+;	10490	: Close Target File
+;	10500	: Set File Log Off
+;			
+;	10510	: LIST ADD EX :  SalesCommonVariableUpdate
+;	10520	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRNO    				: ##vchproductlist_Sales_invoicenumber
+;	10530	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 		: ##Saleslist_vchtype
+;	10540	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRDATE    			: ##Saleslist_invoicedate
+;	10560	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS		: "Error"
+;	10570	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg		: ##Saleslist_roundoffledger+" Ledger Not Found"
+;		
+;	
+;	10580	: End If
+;
+;	10810	: Set Value	: VOUCHERNUMBER				: $$TgtObject:##Saleslist_invoicenumber
+;	10820	: Create TARGET
+;	
+;
+;		
+;	10840	: If	: $$LastResult  
+;	
+;	10850 	: Set File Log On
+;	10860 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	10870 	: Write File Line: "*****************"
+;	10880 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: No - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+", Status: Imported Successfully"
+;	10890 	: Close Target File
+;	10900 	: Set File Log Off
+;		
+;	
+;	10910	: LIST ADD EX :  SalesCommonVariableUpdate
+;	10920	:  Set : CommonVariableUpdate[$$LOOPINDEX].VRNO    			: ##vchproductlist_Sales_invoicenumber
+;	10930	:  Set : CommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 	: ##Saleslist_vchtype
+;	10940	:  Set : CommonVariableUpdate[$$LOOPINDEX].VRDATE    		: ##Saleslist_invoicedate
+;	10950	:  Set : CommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS : "Success"
+;	10960 	:  Set : CommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg	: ""
+;	
+;	10970	: Else
+;	
+;	10980 	: Set File Log On
+;	10990 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	11100 	: Write File Line: "*****************"
+;	11120 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+", Status: "+$$LastError
+;	11130 	: Close Target File
+;	11140 	: Set File Log Off
+;		
+;	11150	: LIST ADD EX :  SalesCommonVariableUpdate
+;	11160	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRNO    				: ##vchproductlist_Sales_invoicenumber
+;	11170	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 		: ##Saleslist_vchtype
+;	11180	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRDATE    			: ##Saleslist_invoicedate
+;	11190	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS 	: "Error"
+;	11200 	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg	    : $$LastError
+;		
+;	11210	: End if
+;		
+;	
+;	11220	:  Else
+;	
+;	11230	: Set File Log On
+;	11240	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	11250	: Write File Line: "*****************"
+;	11260	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+', Status: "'+##Saleslist_customername+'" Ledger Not Found'
+;	11270	: Close Target File
+;	11280	: Set File Log Off
+;		
+;	11290	: LIST ADD EX :  SalesCommonVariableUpdate
+;	11300	: Set : CommonVariableUpdate[$$LOOPINDEX].VRNO    			: ##vchproductlist_Sales_invoicenumber
+;	11310	: Set : CommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 		: ##Saleslist_vchtype
+;	11320	: Set : CommonVariableUpdate[$$LOOPINDEX].VRDATE    		: ##Saleslist_invoicedate
+;	11330	: Set : CommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+;	11340	: Set : CommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg		: ##Saleslist_customername+" Ledger Not Found"
+;		
+;		
+;	11350	: End If
+;	
+;	11360	: INCREMENT 	: GCRNumberOfSalescount
+;	11370	: SHOW PROGRESS	: ##GCRNumberOfSalescount
+;	
+;
+;
+;
+;
+;	
+;	11390	: IF	: ##GCRNumberOfSales > 0
+;	11400	: END PROGRESS
+;	11410	: END IF
+;	
+;
+;		
+;	11420	:  Else
+;	
+;	11430	: Set File Log On
+;	11440	: OPEN FILE : @@currentdate_LogFile : Text : Write
+;	11450	: Write File Line: "*****************"
+;	11460	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: Sales, Voucher Number: "+##vchproductlist_Sales_invoicenumber+", Company Code: "+##Saless_message_tallycode+', Status: Company Code Not Found'
+;	11470	: Close Target File
+;	11480	: Set File Log Off
+;		
+;	
+;	11490	: LIST ADD EX :  SalesCommonVariableUpdate
+;	11500	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRNO    				: ##vchproductlist_Sales_invoicenumber
+;	11510	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].INVOICETYPES 		: ##Saleslist_vchtype
+;	11520	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].VRDATE    			: ##Saleslist_invoicedate
+;	11530	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_STATUS		: "Error"
+;	11540	: Set : SalesCommonVariableUpdate[$$LOOPINDEX].APIRESULT_Msg		: "Company Code Not Found"
+;	
+;	11550	: End If
+;		
+;	11560	: Else
+;	
+;	11570	: Msg Box	: "Check"	: "License is not active.\nDownload not allowed!"
+;	
+;	11580	: End If
+;	
+;	11590	: Else
+;	
+;	11600	: Msg Box	: "Check"	: "Network unavailable.\nPlease try again later!"
+;	
+;	11610	: End If
+;	11620	: End If	
+;	
+;	11630	: End If
+;	
+;	11631	: End Walk	/*SalesList*/	
+;    12020   : End Walk	/*Saless_message*/
+;    12030   : End Walk  /*GCR_SalesVoucher*/
+;		
+;
+;    12031   : Msg Box	: "Success":"Download completed"
+;
+;
+;
+;[Variable:SalesCommonVariableUpdate]
+;
+;Variables:VRNO    			:String
+;Variables:APIRESULT_Msg		:String
+;Variables:INVOICETYPES 		:String
+;Variables:VRDATE    		:String
+;Variables:APIRESULT_STATUS	:String
+;
+;[Collection:CheckSales_GCR_VchAvailabilit]
+;
+;	Type			: Vouchers	: VoucherType
+;	
+;	Child Of		: ##Saleslist_vchtype
+;	Native Method	: VoucherNumber,VoucherTypeName,MasterID
+;	Aggr Method		: LastVoucherNumber1  : Last : $VoucherNumber
+;	Search Key		: $VoucherNumber+$$String:##Saleslist_vchtype
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;

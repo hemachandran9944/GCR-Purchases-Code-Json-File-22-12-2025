@@ -9,9 +9,11 @@
 /*Indent*/
 
 	MenuIndent							:	"DownLoad Integration" 
-	PurchasesIndent						:	 "DownLoad Voucher Types"
+	PurchasesIndent						:	"DownLoad Voucher Types"
+	Sales								: 	"DownLoad Sales"
 	AutoShudling						: 	"AutoScheduling Config"
-	HTTTPConfig							: 	"HTTPS Config"					
+	HTTTPConfig							: 	"HTTPS Config"
+	Payment								:	"DownLoad Payment"
 
  /*Log Formula*/
  
@@ -21,11 +23,21 @@
 	currentdate_LogFile        			: @@TallyDefaultAppPath+"\"+@@currentDate+".log"    
 	
 
-
+		/*Json File Formulas*/
 
 	
 	SalesVoucherDownloadURL	:$$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
 	PurchVCHDownloadURL		:$$localestring:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+	PaymentVCHDownloadURL	:$$LocaleString:$PaymentVCHDownloadURL:Company:##SVCurrentCompany 
+
+
+			
+			/*Voucher Foramulas*/
+			
+	
+	PaymentValueVCHType	:$$LocaleString:$PaymentValueVCHType:Company:##SVCurrentCompany 
+
+
 
 
 
@@ -33,8 +45,8 @@
 
 	
 	MyGitHTTPS	: $$localestring:"https://github.com/"
-	SalesHTTPs	: $$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
-
+	FastAPI		: $$LocaleString:"https://github.com/hemachandran9944/FastAPI.git"
+	
 
 						 
 					/*Add On Storages*/

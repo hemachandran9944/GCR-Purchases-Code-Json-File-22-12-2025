@@ -1,0 +1,408 @@
+
+
+
+[Function: DownLoade_Payment_Funtion]
+
+/*	
+01: Msg Box	: "01"	: "Check Payment Function"	
+
+Variable		: Check_File_json	: 	String
+
+02 : Set		:  Check_File_json	: $$LocaleString:$PaymentVCHDownloadURL:Company:##SVCurrentCompany
+
+
+03: Msg Box		: "03":##Check_File_json
+
+*/
+			/*Request Varaiables*/
+
+	Variable	: Payment_message_tallycode							: String						
+	Variable	: Payment_message_tallyname     	    			: String
+	Variable	: Payment_message_tallyserialno 	    			: String
+	Variable	: Payment_message_requesttype   	    			: String
+	Variable	: Payment_message_ipaddress     	    			: String
+	Variable	: Payment_message_salesguid     	    			: String
+	Variable	: Payment_message_systemname    	    			: String
+	Variable	: Payment_message_date                  			: String
+	
+					
+						/*Voucher Details Variables*/
+
+	Variable	: PaymentList_invoicenumber							: String
+	Variable	: PaymentList_invoicedate               			: String
+	Variable	: PaymentList_narration                 			: String
+	Variable	: PaymentList_customername              			: String
+	Variable	: PaymentList_vchtype                   			: String
+	Variable	: PaymentList_invoicemode               			: String
+	Variable	: PaymentList_subvalue                  			: String
+	Variable	: PaymentList_roundoffledger            			: String
+	Variable	: PaymentList_roundoffamount            			: String
+	Variable	: PaymentList_invoicevalue              			: String
+	Variable	: PaymentList_vchledgerlist             			: String
+	
+							/*Ledger Variables*/
+		
+	Variable	: Payment_vchledgerlist_invoicenumber				: String	
+	Variable	: Payment_vchledgerlist_additionalledger        	: String
+	Variable	: Payment_vchledgerlist_parent              		: String  
+	Variable	: Payment_vchledgerlist_rateofpercentage        	: String
+	Variable	: Payment_vchledgerlist_additionalledgervalue		: String
+	
+		
+							/*BankLedger Variables*/
+							
+	Variable	: Payment_bankAllocation_invoicenumber				: String				
+	Variable	: Payment_bankAllocation_transactiontype            : String
+	Variable	: Payment_bankAllocation_transactionAmount          : String
+	Variable	: Payment_bankAllocation_instNo                     : String
+	Variable	: Payment_bankAllocation_instDate                   : String
+	Variable	: Payment_bankAllocation_bankname                   : String
+	Variable	: Payment_bankAllocation_favouringNameReceivedName  : String
+	
+
+	Variable	: PaymentAmount											: String
+
+	Variable	: CheckSalesVoucherNoPayment							: String
+			
+	Variable	: ProgressCount											: Number
+	Variable	: TotalSales1 											: Number	: 1
+			
+	Variable	: GCRNumberOfPayment									: Number
+	Variable	: GCRNumberOfPaymentcount								: Number	: 0
+
+
+	List Variable	: CommonVariableUpdatePayment
+
+
+	10	: SET	: ProgressCount	: 1
+							
+	20 	: If	: (##TotalSales1 > 0)
+
+	50	: If	: ($$IsInternetActive)
+	
+	60	: If 	: NOT $$IsEmpty:$$LicenseInfo:SerialNumber
+	
+	90	: Query Box	: "Do you want to \n Download Payment ?": Yes: No
+	
+	95	: Call	: PaymentVoucherAlterStartFunction
+
+	
+	100	: Walk Collection	: Payment_Voucher
+	120	: Walk Collection	: message
+	
+	130		: Set : Payment_message_tallycode			  : $$Localestring:$tallycode		 	 
+	150		: Set : Payment_message_tallyname     	   	  : $$Localestring:$tallyname     	 
+	160		: Set : Payment_message_tallyserialno         : $$Localestring:$tallyserialno    
+	170		: Set : Payment_message_requesttype           : $$Localestring:$requesttype      
+	180		: Set : Payment_message_ipaddress             : $$Localestring:$ipaddress        
+	190		: Set : Payment_message_salesguid             : $$Localestring:$salesguid        
+	200		: Set : Payment_message_systemname            : $$Localestring:$systemname       
+	210		: Set : Payment_message_date                  : $$Localestring:$date             
+	
+	215		: 	If	: ##Payment_message_tallycode=$TallyCompanyCode:Company:##SVCurrentCompany
+
+	220		:	SET	: GCRNumberOfPayment	: $$NumItems:paymentlist
+            
+	230		:	IF	: ##GCRNumberOfPayment > 0
+            
+    240		:   START PROGRESS		: ##GCRNumberOfPayment	: "Payment Voucher Import" : @@CmpMailName	: "Importing Payment Voucher..."
+    250		:   END IF
+
+
+	  
+	
+	
+	300		: 	Walk Collection	: Paymentlist
+	310		: 	New Object		: Voucher
+	
+	320		: Set : PaymentList_invoicenumber				: $$LocaleString:$invoicenumber				
+	330		: Set : PaymentList_invoicedate                 : $$LocaleString:$invoicedate   
+	340		: Set : PaymentList_narration                   : $narration     
+	350		: Set : PaymentList_customername                : $$LocaleString:$customername  
+	360		: Set : PaymentList_vchtype                     : $$LocaleString:$vchtype       
+	370		: Set : PaymentList_invoicemode                 : $$LocaleString:$invoicemode   
+	380		: Set : PaymentList_subvalue                    : $$LocaleString:$subvalue      
+	390		: Set : PaymentList_roundoffledger              : $$LocaleString:$roundoffledger
+	400		: Set : PaymentList_roundoffamount              : $$LocaleString:$roundoffamount
+	410		: Set : PaymentList_invoicevalue                : $$LocaleString:$invoicevalue  
+	420		: Set : PaymentList_vchledgerlist               : $$LocaleString:$vchledgerlist 
+
+	
+	421		: Set	: CheckSalesVoucherNoPayment:($$CollectionFieldByKey:$VoucherNumber:($$String:##PaymentList_invoicenumber+$$String:##PaymentList_vchtype):CheckSalesVchAvailabilitPaymentVCH)
+
+	422		: If	: ##CheckSalesVoucherNoPayment=''
+
+	
+	
+
+
+	430		:  SET			: SVViewName		 		: $$SysName:AcctgVchView 
+	450		:  Set Value	: DATE						: ##PaymentList_invoicedate
+	460		:  Set Value	: NARRATION			    	: $narration 
+	470		:  Set Value	: PARTYLEDGERNAME	    	: No
+    480		:  Set Value	: PERSISTEDVIEW		    	: if ##PaymentList_invoicemode + " Inventory View " Then " Invoice Voucher View" Else  " Accounting Voucher View "
+    490		:  Set Value	: IsInvoice			    	: Yes
+    500		:  Set Value	: VOUCHERTYPENAME	    	: ##PaymentList_vchtype
+	510		:  Set Value	: VOUCHERNUMBER				: ##PaymentList_invoicenumber	    
+    520		:  Set Value	: date						: ##PaymentList_invoicedate	    
+    530		:  Set Value	: narration					: ##PaymentList_narration
+    540		:  Set Value	: VOUCHERTYPENAME			: ##PaymentList_vchtype	    
+    550		:  Set Value	: PERSISTEDVIEW				: ##PaymentList_invoicemode				    
+    560		:  Set Value	: Amount					: ##PaymentList_invoicevalue			  
+    570		:  Set Target	:..
+
+	600		: Insert Collection Object					: LEDGER ENTRIES
+
+	610		: Set Value		: LedgerName				: ##PaymentList_customername		 
+	620		: Set Value		: IsDeemedPositive		    : Yes
+	630		: Set Value		: ISPARTYLEDGER			    : Yes
+	640		: Set Value		: ISLASTDEEMEDPOSITIVE	    : Yes
+	650		: Set 			: PaymentAmount				: $$CollectionField:($$AsDrAmt:$additionalledgervalue):1:vchledgerlist
+	660		: Set Value		: Amount				    : If ##PaymentList_invoicemode = "Accounting Voucher View" Then ##PaymentAmount Else  "-"+##PaymentList_invoicevalue
+	
+	/*InCase I Will Come 670: Set Target:.. But I Dont't Know Exactly */                       
+
+
+	700		: Walk Collection	: vchledgerlist
+	
+	710		: Set : Payment_vchledgerlist_invoicenumber					: $$LocaleString:$invoicenumber				
+	720		: Set : Payment_vchledgerlist_additionalledger              : $$LocaleString:$additionalledger      
+	730		: Set : Payment_vchledgerlist_parent              	        : $$LocaleString:$parent              	
+	740		: Set : Payment_vchledgerlist_rateofpercentage              : $$LocaleString:$rateofpercentage      
+	750		: Set : Payment_vchledgerlist_additionalledgervalue	        : $$LocaleString:$additionalledgervalue	
+	
+	751		: If	: (Not($$IsEmpty:##Payment_vchledgerlist_additionalledgervalue))
+
+
+	760		: Insert Collection Object									: ALLLEDGERENTRIES
+	
+	770		: Set Value	: LedgerName									: ##Payment_vchledgerlist_additionalledger	
+	800		: Set Value	: ISDEEMEDPOSITIVE		                        : No
+	810		: Set Value	: LEDGERFROMITEM		                        : No
+	820		: Set Value	: REMOVEZEROENTRIES		                        : No
+	830		: Set Value	: ISPARTYLEDGER			                        : No
+	840		: Set Value	: ISLASTDEEMEDPOSITIVE	                        : No
+	850		: Set Value	: ISCAPVATTAXALTERED	                        : No
+	860		: Set Value	: ISCAPVATNOTCLAIMED	                        : No
+	870		: Set Value	: Amount                                        : ##Payment_vchledgerlist_additionalledgervalue
+	
+	871		:  Else
+	
+	872		: Set File Log On
+	873		: OPEN FILE : @@currentdate_LogFile : Text : Write
+	874		: Write File Line: "*****************"
+	875		: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: "+##PaymentList_vchtype+", Voucher Number: "+##PaymentList_invoicenumber+", Company Code: "+##Payment_message_tallycode+', Status: "'+##Payment_vchledgerlist_additionalledger+'" Ledger Not Found'
+	876		: Close Target File
+	877		: Set File Log Off
+
+	878		: LIST ADD EX :  CommonVariableUpdatePayment
+	879		: Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRNO    		 : ##PaymentList_invoicenumber
+	880		: Set : CommonVariableUpdatePayment[$$LOOPINDEX].INVOICETYPES 	 : ##PaymentList_vchtype
+	881		: Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRDATE    		 : ##PaymentList_invoicedate
+	882		: Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_STATUS: "Error"
+	883		: Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_Msg	 : ##Payment_vchledgerlist_additionalledger+" Ledger Not Found"
+	
+	884		: End If
+
+	900		: End Walk	  	/*vchledgerlist*/
+
+
+	
+	1000	: Walk Collection	: bankAllocation
+	
+	1010	: Set	: Payment_bankAllocation_invoicenumber					: $$LocaleString:$invoicenumber							
+	1020	: Set	: Payment_bankAllocation_transactiontype                : $$LocaleString:$transactiontype            
+	1030	: Set	: Payment_bankAllocation_transactionAmount              : $$LocaleString:$transactionAmount          
+	1040	: Set	: Payment_bankAllocation_instNo                         : $$LocaleString:$instNo                     
+	1050	: Set	: Payment_bankAllocation_instDate                       : $$LocaleString:$instDate                   
+	1060	: Set	: Payment_bankAllocation_bankname                       : $$LocaleString:$bankname                   
+	1070	: Set	: Payment_bankAllocation_favouringNameReceivedName      : $$LocaleString:$favouringNameReceivedName  
+	
+	
+
+	1071	: Insert Collection Object						: BANKALLOCATIONS
+
+
+	1080	: Set Value	: INSTRUMENTDATE					: ##Payment_bankAllocation_instDate
+	1210	: Set Value	: TRANSACTIONTYPE	                : "Cheque"
+	1220	: Set Value	: PAYMENTFAVOURING	                : ##PaymentList_customername
+	1230	: Set Value	: CHEQUECROSSCOMMENT                : "A/c Payee"
+	1240	: Set Value	: PAYMENTMODE		                : "Transacted"
+	1250	: Set Value	: BANKPARTYNAME		                : ##PaymentList_customername
+	1260	: Set Value	: AMOUNT	                        : ##Payment_vchledgerlist_additionalledgervalue		
+	
+	1270	: Set Target:...
+	1273	: End Walk	/*bankAllocation*/		
+
+
+
+	1283	: Set Value	: VOUCHERNUMBER					: $$TgtObject:##PaymentList_invoicenumber
+	1290	: Create TARGET
+
+	
+	5800	: If	: $$LastResult
+
+	5810 	: Set File Log On
+	5820 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	5830 	: Write File Line: "*****************"
+	5840 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: No - Voucher Type: "+##PaymentList_vchtype+", Voucher Number: "+##PaymentList_invoicenumber+", Company Code: "+##Payment_message_tallycode+", Status: Imported Successfully"
+	5860 	: Close Target File
+	5870 	: Set File Log Off
+	
+
+	5880	: LIST ADD EX :  CommonVariableUpdatePayment
+	5890	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRNO    			: ##PaymentList_invoicenumber
+	5910	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].INVOICETYPES 		: ##PaymentList_vchtype
+	5920	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRDATE    		: ##PaymentList_invoicedate
+	5930	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_STATUS	: "Success"
+	5940 	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_Msg		: ""
+
+	5950	: Else
+
+	5960 	: Set File Log On
+	5970 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	5980 	: Write File Line: "*****************"
+	5990 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: "+##PaymentList_vchtype+", Voucher Number: "+##PaymentList_invoicenumber+", Company Code: "+##Payment_message_tallycode+", Status: "+$$LastError
+	6000 	: Close Target File
+	6010 	: Set File Log Off
+	
+	6020	: LIST ADD EX :  CommonVariableUpdatePayment
+	6030	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRNO    			: ##PaymentList_invoicenumber
+	6040	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].INVOICETYPES 		: ##PaymentList_vchtype
+	6050	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRDATE    		: ##PaymentList_invoicedate
+	6060	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	6070 	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_Msg		: $$LastError
+	
+	6080	: End if
+
+	
+	7000	: Else
+
+	7002 	: Set File Log On
+	7003 	: OPEN FILE : @@currentdate_LogFile : Text : Write
+	7004 	: Write File Line: "*"
+	7005 	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: "+##PaymentList_vchtype+", Voucher Number: "+##PaymentList_invoicenumber+", Company Code: "+##Payment_message_tallycode+", Status: Invoice Number Already Exist"
+	7006 	: Close Target File
+	7007 	: Set File Log Off
+	
+	7010	: LIST ADD EX :  CommonVariableUpdatePayment
+	7020	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRNO    			: ##PaymentList_invoicenumber
+	7030	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].INVOICETYPES 		: ##PaymentList_vchtype
+	7040	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRDATE    		: ##PaymentList_invoicedate
+	7050	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+	7060	:  Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_Msg		: ##PaymentList_invoicenumber+" Invoice Number Already Exist"
+	  
+	7080	: End If
+
+	8000	: INCREMENT 	: GCRNumberOfPaymentcount
+	8010	: SHOW PROGRESS	: ##GCRNumberOfPaymentcount
+	
+	8020A	: End Walk		/*paymentlist*/
+
+	8020B	: IF	: ##GCRNumberOfPayment > 0
+	8030	: END PROGRESS
+	8040	: END IF
+	
+
+	8050	: Else
+	
+    8060	: Set File Log On
+    8070	: OPEN FILE : @@currentdate_LogFile : Text : Write
+    8080	: Write File Line:	"*****************"
+    8090	: Write File Line: "["+@@currentDate+" "+$$SysInfo:SystemTimeHMS+"] Error: Yes - Voucher Type: "+##PaymentList_vchtype+", Voucher Number: "+##PaymentList_invoicenumber+", Company Code: "+##Payment_message_tallycode+', Status: Company Code Not Found'
+    8110	: Close Target File
+    8120	: Set File Log Off
+    
+    8130	: LIST ADD EX :  CommonVariableUpdatePayment
+    8140	: Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRNO    			: ##PaymentList_invoicenumber
+    8150	: Set : CommonVariableUpdatePayment[$$LOOPINDEX].INVOICETYPES 		: ##PaymentList_vchtype
+    8160	: Set : CommonVariableUpdatePayment[$$LOOPINDEX].VRDATE    			: ##PaymentList_invoicedate
+    8180	: Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_STATUS	: "Error"
+    8190	: Set : CommonVariableUpdatePayment[$$LOOPINDEX].APIRESULT_Msg		: "Company Code Not Found"
+    8210	: End If
+
+
+
+
+																									
+                                                                                                     
+
+	
+	10001: End Walk		/*Payment_Voucher*/
+	10002: End Walk		/*message*/
+
+	
+	
+	10110 : Else
+	10120 : Msg Box : "Check"	: "License is not active.\nDownload not allowed!"
+	10130 : End If
+
+	10140 : Else
+	10150 : Msg Box : "Check"	: "Network unavailable.\nPlease try again later!"
+	10160 : End If
+
+	
+	10161 : End If
+
+	10162: Call:PaymentVoucherAlterEndFunction
+
+
+	12009 : IF : $$LastResult
+		
+	12010 : Msg Box : "Success" : "DownLoad\n\n Sucessfully"
+	
+	12011 : Else  
+	
+    12012 : Msg Box : "Failure" : "Download \n\n Failure"
+    
+    12013 : End If
+		
+
+
+
+[Collection: CheckSalesVchAvailabilitPaymentVCH]
+	
+
+	Type			: Vouchers	: VoucherType
+	
+	Child Of		: ##PaymentList_vchtype
+	Native Method	: VoucherNumber,VoucherTypeName,MasterID
+	Aggr Method		: LastVoucherNumber1  : Last : $VoucherNumber
+	Search Key		: $VoucherNumber+$$String:##PaymentList_vchtype
+
+
+
+	
+
+
+[Variable:CommonVariableUpdatePayment]
+
+Variables:VRNO    			:String
+Variables:APIRESULT_Msg		:String
+Variables:INVOICETYPES 		:String
+Variables:VRDATE    		:String
+Variables:APIRESULT_STATUS	:String
+
+
+[Function: PaymentVoucherAlterStartFunction]
+	
+	100		: NEW OBJECT	: VoucherType		: @@PaymentValueVCHType
+	102		: Set Value		: Name				: @@PaymentValueVCHType
+	110		: Set Value		: NUMBERINGMETHOD	: "Automatic (Manual Override)"
+	120		: Set Value		: PREVENTDUPLICATES	: "Yes"
+
+	190		: Accept Alter
+	
+
+
+[Function: PaymentVoucherAlterEndFunction]
+	
+	
+	100		: NEW OBJECT	: VoucherType		: @@PaymentValueVCHType
+
+	110		: Set Value		: NUMBERINGMETHOD	: "Manual"
+	120		: Set Value		: PREVENTDUPLICATES	: "Yes"
+
+	190		: Accept Alter
+
+

@@ -23,8 +23,10 @@
 	Variable	: message_purchase_systemname   					: String
 	Variable	: message_purchase_createduser  					: String
 	Variable	: message_purchase_requesttype						: String
-	Variable	: message_purchase_date								: String
-		         
+	Variable	: message_purchase_fromdate							: String	 
+	Variable	: message_purchase_todate							: String	
+	
+
 					/*Voucher Detail Variables */
 	
 	Variable	: purchaselist_purchase_invoicenumber 				: String
@@ -114,7 +116,7 @@
 
 	41	: If	: ($$IsInternetActive)
 	
-	;42	: If 	: NOT $$IsEmpty:$$LicenseInfo:SerialNumber
+	42	: If 	: NOT $$IsEmpty:$$LicenseInfo:SerialNumber
 	
 	50		: Walk Collection	: 	GCR_Purchases  
 
@@ -128,8 +130,9 @@
 	110		: Set	: message_purchase_systemname   			: $$LocaleString:$systemname    
 	120		: Set	: message_purchase_createduser  			: $$LocaleString:$createduser   
 	130		: Set	: message_purchase_requesttype				: $$LocaleString:$requesttype	
-	131		: Set	: message_purchase_date						: $$LocaleString:$date
-
+	131		: Set	: message_purchase_fromdate					: $$LocaleString:$fromdate
+    132		: Set	: message_purchase_todate					: $$LocaleString:$todate
+					  
 	135		:  If	: ##message_purchase_tallycode=$TallyCompanyCode:Company:##SVCurrentCompany
 	
 	136		: SET	: GCRNumberOfPurchase	: $$NumItems:purchaselist
@@ -180,7 +183,6 @@
 	430		: Set	: purchaselist_purchase_gstinnumber			: $$LocaleString:$consigneegstinnumber		
 	432		: Set	: purchaselist_purchase_invoicevalue		: $$LocaleString:$invoicevalue
 	
-	434:Msg Box	: "434"	: ##purchaselist_purchase_invoicedate	
 	
 	436		: If: (Not($$IsEmpty:##purchaselist_purchase_customername))
 
@@ -254,10 +256,10 @@
 	
 	
 	
-	;504		: Call	: StockGroup_Master 
-	;505		: Call	: StockUnit_Masters
-	;506		: Call	: StockItem_Masters
-	;507		: Call	: Godwons_Master
+	504		: Call	: StockGroup_Master 
+	505		: Call	: StockUnit_Masters
+	506		: Call	: StockItem_Masters
+	507		: Call	: Godwons_Master
 	
 	
 	
@@ -490,11 +492,11 @@
 	7870	: End Walk 
 	7870a	: End Walk 
 	
-	;8610	: Else
-	;
-	;8620	: Msg Box	: "Check"	: "License is not active.\nDownload not allowed!"
-	;
-	;8630	: End If
+	8610	: Else
+	
+	8620	: Msg Box	: "Check"	: "License is not active.\nDownload not allowed!"
+	
+	8630	: End If
 	
 	8640	: Else
 	
@@ -506,7 +508,21 @@
 	
 	8680	: End If
 	
-	9000	: Msg Box: "Success":"Download completed"
+
+
+
+	12009 : IF : $$LastResult
+		
+	12010 : Msg Box : "Success" : "DownLoad\n\n Sucessfully"
+	
+	12011 : Else  
+	
+    12012 : Msg Box : "Failure" : "Download \n\n Failure"
+    
+    12013 : End If
+	
+
+	
 	
 [Variable:CommonVariableUpdatePur]
 

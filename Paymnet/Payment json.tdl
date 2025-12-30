@@ -1,0 +1,101 @@
+
+
+
+[Collection: Payment_Voucher]
+	
+	Data Source	: File JSON	: @@PaymentVCHDownloadURL
+	
+[Collection:Payment_Voucher2]
+	
+	Client Only	: Yes
+	Fetch       : .*.
+	JSON Object	: Payment_object
+
+[Object: Payment_object]
+	
+	Collection		: message	: message
+
+[#Object: message]
+	
+	Storage	: tallycode			: String			
+	Storage	: tallyname         : String
+	Storage	: tallyserialno     : String
+	Storage	: requesttype       : String
+	Storage	: ipaddress         : String
+	Storage	: salesguid         : String
+	Storage	: systemname        : String
+	Storage	: date
+	
+	Collection	: Paymentlist	: Paymentlist
+	
+[Object: Paymentlist]
+	
+
+	Storage	: invoicenumber		: String
+	Storage	: invoicedate       : String
+	Storage	: narration         : String
+	Storage	: customername      : String
+	Storage	: vchtype           : String
+	Storage	: invoicemode       : String
+	Storage	: subvalue          : String
+	Storage	: roundoffledger    : String
+	Storage	: roundoffamount    : String
+	Storage	: invoicevalue      : String
+	Storage	: vchledgerlist     : String
+	
+	Collection	:	vchledgerlist	: vchledgerlist
+	
+[#Object: vchledgerlist]
+	
+	
+	Storage	: invoicenumber			: String
+	Storage	: additionalledger      : String
+	Storage	: parent                : String
+	Storage	: rateofpercentage      : String
+	Storage	: additionalledgervalue	: String
+	
+	Collection	: bankAllocation	: bankAllocation
+	
+[Object: bankAllocation]
+	
+	
+	Storage	: invoicenumber					: String
+	Storage	: transactiontype               : String
+	Storage	: transactionAmount             : String
+	Storage	: instNo                        : String
+	Storage	: instDate                      : String
+	Storage	: bankname                      : String
+	Storage	: favouringNameReceivedName     : String
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+
+
+
+
+
+
+
