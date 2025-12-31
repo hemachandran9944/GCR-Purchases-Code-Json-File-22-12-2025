@@ -298,7 +298,7 @@
 	662		: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Purchase_productrate
 	663		: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Purchase_productvalue)) * -1
 	
-	664A	: Msg Box	: "664A"	: ##vchproductlist_Purchase_productAltqty
+	
 	
 	664B	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS	
 	665		: SET VALUE		: GodownName			: if $$IsEmpty:##vchproductlist_Purchase_productgodown then "Main Location" else ##vchproductlist_Purchase_productgodown

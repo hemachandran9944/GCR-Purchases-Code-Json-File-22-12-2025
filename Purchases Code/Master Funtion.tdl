@@ -21,7 +21,7 @@
 			/*--------------StockUnit_Master-----------------------------*/
 			
 			
-			[Function: StockUnit_Master]
+			[Function: StockUnit_Masters]
 				
 			60	: If	: $$IsEmpty:$Name:Unit:$Unit
 			70	: New Object   : Unit				
@@ -33,7 +33,7 @@
 			
 		/*---------------------------StockItem_Master----------------------*/
 		
-		[Function: StockItem_Master]
+		[Function: StockItem_Masters]
 			
 			120	: If	: $$IsEmpty:$Name:StockItem:$product
 			130	: New Object	: StockItem

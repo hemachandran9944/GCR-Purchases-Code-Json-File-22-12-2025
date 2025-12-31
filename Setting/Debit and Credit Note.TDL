@@ -1,0 +1,271 @@
+
+
+
+
+[Button: HemaVirat]
+	
+
+Key		: Ctrl	+ 7
+Title	: $$LocaleString:"HemaVirat18"
+Color	: Royal Blue
+Action	: Alter	: AddOnHid
+
+
+
+[Report:AddOnHid ]
+	
+Form	:	 AddOnHid_Form
+
+[Form: AddOnHid_Form]
+	
+Part	: 	AddOnHid_Part
+Height	: 	50 % Page
+Width	: 	50 % Page	
+
+
+[Part: AddOnHid_Part]
+	
+	Add: Line: IntergrationTitleButton,EnableintegrationButton
+	
+
+	Lines			:	IntergrationTitleButton,EnableintegrationButton
+	Scroll			:	Vertical
+	
+[Line: IntergrationTitleButton]
+
+	Right Field		: 	Form SubTitle
+	Local			: 	Field	: Form SubTitle	: Info 	: $$LocaleString:"[Integration Details]"
+	Local			:	Field	: Form SubTitle	: Color	: Royal Blue
+	Local			:	Field	: Form SubTitle	: Style	: Large Serif
+	Space Top 		: 	0.25
+	Space Bottom	: 	0.5
+		
+[Line:EnableintegrationButton]
+	
+	Field			: 	Medium Prompt,Hit_Enableintegration_ButtonReport
+	Local       	: 	Field : Medium Prompt : Set as    : $$LocaleString:"Integration Details ?"
+	Local      	 	: 	Field : Medium Prompt : Color	  : Royal Blue
+	Local 			: 	Field : Default 	  : Style     : Normal Bold
+	Space Top		: 	0.25
+
+[Field: Hit_Enableintegration_ButtonReport]
+
+    Use         	: 	Logical Field
+    Storage     	: 	EnablIntegrationDetailButton
+	Sub Form		: 	EnableintegrationExploadButtonReport	: $$Value
+
+
+
+[Report:EnableintegrationExploadButtonReport]
+	
+	Title		: $$LocaleString:"Integration Details"
+
+	Form		: EnableintegrationExploadFormButton
+	
+	Object		: Company
+	
+[Form:EnableintegrationExploadFormButton]
+	
+	Part			: 	EnableintegrationExploadButton_Part
+		
+	Space Bottom    : 	1
+	Space Left		: 	1
+	Space Right		: 	1
+	Space Top		: 	1
+    Full Width      : 	No
+    Full Height     : 	No
+		
+	Width			: 	55% Screen
+	
+	Background		: 	White
+	
+    Horizontal Align: 	Left
+    Vertical Align  : 	Bottom
+	
+	Option			: 	Small Size Form
+	
+
+
+
+[Part: EnableintegrationExploadButton_Part]
+	
+	Border			: 	Thick Box
+	Height			: 	100 % Page		
+	Lines			: 	Integration_Detail_L1,CrditNoteAPI,CrditNoteStatus,DebitNoteVoucher,+
+						DebitNoteStatus,VoucherTypes,CriditNoteVoucherTable,DebitNoteTables
+	
+[Line: Integration_Detail_L1]
+	
+	Space Bottom	: 	3 % Page
+	Field			: 	Integration_Detail_L1_Field
+	
+[Field: Integration_Detail_L1_Field]
+	
+   Use				: 	Form SubTitle
+   Info				: 	$$LocaleString:" WelCome Integration Details:-"
+   Color			: 	Black
+   Style			: 	Large Serif Bold
+   Border			:	Double Bottom
+   
+
+[Line: CrditNoteAPI]
+	
+	Space Bottom	:	2 % Page
+	Field			: 	Long Prompt,CreditNoteURL_Field		
+	Local			: 	Field		: Long Prompt	: Info		: $$LocaleString:"[CreditNote-Voucher DownLoad URL]"
+	Local			: 	Field		: Long Prompt	: Color		: Royal Blue
+	Local			:	Field		: Long Prompt	: Style		: Large Serif
+
+[Field: CreditNoteURL_Field] 
+	
+
+	
+	Use          	: 	Name Field
+	Storage			: 	CreditNoteDownLoadURL
+    Case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    
+	
+	
+
+
+[Line: CrditNoteStatus]
+	
+	Space Bottom	:	2 % Page
+	Field			: 	Long Prompt,CreditNoteStatus	
+	Local			: 	Field		: Long Prompt	: Info		: $$LocaleString:"[CreditNote-Voucher Status]"
+	Local			: 	Field		: Long Prompt	: Style		: Large Serif
+	Local			: 	Field		: Long Prompt	: Color		: Royal Blue
+
+[Field: CreditNoteStatus]	
+	
+
+	Use				: 	Name Field
+	Storage			:	CreditNoteVoucherStatus
+	case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    
+
+
+
+[Line: DebitNoteVoucher]
+	
+	Space Bottom	: 	2 % Page
+	Field			: 	Long Prompt,DebitNoteVouhverDownLoadURLField
+	Local			:	Field		: Long Prompt		: Info		: $$LocaleString:"[DebitNote-Vouhver DownLoad URL]"
+	Local			:	Field		: Long Prompt		: Style		: Large Serif
+	Local			:	Field		: Long Prompt		: Color		: Royal Blue
+
+
+[Field: DebitNoteVouhverDownLoadURLField]
+	
+	Use				: 	Name Field
+	Storage			:	DebitNoteVoucherDownLoadURL
+	case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+    
+
+
+[Line: DebitNoteStatus]
+	
+	Space Bottom	: 10 % Page	
+	Field			: Long Prompt,DebiitNoteVoucherStatus
+	Local			: Field		: Long Prompt		: Info 		: $$LocaleString:"[DebitNote-Voucher Status]"
+	Local			: Field		: Long Prompt		: Style		: Large Serif
+	Local			: Field		: Long Prompt		: Color		: Royal Blue
+	
+[Field: DebiitNoteVoucherStatus]
+	
+	Use				: 	Name Field
+	Storage			: 	DebitNoteVOucherStatus
+	case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+   
+	
+[Line: VoucherTypes]
+	
+	Space Bottom	: 	3 % Page	
+	Field			: 	Name Field
+	Local			: 	Field	: Name Field	: Info 		: $$LocaleString:"Transaction Values :-"
+	Local			: 	Field	: Name Field	: Border	: Double Bottom
+	Local			: 	Field 	: Name Field	: Color		: Black
+	
+
+[Line: CriditNoteVoucherTable]
+	
+	Space Bottom	: 	2 % Page
+	Field			: 	Long Prompt,CriditNoteVoucherTables
+	Local			:	Field	: Long Prompt	: Info		: $$LocaleString:"[Voucher Type-[CriditNote]"
+	Local			:	Field	: Long Prompt	: Style		: Large Serif
+	Local			:	Field	: Long Prompt	: Color		: Royal Blue
+	
+
+[Field: CriditNoteVoucherTables]
+	
+	Use				:	Name Field
+	Storage			:	CriditNoteVoucherTable
+	Set as			:	$CriditNoteVoucherTable
+	case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+	Table			: 	CriditNoteTables
+	Show Table		: 	Always
+	
+[Table: CriditNoteTables]
+
+	Title       	: 	$$LocaleString:"List of Voucher Types"
+    Type        	: 	Voucher Type
+	Child Of		: 	$$VchTypeCreditNote
+	Belongs To		: 	Yes
+	Fetch			: 	Name, IsActive
+	Format      	: 	$$Name, 30
+    Align       	: 	Right
+    FullHeight  	: 	Yes
+
+
+[Line: DebitNoteTables]
+	
+	Space Bottom	:	2 % Page
+	Field			:	Long Prompt,DebitNoteFieldTables
+	Local			:	Field		: Long Prompt		: Info		: $$LocaleString:"[Voucher-Type[DebitNote]"
+	Local			:	Field		: Long Prompt		: Style		: Large Serif
+	Local			:	Field		: Long Prompt		: Color		: Royal Blue
+
+[Field: DebitNoteFieldTables]
+	
+	Use				: 	NameField
+	Storage			:	DebitNoteVoucherTypeTable
+	Set as			:	$DebitNoteVoucherTypeTable
+	case    	 	: 	Normal
+    Width        	: 	52 % Page
+    Style		 	: 	Small Bold
+	ASCIIOnly	 	: 	Yes
+	KBLanguage   	: 	@@EnglishLanguageID
+	Table			:	DebitNoteTables
+	Show Table		: 	Always
+	
+[Table: DebitNoteTables]
+	
+	Title       	: 	$$LocaleString:"List of Voucher Types"
+    Type        	: 	Voucher Type
+	Child Of		: 	$$VchTypeDebitNote
+	Belongs To		: 	Yes
+	Fetch			: 	Name, IsActive
+	Format      	: 	$$Name, 30
+    Align       	: 	Right
+    FullHeight  	: 	Yes
+

@@ -8,13 +8,16 @@
 	
 /*Indent*/
 
-	MenuIndent							:	"DownLoad Integration" 
+	MenuIndent							:	"[DownLoad Integration]" 
 	PurchasesIndent						:	"DownLoad Voucher Types"
 	Sales								: 	"DownLoad Sales"
 	AutoShudling						: 	"AutoScheduling Config"
 	HTTTPConfig							: 	"HTTPS Config"
 	Payment								:	"DownLoad Payment"
+	CrieditNote							: 	"Credit Note"
+	DebitNote							: 	"Debite Note"
 
+	
  /*Log Formula*/
  
 
@@ -88,12 +91,31 @@
 	ReciptValueVCHType				: String	: 2018
 
 
+
+
+
+
+
 	PurchasesVoucherDate			: Date		: 2029
 
 
 	HTTPPostEnable					: Logical	: 2030
 
 
+
+		/*DebitNote-*/
+	
+	EnablIntegrationDetailButton	: Logical	: 2000
+
+	CreditNoteDownLoadURL			: String	: 2001
+	CreditNoteVoucherStatus			: String	: 2002
+	CriditNoteVoucherTable			: String	: 2003
+
+		/*Credit Note*/
+
+	DebitNoteVoucherDownLoadURL		: String	: 2004
+	DebitNoteVOucherStatus			: String	: 2005
+	DebitNoteVoucherTypeTable		: String	: 2006
 
 
 

@@ -7,6 +7,87 @@
 			[#Field:Default]
 			
 			ADD:Tooltip:$$DescName
+			
+
+
+[#Menu	: GateWay Of Tally]
+	
+
+Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: PurchasesFuntion
+
+Add	: Button	: HemaVirat
+
+
+
+[Menu: PurchasesFuntion]
+	
+	Title		: $$LocaleString:"DownLoad Transcations"
+		
+	Indent		: @@PurchasesIndent
+	
+	Key Item	: "DownLoade Purchases"	: P	: Alter: GCR_Date_Wise_DownLoad_Report
+	
+
+	
+	Indent		: ""
+	
+	Indent		: @@Sales
+	
+	Key Item	: "DownLoad Sales"		: S : Call: DownLoad_Sales_Function
+	
+
+	Indent		: ""
+	
+	Indent		: @@Payment
+	
+	Key Item	: "DownLoade Payment"	: P	: Call	: DownLoade_Payment_Funtion
+	
+
+	Indent		: ""
+	
+	Indent		: @@CrieditNote
+	
+	Key Item	: "DownLoade Credit-Note": C : Call	: CreditNoteFuntion
+	
+	Indent		: ""
+	
+	Indent		: @@DebitNote
+	
+	Key Item	: "DownLoade Debit-Note"	: D : Call	: DebitNoteFuntion
+
+	
+	Indent		: ""
+	
+	Indent		: @@AutoShudling
+
+	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
+	
+
+
+	
+	Indent		: ""
+
+	Indent		: @@HTTTPConfig
+	
+	Key Item	: "API Request"			: A	: Display	: DownLoadeURLReport
+	
+
+	
+	Indent		: ""
+	
+	Indent		: @@AutoShudling
+
+	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
+
+
+
+
+
+
+
+
+
+
 
 
 					/*Master Funtion*/
@@ -35,6 +116,7 @@
 	[Include: Setting\Formula UDF.tdl]
 	[Include: Setting\Auto Shudduling.tdl]
 	[Include: Setting\Report.tdl]
+	[Include: Setting\Debit and Credit Note.TDL]
 	
 
 				/*Payment*/
@@ -43,6 +125,20 @@
 	[Include: Paymnet\Payment Json.tdl]
 	[Include: Paymnet\Payment Status.tdl]
 	
+				/*Credit Note*/
+				
+	[Include: Credit Note\Credit Note Function.tdl]
+	[Include: Credit Note\Credit Note Json.tdl]
+	[Include: Credit Note\Credit Status.tdl]
+	[Include: Credit Note\Date Wise Get CR VCH.TDL]
+	
+					/*Debit Note*/
+					
+	[Include: Debite Note\Debit Note Json.TDL]
+	[Include: Debite Note\Debit Note Status.tdl]
+	[Include: Debite Note\Debite Note Function.TDL]
+	[Include: Debite Note\Date Wise DB Note VCH.tdl]
+
 				/*HTTPS URL Config*/
 	
 	[Include: HTTPS URL\HTTPS URL Setting.tdl]

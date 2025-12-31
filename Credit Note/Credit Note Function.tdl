@@ -1,0 +1,12 @@
+
+
+
+[Function: CreditNoteFuntion]
+	
+01:Msg Box		: "01"	: "Test"
+
+Variable		: Check_CreditNote		: String
+
+10:Set			: Check_CreditNote		: $$LocaleString:$CreditNoteDownLoadURL:Company:##SVCurrentCompany
+
+20:Msg Box		: "20"	: ##Check_CreditNote

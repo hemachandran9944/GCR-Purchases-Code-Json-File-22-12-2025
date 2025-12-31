@@ -110,7 +110,7 @@
 
 [Field: Table_Field]
 														
-	Storage		:	SalesValueVCHType                   
+	Storage		:	SelectVocherTypes                   
 	Width		:  	45 
 	Set as		:	$PurchValueVCHTyp	
 	Modifies	:	PurchValueVCHTyp:Yes   
@@ -186,12 +186,12 @@
 					(##CurrentTimeMin = $$LocaleString:##AutoscheduleMinFieldFalue) AND +
 					(##CurrentTimeSec = "01")
 					
-	110: If  		:@@SalesVoucherDownloadURL = #SalesVCHTypeValue_Field
+	110: If  		: $$VchTypeSales = ##Saleslist_vchtype
 	120: Call	 	: DownLoad_Sales 
 	130: End If
 	
-	140: If    : @@PurchVCHDownloadURL = #PurchValueVCHType_Field
-	150: Call  :  DownLoad_PurchasesFuntion
+	140: If    		: $$VchTypePurchase = #purchaselist_purchase_VchType
+	150: Call  		:  DownLoad_PurchasesFuntion
 	160: End If
 	
 	800: End If
