@@ -11,7 +11,7 @@ Variable		: Check_File_json	: 	String
 02 : Set		:  Check_File_json	: $$LocaleString:$PaymentVCHDownloadURL:Company:##SVCurrentCompany
 
 
-03: Msg Box		: "03":##Check_File_json
+03: Msg Box		: "03":##Check_File_json 
 
 */
 			/*Request Varaiables*/

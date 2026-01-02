@@ -186,13 +186,13 @@
 					(##CurrentTimeMin = $$LocaleString:##AutoscheduleMinFieldFalue) AND +
 					(##CurrentTimeSec = "01")
 					
-	110: If  		: $$VchTypeSales = ##Saleslist_vchtype
-	120: Call	 	: DownLoad_Sales 
-	130: End If
+	;110: If  		: $$VchTypeSales = ##Saleslist_vchtype 
+	;120: Call	 	: DownLoad_Sales 
+	;130: End If
 	
-	140: If    		: $$VchTypePurchase = #purchaselist_purchase_VchType
-	150: Call  		:  DownLoad_PurchasesFuntion
-	160: End If
+	;140: If    		: $$VchTypePurchase = #purchaselist_purchase_VchType
+	150: Call  		:  DownLoade_Payment_Funtion
+	;160: End If
 	
 	800: End If
 	

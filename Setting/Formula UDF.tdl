@@ -16,6 +16,7 @@
 	Payment								:	"DownLoad Payment"
 	CrieditNote							: 	"Credit Note"
 	DebitNote							: 	"Debite Note"
+	AutosudulingHTTP					:	"Auto & HTTP"
 
 	
  /*Log Formula*/
@@ -26,19 +27,22 @@
 	currentdate_LogFile        			: @@TallyDefaultAppPath+"\"+@@currentDate+".log"    
 	
 
-		/*Json File Formulas*/
-
-	
+		/*Json File Sales Formulas*/
 	SalesVoucherDownloadURL	:$$LocaleString:$SalesVoucherDownloadURL:Company:##SVCurrentCompany
+	
+		/*Purchase VCH*/
 	PurchVCHDownloadURL		:$$localestring:$PurchVCHDownloadURL:Company:##SVCurrentCompany
+		
+		/*Payment VCH*/
+
 	PaymentVCHDownloadURL	:$$LocaleString:$PaymentVCHDownloadURL:Company:##SVCurrentCompany 
 
-
+		/*Credit Note VCH*/
+		
+	CreditNoteDownLoadURL	:$$LocaleString:$CreditNoteDownLoadURL:Company:##SVCurrentCompany
 			
-			/*Voucher Foramulas*/
 			
 	
-	PaymentValueVCHType	:$$LocaleString:$PaymentValueVCHType:Company:##SVCurrentCompany 
 
 
 

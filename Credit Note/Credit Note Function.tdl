@@ -10,3 +10,473 @@ Variable		: Check_CreditNote		: String
 10:Set			: Check_CreditNote		: $$LocaleString:$CreditNoteDownLoadURL:Company:##SVCurrentCompany
 
 20:Msg Box		: "20"	: ##Check_CreditNote
+
+
+
+					/*RequestType Variables*/
+
+	Variable	: Message_CreditNote_tallycode			: String	
+	Variable	: Message_CreditNote_tallyname		    : String
+	Variable	: Message_CreditNote_tallyserialno	    : String
+	Variable	: Message_CreditNote_salesguid		    : String
+	Variable	: Message_CreditNote_ipaddress		    : String
+	Variable	: Message_CreditNote_systemname         : String
+	Variable	: Message_CreditNote_createduser        : String
+	Variable	: Message_CreditNote_requesttype	    : String
+	Variable	: Message_CreditNote_date				: String
+
+					/*SalesList Details Variables*/
+						
+	Variable	: Creditnotelist_invoicenumber			: String			
+	Variable	: Creditnotelist_invoicedate            : String
+	Variable	: Creditnotelist_narration              : String
+	Variable	: Creditnotelist_customername           : String
+	Variable	: Creditnotelist_vchtype                : String
+	Variable	: Creditnotelist_invoicemode            : String
+	Variable	: Creditnotelist_reference              : String
+	Variable	: Creditnotelist_salesledger            : String
+	Variable	: Creditnotelist_vchclass               : String
+	Variable	: Creditnotelist_deliverynoteno         : String
+	Variable	: Creditnotelist_deliverynotedate       : String
+	Variable	: Creditnotelist_dispatchdocno          : String
+	Variable	: Creditnotelist_dipatchthrough         : String
+	Variable	: Creditnotelist_destination            : String
+	Variable	: Creditnotelist_lrrnumber              : String
+	Variable	: Creditnotelist_lrrdate                : String
+	Variable	: Creditnotelist_vehiclenumber          : String
+	Variable	: Creditnotelist_ordernumber            : String
+	Variable	: Creditnotelist_orderdate              : String
+	Variable	: Creditnotelist_modeofpayment          : String
+	Variable	: Creditnotelist_otherreference         : String
+	Variable	: Creditnotelist_termsofdelivery        : String
+	Variable	: Creditnotelist_buyername              : String
+	Variable	: Creditnotelist_deliveryaddress		: String
+	Variable	: Creditnotelist_buyeraddress1          : String
+	Variable	: Creditnotelist_buyeraddress2          : String
+	Variable	: Creditnotelist_buyeraddress3          : String
+	Variable	: Creditnotelist_buyeraddress4          : String
+	Variable	: Creditnotelist_buyeraddress5          : String
+	Variable	: Creditnotelist_country                : String
+	Variable	: Creditnotelist_buyerstate             : String
+	Variable	: Creditnotelist_placeofsupply          : String
+	Variable	: Creditnotelist_buyergstinnumber       : String
+	Variable	: Creditnotelist_deliveryname           : String
+	Variable	: Creditnotelist_deliveryaddress1       : String
+	Variable	: Creditnotelist_deliveryaddress2       : String
+	Variable	: Creditnotelist_deliveryaddress3       : String
+	Variable	: Creditnotelist_deliveryaddress4       : String
+	Variable	: Creditnotelist_deliveryaddress5       : String
+	Variable	: Creditnotelist_consigneestate         : String
+	Variable	: Creditnotelist_consigneegstinnumber   : String
+	Variable	: Creditnotelist_subvalue               : String
+	Variable	: Creditnotelist_roundoffledger         : String
+	Variable	: Creditnotelist_roundoffamount         : String
+	Variable	: Creditnotelist_invoicevalue           : String
+	Variable	: Creditnotelist_irn                    : String
+	Variable	: Creditnotelist_ackno                  : String
+	Variable	: Creditnotelist_ackdate                : String
+	Variable	: Creditnotelist_SignedInvoice          : String
+	Variable	: Creditnotelist_SignedQRCode           : String
+	Variable	: Creditnotelist_ewaybillno             : String
+	Variable	: Creditnotelist_ewaybillnodate         : String
+	Variable	: CRPartyLedgerAmountPurchase			: String
+
+					/*Master Details Variables*/
+					
+
+	Variable	: vchproductlist_Creditnote_invoicenumber				: String
+	Variable	: vchproductlist_Creditnote_product                     : String
+	Variable	: vchproductlist_Creditnote_productdescription          : String
+	Variable	: vchproductlist_Creditnote_parent                      : String
+	Variable	: vchproductlist_Creditnote_partno                      : String
+	Variable	: vchproductlist_Creditnote_productgodown               : String
+	Variable	: vchproductlist_Creditnote_unit                        : String
+	Variable	: vchproductlist_Creditnote_Altunit                     : String
+	Variable	: vchproductlist_Creditnote_productqty                  : String
+	Variable	: vchproductlist_Creditnote_productAltqty               : String
+	Variable	: vchproductlist_Creditnote_productrate                 : String
+	Variable	: vchproductlist_Creditnote_producthsn                  : String
+	Variable	: vchproductlist_Creditnote_productigstpercentage       : String
+	Variable	: vchproductlist_Creditnote_productcgstpercentage       : String
+	Variable	: vchproductlist_Creditnote_productsgstpercentage       : String
+	Variable	: vchproductlist_Creditnote_taxamount                   : String
+	Variable	: vchproductlist_Creditnote_taxableamount               : String
+	Variable	: vchproductlist_Creditnote_productvalue          		: String
+	
+
+
+
+						/*Ledger Variables*/
+
+
+	Variable	: vchledgerlistCreditNote_invoicenumber					: String			
+	Variable	: vchledgerlistCreditNote_additionalledger              : String
+	Variable	: vchledgerlistCreditNote_parent                        : String
+	Variable	: vchledgerlistCreditNote_rateofpercentage              : String
+	Variable	: vchledgerlistCreditNote_additionalledgervalue	        : String
+	Variable	: CreditNote_ledger										: String
+
+	Variable	: CreditNote_party_name									: String
+	Variable	: CheckSalesVoucherNo									: String
+	Variable	: CreditNote_STK_product								: String
+	
+	
+
+
+
+	90		: Walk Collection: CreditVoucher
+	91		: Walk Collection: message
+	
+
+	100		: Set : Message_CreditNote_tallycode						: $$Localestring:$tallycode		
+	110		: Set : Message_CreditNote_tallyname		                : $$Localestring:$tallyname	
+	120		: Set : Message_CreditNote_tallyserialno	                : $$Localestring:$tallyserialno
+	130		: Set : Message_CreditNote_salesguid		                : $$Localestring:$salesguid	
+	140		: Set : Message_CreditNote_ipaddress		                : $$Localestring:$ipaddress	
+	150		: Set : Message_CreditNote_systemname                     	: $$Localestring:$systemname   
+	160		: Set : Message_CreditNote_createduser                    	: $$Localestring:$createduser  
+	170		: Set : Message_CreditNote_requesttype	                	: $$LocaleString:$requesttype	
+	180		: Set : Message_CreditNote_date								: $$LocaleString:$date
+
+
+
+
+	
+	
+	250		: Msg : "200"   : ##Message_CreditNote_requesttype
+	
+	
+	260		: Walk Collection	: Creditnotelist
+	208		: New Object		: Voucher 
+
+	210		: Set : Creditnotelist_invoicenumber				: $$Localestring:$invoicenumber						
+	220		: Set : Creditnotelist_invoicedate                  : $invoicedate             
+	230		: Set : Creditnotelist_narration                    : $$Localestring:$narration               
+	240		: Set : Creditnotelist_customername                 : $$Localestring:$customername            
+	250		: Set : Creditnotelist_vchtype                      : $vchtype 
+	251		: Set : CreditNote_party_name						: $$LocaleString:$Name:Ledger:$customername
+	260		: Set : Creditnotelist_invoicemode                  : $$Localestring:$invoicemode             
+	270		: Set : Creditnotelist_reference                    : $$Localestring:$reference               
+	280		: Set : Creditnotelist_salesledger                  : $$Localestring:$salesledger             
+	290		: Set : Creditnotelist_vchclass                     : $$Localestring:$vchclass                
+	300		: Set : Creditnotelist_deliverynoteno               : $$Localestring:$deliverynoteno          
+	310		: Set : Creditnotelist_deliverynotedate             : $$Localestring:$deliverynotedate        
+	320		: Set : Creditnotelist_dispatchdocno                : $$Localestring:$dispatchdocno           
+	340		: Set : Creditnotelist_dipatchthrough               : $$Localestring:$dipatchthrough          
+	350		: Set : Creditnotelist_destination                  : $$Localestring:$destination             
+	360		: Set : Creditnotelist_lrrnumber                    : $$Localestring:$lrrnumber               
+	370		: Set : Creditnotelist_lrrdate                      : $$Localestring:$lrrdate                 
+	380		: Set : Creditnotelist_vehiclenumber                : $$Localestring:$vehiclenumber           
+	390		: Set : Creditnotelist_ordernumber                  : $$Localestring:$ordernumber             
+	400		: Set : Creditnotelist_orderdate                    : $$Localestring:$orderdate               
+	410		: Set : Creditnotelist_modeofpayment                : $$Localestring:$modeofpayment           
+	420		: Set : Creditnotelist_otherreference               : $$Localestring:$otherreference          
+	430		: Set : Creditnotelist_termsofdelivery              : $$Localestring:$termsofdelivery         
+	450		: Set : Creditnotelist_buyername                    : $$Localestring:$buyername               
+	460		: Set : Creditnotelist_deliveryaddress	            : $$Localestring:$deliveryaddress			
+	470		: Set : Creditnotelist_buyeraddress1                : $$Localestring:$buyeraddress1           
+	480		: Set : Creditnotelist_buyeraddress2                : $$Localestring:$buyeraddress2           
+	490		: Set : Creditnotelist_buyeraddress3                : $$Localestring:$buyeraddress3           
+	500		: Set : Creditnotelist_buyeraddress4                : $$Localestring:$buyeraddress4           
+	510		: Set : Creditnotelist_buyeraddress5                : $$Localestring:$buyeraddress5           
+	520		: Set : Creditnotelist_country                      : $$Localestring:$country                 
+	530		: Set : Creditnotelist_buyerstate                   : $$Localestring:$buyerstate              
+	540		: Set : Creditnotelist_placeofsupply                : $$Localestring:$placeofsupply           
+	550		: Set : Creditnotelist_buyergstinnumber             : $$Localestring:$buyergstinnumber        
+	560		: Set : Creditnotelist_deliveryname                 : $$Localestring:$deliveryname            
+	570		: Set : Creditnotelist_deliveryaddress1             : $$Localestring:$deliveryaddress1        
+	580		: Set : Creditnotelist_deliveryaddress2             : $$Localestring:$deliveryaddress2        
+	590		: Set : Creditnotelist_deliveryaddress3             : $$Localestring:$deliveryaddress3        
+	600		: Set : Creditnotelist_deliveryaddress4             : $$Localestring:$deliveryaddress4        
+	610		: Set : Creditnotelist_deliveryaddress5             : $$Localestring:$deliveryaddress5        
+	620		: Set : Creditnotelist_consigneestate               : $$Localestring:$consigneestate          
+	630		: Set : Creditnotelist_consigneegstinnumber         : $$Localestring:$consigneegstinnumber    
+	640		: Set : Creditnotelist_subvalue                     : $$Localestring:$subvalue                
+	650		: Set : Creditnotelist_roundoffledger               : $$Localestring:$roundoffledger          
+	660		: Set : Creditnotelist_roundoffamount               : $$Localestring:$roundoffamount          
+	670		: Set : Creditnotelist_invoicevalue                 : $$Localestring:$invoicevalue            
+	680		: Set : Creditnotelist_irn                          : $$Localestring:$irn                     
+	690		: Set : Creditnotelist_ackno                        : $$Localestring:$ackno                   
+	700		: Set : Creditnotelist_ackdate                      : $$Localestring:$ackdate                 
+	710		: Set : Creditnotelist_SignedInvoice                : $$Localestring:$SignedInvoice           
+	720		: Set : Creditnotelist_SignedQRCode                 : $$Localestring:$SignedQRCode            
+	730		: Set : Creditnotelist_ewaybillno                   : $$Localestring:$ewaybillno              
+	740		: Set : Creditnotelist_ewaybillnodate               : $$Localestring:$ewaybillnodate          
+	
+	741		: Msg Box	: "741"		: ##Creditnotelist_vchtype
+	
+	
+	
+	750		: 	 SET    : SVViewName 						: $$SysName:InvVchView	;If ##Creditnotelist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"	
+	760		: Set Value : DATE							: ##Creditnotelist_invoicedate
+	780		: Set Value : NARRATION						: $narration
+	790		: Set Value : PARTYLEDGERNAME				: ##Creditnotelist_customername
+	800		: Set Value : PERSISTEDVIEW					: If ##Creditnotelist_invoicemode = "Accounting Voucher View" Then "Accounting Voucher View" Else "Invoice Voucher View"
+	810		: Set Value	: REFERENCE						: ##Creditnotelist_reference
+    820		: Set Value	: IsInvoice						: If ##Creditnotelist_invoicemode = "Accounting Voucher View" Then "No" Else "Yes"
+    830		: Set Value	: VOUCHERTYPENAME				: ##Creditnotelist_vchtype
+	
+	
+	
+	
+	900		:  Insert Collection Object:INVOICEDELNOTES
+	910		:  Set Value	: BASICSHIPDELIVERYNOTE			: ##Creditnotelist_deliverynoteno   
+	920		:  Set Value	: BASICSHIPPINGDATE				: ##Creditnotelist_deliverynotedate 
+	930		:  Set Target:..	
+	
+	1001	: Set Value	: BASICSHIPDOCUMENTNO				: ##Creditnotelist_dispatchdocno 
+    1020	: Set Value	: BASICSHIPPEDBY					: ##Creditnotelist_dipatchthrough
+    1030	: Set Value	: BASICFINALDESTINATION				: ##Creditnotelist_destination  
+	1040	: Set Value	: BILLOFLADINGNO					: ##Creditnotelist_lrrnumber    	
+	1050	: Set Value	: BILLOFLADINGDATE					: ##Creditnotelist_lrrdate      		
+    1060	: Set Value	: BASICSHIPVESSELNO					: ##Creditnotelist_vehiclenumber
+	
+	
+	1070	: Insert Collection Object:INVOICEORDERLIST	
+ 	1080	: Set Value	: BASICPURCHASEORDERNO				: ##Creditnotelist_lrrnumber   
+	1100	: Set Value	: BASICORDERDATE					: ##Creditnotelist_lrrdate     
+	1110	: Set Target:..																
+			
+	1120	: Set Value	: BASICDUEDATEOFPYMT				: ##Creditnotelist_modeofpayment 
+    1130	: Set Value	: BASICORDERREF						: ##Creditnotelist_otherreference
+				
+    1140	: Insert Collection Object:BASICORDERTERMS	
+    1150	: Set Value	: BASICORDERTERMS					: ##Creditnotelist_termsofdelivery
+	1160	: Set Target:..	
+		
+    1170	: Set Value	: BASICBUYERNAME					: ##Creditnotelist_buyername
+    1180	: Set Value	: VCHGSTClass						: ##Creditnotelist_vchclass    
+	
+	
+																	      
+    				/*while condition*/
+					
+	Variable:CRListCount					: Number:5
+	Variable:CRListCount2					: Number:1
+	Variable:T1,CreditNotelist_buyeraddress	: String
+	
+	1200	: While	: ##CRListCount>0
+    		  
+    1220	: 	If	: $$LocaleString:##CRListCount2=$$LocaleString:1
+    1230	: 		Set	: CreditNotelist_buyeraddress	: $$LocaleString:##Creditnotelist_deliveryaddress1  
+    1240	: 	End If
+	1250	: 	If	: $$LocaleString:##CRListCount2=$$LocaleString:2
+	1260	: 		Set	: CreditNotelist_buyeraddress	: $$LocaleString:##Creditnotelist_deliveryaddress2
+    1270	: 	End If
+    1290	: 	If	: $$LocaleString:##CRListCount2=$$LocaleString:3
+    1300	: 		Set	: CreditNotelist_buyeraddress	: $$LocaleString:##Creditnotelist_deliveryaddress3 
+	
+    1310	: 	End If
+    1320	: 	If	: $$LocaleString:##CRListCount2=$$LocaleString:4
+    1330	: 		Set	: CreditNotelist_buyeraddress	: $$LocaleString:##Creditnotelist_deliveryaddress4
+    1350	: 	End If
+    1360	: 	If	: $$LocaleString:##CRListCount2=$$LocaleString:5
+    1390	: 		Set	:CreditNotelist_buyeraddress	: $$LocaleString:##Creditnotelist_deliveryaddress5
+    1400	: 	End If
+				
+    
+	
+	
+	1500	: 	Insert Collection Object	: BASICBUYERADDRESS
+	1510	: 	Set Value	: BASICBUYERADDRESS	: ##Creditnotelist_deliveryaddress
+	1520	: 	Set Target 	: ..
+			  
+	1530 	:   Decr		: CRListCount		
+	1540	:   Increment	: CRListCount2	
+	
+	1560	:	End While
+	
+	1580	: 	Set Value	: REFERENCE				: $$LocaleString:""
+	1590	: 	Set Value	: ISOPTIONAL			: $$LocaleString:No
+	
+	
+																														
+    1600	: Set Value	: COUNTRYOFRESIDENCE		: ##Creditnotelist_country            		
+    1610	: Set Value	: STATENAME					: ##Creditnotelist_buyerstate                
+	1630	: Set Value	: PLACEOFSUPPLY				: ##Creditnotelist_placeofsupply      						 
+    1640	: Set Value	: PARTYGSTIN				: ##Creditnotelist_buyergstinnumber                           
+																							
+    1690	: Set Value	: STATENAME					: ##Creditnotelist_buyerstate                             
+    1700	: Set Value	: PARTYNAME					: ##Creditnotelist_deliveryname
+    1710	: Set Value	: CONSIGNEEGSTIN			: ##Creditnotelist_buyergstinnumber
+    1720	: Set Value	: VCHENTRYMODE				: If ##Creditnotelist_invoicenumber = "Accounting Voucher View" Then "As Voucher" Else "Item Invoice"
+	
+							            
+	Variable:CRListCountCON	:Number:5
+	Variable:CRListCountCON2:Number:1
+	Variable:sCON1,Creditnotelist_deliveryaddress:String
+	
+	
+	1800	: While	: ##CRListCountCON>0
+    		  
+    1810	: If	: $$LocaleString:##CRListCountCON2=$$LocaleString:1
+    1820	: 	Set	: Creditnotelist_deliveryaddress	: $$LocaleString:##Creditnotelist_deliveryaddress1
+    1830	: End If
+    1840	: If	: $$LocaleString:##CRListCountCON2=$$LocaleString:2
+    1850	: 	Set	: Creditnotelist_deliveryaddress	: $$LocaleString:##Creditnotelist_deliveryaddress2
+    1870	: End If
+    1890	: If	: $$LocaleString:##CRListCountCON2=$$LocaleString:3
+    1900	: 	Set	: Creditnotelist_deliveryaddress	: $$LocaleString:##Creditnotelist_deliveryaddress3
+    1910	: End If
+    1920	: If	: $$LocaleString:##CRListCountCON2=$$LocaleString:4
+    1930	: 	Set	: Creditnotelist_deliveryaddress	: $$LocaleString:##Creditnotelist_deliveryaddress4
+    1950	: End If
+    1955	: If	: $$LocaleString:##CRListCountCON2=$$LocaleString:5
+    1960	: 	Set	: Creditnotelist_deliveryaddress	: $$LocaleString:##Creditnotelist_deliveryaddress5
+    1970	: End If
+	
+	
+	
+	2000	: Insert Collection Object	: ADDRESS
+	
+	2010	: Set Value	: ADDRESS	: ##Creditnotelist_deliveryaddress
+	2020	: Set Target : ..
+	
+	2030 	: Decr		: CRListCountCON	
+	2040	: Increment	: CRListCountCON2
+	
+	2050	: End While
+	
+	
+	
+	2060	: INSERT COLLECTION OBJECT							: LEDGER ENTRIES
+	2070 	: SET VALUE		: LedgerName						: ##Creditnotelist_customername
+	2080	: SET VALUE		: IsDeemedPositive					: $$LocaleString:"Yes"
+	3000	: SET VALUE		: ISPARTYLEDGER						: $$LocaleString:"Yes"
+	3010	: SET VALUE		: ISLASTDEEMEDPOSITIVE				: $$LocaleString:"Yes"
+	3020	: Set			: CRPartyLedgerAmountPurchase		: $$CollectionField:($$AsDrAmt:$additionalledgervalue):1:vchledgerlist
+	3040	: SET VALUE		: Amount							: If ##Creditnotelist_invoicemode = "Accounting Voucher View" Then ##CRPartyLedgerAmountPurchase Else  "-"+##Creditnotelist_invoicevalue
+	
+	
+	3050		: INSERT COLLECTION OBJECT						: BILLALLOCATIONS
+	3060		: SET VALUE		: NAME							: $$LocaleString:##Creditnotelist_invoicenumber
+	
+	Variable					: ReturnSalesDueOnValueVariable	: String
+		
+	3070		: Set			: ReturnSalesDueOnValueVariable	: $$LocaleString:$BillCreditPeriod:Ledger:##Creditnotelist_customername
+	3080		: SET VALUE		: BILLCREDITPERIOD				: $$DateRange:(##ReturnSalesDueOnValueVariable):(##Creditnotelist_invoicedate):True
+				
+	4000	: SET VALUE			: BILLTYPE						: $$LocaleString:"New Ref"
+	4010	: SET VALUE			: TDSDEDUCTEEISSPECIALRATE		: $$LocaleString:"Yes"
+	4020	: SET VALUE			: AMOUNT						: If ##Creditnotelist_invoicemode = "Accounting Voucher View" Then ##CRPartyLedgerAmountPurchase Else  "-"+##Creditnotelist_invoicevalue			
+	4030	: SET TARGET		: ..
+	4040	: SET TARGET		: ..
+			
+	4060	: Set Value		: REFERENCE						: $$LocaleString:##Creditnotelist_invoicenumber
+	
+	
+	4070	: Walk Collection	: vchproductlist_Creditnote
+	
+	5000	: Set : vchproductlist_Creditnote_invoicenumber				: $$LocaleString:$invoicenumber					
+    5010	: Set : vchproductlist_Creditnote_product                   : $$LocaleString:$product               
+    5020	: Set : vchproductlist_Creditnote_productdescription        : $$LocaleString:$productdescription    
+    5021	: Set : vchproductlist_Creditnote_parent                    : $$LocaleString:$parent 
+	5023	: Set : CreditNote_STK_product								: $$LocaleString:$Name:StockItem:$product
+    5030	: Set : vchproductlist_Creditnote_partno                    : $$LocaleString:$partno                
+    5040	: Set : vchproductlist_Creditnote_productgodown             : $$LocaleString:$productgodown         
+    5060	: Set : vchproductlist_Creditnote_unit                      : $$LocaleString:$unit                  
+    5070	: Set : vchproductlist_Creditnote_Altunit                   : $$LocaleString:$Altunit               
+    5080	: Set : vchproductlist_Creditnote_productqty                : $$LocaleString:$productqty            
+    6000	: Set : vchproductlist_Creditnote_productAltqty             : $$LocaleString:$productAltqty         
+    6010	: Set : vchproductlist_Creditnote_productrate               : $$LocaleString:$productrate           
+    6020	: Set : vchproductlist_Creditnote_producthsn                : $$LocaleString:$producthsn            
+    6030	: Set : vchproductlist_Creditnote_productigstpercentage     : $$LocaleString:$productigstpercentage 
+    6040	: Set : vchproductlist_Creditnote_productcgstpercentage     : $$LocaleString:$productcgstpercentage 
+    6050	: Set : vchproductlist_Creditnote_productsgstpercentage     : $$LocaleString:$productsgstpercentage 
+    6070	: Set : vchproductlist_Creditnote_taxamount                 : $$LocaleString:$taxamount             
+    6090	: Set : vchproductlist_Creditnote_taxableamount             : $$LocaleString:$taxableamount         
+    7000	: Set : vchproductlist_Creditnote_productvalue          	: $$LocaleString:$productvalue          
+	
+	
+	7020	: INSERT COLLECTION OBJECT				: ALLINVENTORYENTRIES 
+    
+    7030	: SET VALUE		: StockItemName			: ##vchproductlist_Creditnote_product
+	7040	: SET VALUE		: IsDeemedPositive		: No
+    7050	: SET VALUE		: ISLASTDEEMEDPOSITIVE	: No  
+	7060	: SET VALUE		: ActualQty				: if ##vchproductlist_Creditnote_productAltqty=##vchproductlist_Creditnote_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productAltqty)) * -1 
+    7080	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productqty)) * -1
+    7090	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Creditnote_productrate
+    8000	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Creditnote_productvalue))
+	
+	
+	8010	: INSERT COLLECTION OBJECT				: BATCH ALLOCATIONS
+		
+    8020	: SET VALUE		: GodownName			: ##vchproductlist_Creditnote_productgodown
+    8030	: SET VALUE		: ActualQty				: if ##vchproductlist_Creditnote_productAltqty=##vchproductlist_Creditnote_productqty then ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productqty)) * -1 else ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productAltqty)) * -1
+    8040	: SET VALUE		: BilledQty				: ($$TgtObject:($$AsQty:##vchproductlist_Creditnote_productqty)) * -1
+	8050	: SET VALUE		: Rate					: $$TgtObject:$$AsRate:##vchproductlist_Creditnote_productrate
+    8060	: SET VALUE		: Amount				: ($$TgtObject:($$AsAmount:##vchproductlist_Creditnote_productvalue))
+    8090	: SET TARGET	: ..
+	
+	9000	: INSERT COLLECTION OBJECT				: ACCOUNTING ALLOCATIONS
+		
+	9010	: SET VALUE		: LedgerName			: ##Creditnotelist_salesledger
+	9020	: SET VALUE		: Amount				: ##vchproductlist_Creditnote_productvalue    
+	9030	: SET TARGET	: ...
+	
+	
+	9040	: End Walk /*vchproductlist_Creditnote*/
+	
+	
+	1000	: Walk Collection	: vchledgerlist
+	
+	10100	: Set :	vchledgerlistCreditNote_invoicenumber				: $$Localestring:$invoicenumber						
+    10110	: Set : vchledgerlistCreditNote_additionalledger            : $$Localestring:$additionalledger         
+    10120	: Set : vchledgerlistCreditNote_parent                      : $$Localestring:$parent                   
+    10130	: Set : vchledgerlistCreditNote_rateofpercentage            : $$Localestring:$rateofpercentage         
+    10140	: Set : vchledgerlistCreditNote_additionalledgervalue	    : $$Localestring:$additionalledgervalue	   
+    10150	: Set : CreditNote_ledger									: $$LocaleString:$Name:Ledger:$additionalledger
+																		 
+	       
+	
+	10180	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
+					
+    10200	: SET VALUE		: LedgerName							: ##vchledgerlistCreditNote_additionalledger
+    10210	: SET VALUE		: ISDEEMEDPOSITIVE						: No
+    10230	: SET VALUE		: LEDGERFROMITEM						: No
+    10240	: SET VALUE		: REMOVEZEROENTRIES						: No
+    10250	: SET VALUE		: ISPARTYLEDGER							: No
+    10260	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
+    10270	: SET VALUE		: ISCAPVATTAXALTERED					: No
+    10280	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
+    10300	: SET VALUE		: Amount								: ##vchledgerlistCreditNote_additionalledgervalue
+    10310	: SET TARGET	: ..    
+	
+	
+	10319	: End Walk	/*vchledgerlist*/
+	
+	
+	
+	
+	10320	: INSERT COLLECTION OBJECT								: LEDGERENTRIES
+	10330	: SET VALUE		: LedgerName							: ##Creditnotelist_roundoffledger    
+	10340	: SET VALUE		: ISDEEMEDPOSITIVE						: No
+	10350	: SET VALUE		: LEDGERFROMITEM						: No
+	10360	: SET VALUE		: REMOVEZEROENTRIES						: No
+	10370	: SET VALUE		: ISPARTYLEDGER							: No
+	10380	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
+	10390	: SET VALUE		: ISCAPVATTAXALTERED					: No
+	10410	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
+	10420	: SET VALUE		: Amount								: ##Creditnotelist_roundoffamount             
+	10430	: SET TARGET	: ..
+		
+	
+	
+	
+	
+	
+	10810	: Set Value	: VOUCHERNUMBER								: $$TgtObject:##Creditnotelist_invoicenumber
+	10820	: Create TARGET
+	
+	
+	
+	
+	
+	
+                                                         
+                                                         
+    11001	: End Walk	/*Creditnotelist*/    
+	11002	: End Walk	/*message*/
+	11003	: End Walk	/*CreditVoucher*/
+	
+	11004	: Msg Box	: Msg Box	: "Success":"Download completed"

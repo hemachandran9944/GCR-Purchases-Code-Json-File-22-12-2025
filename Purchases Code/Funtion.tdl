@@ -350,8 +350,8 @@
 	740		: Set	: vchledgerlist_Purchase_purchase_rateofpercentage			: $$LocaleString:$rateofpercentage		
 	745		: Set	: vchledgerlist_Purchase_purchase_additionalledgervalue		: $$LocaleString:$additionalledgervalue	
 	
-	746A:Msg Box	: "746A"	: ##vchledgerlist_Purchase_purchase_additionalledgervalue
-	746B		: If: (Not($$IsEmpty:##vchledgerlist_Purchase_ledger)) AND (Not($$IsEmpty:##vchledgerlist_Purchase_purchase_additionalledger))
+	
+	746		: If: (Not($$IsEmpty:##vchledgerlist_Purchase_ledger)) AND (Not($$IsEmpty:##vchledgerlist_Purchase_purchase_additionalledger))
 
 	750A	: INSERT COLLECTION OBJECT				: LEDGERENTRIES
 	750B	: SET VALUE		: LedgerName			: ##vchledgerlist_Purchase_purchase_additionalledger

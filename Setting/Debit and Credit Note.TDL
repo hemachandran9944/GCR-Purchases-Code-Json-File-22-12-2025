@@ -1,62 +1,7 @@
 
 
 
-
-[Button: HemaVirat]
-	
-
-Key		: Ctrl	+ 7
-Title	: $$LocaleString:"HemaVirat18"
-Color	: Royal Blue
-Action	: Alter	: AddOnHid
-
-
-
-[Report:AddOnHid ]
-	
-Form	:	 AddOnHid_Form
-
-[Form: AddOnHid_Form]
-	
-Part	: 	AddOnHid_Part
-Height	: 	50 % Page
-Width	: 	50 % Page	
-
-
-[Part: AddOnHid_Part]
-	
-	Add: Line: IntergrationTitleButton,EnableintegrationButton
-	
-
-	Lines			:	IntergrationTitleButton,EnableintegrationButton
-	Scroll			:	Vertical
-	
-[Line: IntergrationTitleButton]
-
-	Right Field		: 	Form SubTitle
-	Local			: 	Field	: Form SubTitle	: Info 	: $$LocaleString:"[Integration Details]"
-	Local			:	Field	: Form SubTitle	: Color	: Royal Blue
-	Local			:	Field	: Form SubTitle	: Style	: Large Serif
-	Space Top 		: 	0.25
-	Space Bottom	: 	0.5
-		
-[Line:EnableintegrationButton]
-	
-	Field			: 	Medium Prompt,Hit_Enableintegration_ButtonReport
-	Local       	: 	Field : Medium Prompt : Set as    : $$LocaleString:"Integration Details ?"
-	Local      	 	: 	Field : Medium Prompt : Color	  : Royal Blue
-	Local 			: 	Field : Default 	  : Style     : Normal Bold
-	Space Top		: 	0.25
-
-[Field: Hit_Enableintegration_ButtonReport]
-
-    Use         	: 	Logical Field
-    Storage     	: 	EnablIntegrationDetailButton
-	Sub Form		: 	EnableintegrationExploadButtonReport	: $$Value
-
-
-
-[Report:EnableintegrationExploadButtonReport]
+[Report:DebitCreditNoteSetting]
 	
 	Title		: $$LocaleString:"Integration Details"
 
@@ -118,19 +63,11 @@ Width	: 	50 % Page
 
 [Field: CreditNoteURL_Field] 
 	
-
-	
 	Use          	: 	Name Field
 	Storage			: 	CreditNoteDownLoadURL
-    Case    	 	: 	Normal
-    Width        	: 	52 % Page
-    Style		 	: 	Small Bold
-	ASCIIOnly	 	: 	Yes
-	KBLanguage   	: 	@@EnglishLanguageID
-    
-	
-	
-
+	Max				:	1000
+	Full Width		:	Yes	
+	Style			:	Large Serif
 
 [Line: CrditNoteStatus]
 	
@@ -146,10 +83,11 @@ Width	: 	50 % Page
 	Use				: 	Name Field
 	Storage			:	CreditNoteVoucherStatus
 	case    	 	: 	Normal
-    Width        	: 	52 % Page
+    Style			:	Large Serif
     Style		 	: 	Small Bold
 	ASCIIOnly	 	: 	Yes
 	KBLanguage   	: 	@@EnglishLanguageID
+	Full Width		:	Yes
     
 
 
@@ -168,30 +106,25 @@ Width	: 	50 % Page
 	Use				: 	Name Field
 	Storage			:	DebitNoteVoucherDownLoadURL
 	case    	 	: 	Normal
-    Width        	: 	52 % Page
-    Style		 	: 	Small Bold
-	ASCIIOnly	 	: 	Yes
-	KBLanguage   	: 	@@EnglishLanguageID
+    Style			:	Large Serif
+	Full Width		:	Yes
     
 
 
 [Line: DebitNoteStatus]
 	
-	Space Bottom	: 10 % Page	
-	Field			: Long Prompt,DebiitNoteVoucherStatus
-	Local			: Field		: Long Prompt		: Info 		: $$LocaleString:"[DebitNote-Voucher Status]"
-	Local			: Field		: Long Prompt		: Style		: Large Serif
-	Local			: Field		: Long Prompt		: Color		: Royal Blue
+	Space Bottom	: 	10 % Page	
+	Field			: 	Long Prompt,DebiitNoteVoucherStatus
+	Local			: 	Field		: Long Prompt		: Info 		: $$LocaleString:"[DebitNote-Voucher Status]"
+	Local			: 	Field		: Long Prompt		: Style		: Large Serif
+	Local			: 	Field		: Long Prompt		: Color		: Royal Blue
 	
 [Field: DebiitNoteVoucherStatus]
 	
 	Use				: 	Name Field
-	Storage			: 	DebitNoteVOucherStatus
-	case    	 	: 	Normal
-    Width        	: 	52 % Page
-    Style		 	: 	Small Bold
-	ASCIIOnly	 	: 	Yes
-	KBLanguage   	: 	@@EnglishLanguageID
+	;Storage			: 	DebitNoteVOucherStatus
+    Style			:	Large Serif
+	Full Width		:	Yes
    
 	
 [Line: VoucherTypes]
@@ -217,13 +150,10 @@ Width	: 	50 % Page
 	Use				:	Name Field
 	Storage			:	CriditNoteVoucherTable
 	Set as			:	$CriditNoteVoucherTable
-	case    	 	: 	Normal
-    Width        	: 	52 % Page
-    Style		 	: 	Small Bold
-	ASCIIOnly	 	: 	Yes
-	KBLanguage   	: 	@@EnglishLanguageID
+	Style			:	Large Serif
 	Table			: 	CriditNoteTables
 	Show Table		: 	Always
+	Full Width		:	Yes
 	
 [Table: CriditNoteTables]
 
@@ -250,13 +180,10 @@ Width	: 	50 % Page
 	Use				: 	NameField
 	Storage			:	DebitNoteVoucherTypeTable
 	Set as			:	$DebitNoteVoucherTypeTable
-	case    	 	: 	Normal
-    Width        	: 	52 % Page
-    Style		 	: 	Small Bold
-	ASCIIOnly	 	: 	Yes
-	KBLanguage   	: 	@@EnglishLanguageID
+    Style			:	Large Serif
 	Table			:	DebitNoteTables
 	Show Table		: 	Always
+	Full Width		:	Yes
 	
 [Table: DebitNoteTables]
 	
@@ -269,3 +196,13 @@ Width	: 	50 % Page
     Align       	: 	Right
     FullHeight  	: 	Yes
 
+
+
+	[System: Variable]
+    
+    CreditNoteVoucherDonwload : ""
+
+[Variable: CreditNoteVoucherDonwload]
+	
+    Type       : String
+    Persistent : Yes  

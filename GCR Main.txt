@@ -4,6 +4,8 @@
 				
 
 
+
+
 			[#Field:Default]
 			
 			ADD:Tooltip:$$DescName
@@ -15,70 +17,49 @@
 
 Add	: Key Item	: After	: @@locIndentUtilities	: @@MenuIndent		: I : Menu	: PurchasesFuntion
 
-Add	: Button	: HemaVirat
+
 
 
 
 [Menu: PurchasesFuntion]
 	
 	Title		: $$LocaleString:"DownLoad Transcations"
-		
 	Indent		: @@PurchasesIndent
-	
 	Key Item	: "DownLoade Purchases"	: P	: Alter: GCR_Date_Wise_DownLoad_Report
 	
 
 	
 	Indent		: ""
-	
 	Indent		: @@Sales
-	
 	Key Item	: "DownLoad Sales"		: S : Call: DownLoad_Sales_Function
 	
 
 	Indent		: ""
-	
 	Indent		: @@Payment
-	
 	Key Item	: "DownLoade Payment"	: P	: Call	: DownLoade_Payment_Funtion
 	
 
 	Indent		: ""
-	
 	Indent		: @@CrieditNote
-	
 	Key Item	: "DownLoade Credit-Note": C : Call	: CreditNoteFuntion
-	
+
 	Indent		: ""
-	
 	Indent		: @@DebitNote
-	
 	Key Item	: "DownLoade Debit-Note"	: D : Call	: DebitNoteFuntion
+	Key Item	: "Debit Credit Note Seeting":N : Alter	: DebitCreditNoteSetting
 
 	
 	Indent		: ""
-	
 	Indent		: @@AutoShudling
-
 	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
 	
-
-
 	
 	Indent		: ""
-
 	Indent		: @@HTTTPConfig
-	
 	Key Item	: "API Request"			: A	: Display	: DownLoadeURLReport
 	
 
 	
-	Indent		: ""
-	
-	Indent		: @@AutoShudling
-
-	Key Item	: "AutoScheduling"		: A	: Alter	: AutoSchedulingGCRPurchases
-
 
 
 

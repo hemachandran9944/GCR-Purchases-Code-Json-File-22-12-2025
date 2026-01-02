@@ -491,7 +491,7 @@ Variable	:	Check_add_On	: String
     10260	: SET VALUE		: ISLASTDEEMEDPOSITIVE					: No
     10270	: SET VALUE		: ISCAPVATTAXALTERED					: No
     10280	: SET VALUE		: ISCAPVATNOTCLAIMED					: No
-    10300	: SET VALUE		:  Amount								: ##vchledgerlist_Sales_additionalledgervalue
+    10300	: SET VALUE		: Amount								: ##vchledgerlist_Sales_additionalledgervalue
     10310	: SET TARGET	: ..    
 
 	
